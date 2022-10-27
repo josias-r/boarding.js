@@ -14,9 +14,9 @@ export const ID_OVERLAY = "driver-page-overlay";
 export const ID_STAGE = "driver-highlighted-element-stage";
 export const ID_POPOVER = "driver-popover-item";
 
-export const CLASS_DRIVER_HIGHLIGHTED_ELEMENT = "driver-highlighted-element";
-export const CLASS_POSITION_RELATIVE = "driver-position-relative";
-export const CLASS_FIX_STACKING_CONTEXT = "driver-fix-stacking";
+// export const CLASS_DRIVER_HIGHLIGHTED_ELEMENT = "driver-highlighted-element";
+// export const CLASS_POSITION_RELATIVE = "driver-position-relative";
+// export const CLASS_FIX_STACKING_CONTEXT = "driver-fix-stacking";
 
 export const CLASS_CLEARFIX = "driver-clearfix";
 export const CLASS_BTN_GROUP = "driver-btn-group";
@@ -83,7 +83,17 @@ export const POPOVER_ELEMENT = (className = "") => {
   popoverWrapper.appendChild(popoverDescription);
   popoverWrapper.appendChild(popoverFooter);
 
-  return popoverWrapper;
+  return {
+    popoverWrapper,
+    popoverTip,
+    popoverTitle,
+    popoverDescription,
+    popoverFooter,
+    popoverPrevBtn,
+    popoverNextBtn,
+    popoverCloseBtn,
+    popoverFooterBtnGroup,
+  };
 };
 
 export const OVERLAY_ELEMENT = () => {

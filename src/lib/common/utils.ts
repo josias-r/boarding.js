@@ -1,4 +1,27 @@
 /**
+ * TS runtime check to make sure we are working with an HTMLElement
+ */
+export function assertIsHtmlElement(e: any | null): asserts e is HTMLElement {
+  if (
+    !e ||
+    !("nodeType" in e && e.nodeType === 1 && typeof e.nodeName === "string")
+  ) {
+    throw new Error("Html Element expected");
+  }
+}
+
+/**
+ * TS runtime check to ensure var is not falsy
+ */
+export function assertVarIsNotFalsy<T extends any>(e?: T): asserts e is T {
+  if (!e) {
+    throw new Error(
+      `Variable was expected to not be falsy, but isntead was: ${e}`
+    );
+  }
+}
+
+/**
  * Gets the CSS property from the given element
  */
 export const getStyleProperty = (

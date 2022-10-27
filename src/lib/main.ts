@@ -1,6 +1,6 @@
 import Overlay from "./core/overlay";
-import Element from "./core/element";
-import Popover from "./core/popover";
+import BoardingElement from "./core/element";
+import Popover, { DriverPopoverOptions } from "./core/popover";
 import {
   CLASS_CLOSE_BTN,
   CLASS_NEXT_STEP_BTN,
@@ -17,16 +17,147 @@ import {
   ALLOW_KEYBOARD_CONTROL,
 } from "./common/constants";
 import Stage from "./core/stage";
-import { isDomElement } from "./common/utils";
+import { assertIsHtmlElement } from "./common/utils";
+
+interface DriverOptions {
+  /**
+   * Whether to animate while transitioning from one highlighted
+   * element to another
+   * @default true
+   */
+  animate?: boolean;
+
+  /**
+   * Opacity for the overlay
+   * @default 0.75
+   */
+  opacity?: number;
+  /**
+   * Distance of elements corner from the edges of the overlay
+   * @default 10
+   */
+  padding?: number;
+  /**
+   * Options to be passed to scrollIntoView if supported by browser
+   * @default { behavior: 'instant', block: 'center' }
+   */
+  scrollIntoViewOptions?: ScrollIntoViewOptions;
+  /**
+   * Clicking outside the highlighted element should reset driver or not
+   * @default true
+   */
+  allowClose?: boolean;
+  /**
+   * Whether to allow controlling steps through keyboard
+   * @default true
+   */
+  keyboardControl?: boolean;
+  /**
+   * Clicking outside the highlighted element should move next
+   * @default false
+   */
+  overlayClickNext?: boolean;
+  /**
+   * Background color for the stage behind the highlighted element
+   * @default '#ffffff'
+   */
+  stageBackground?: string;
+  /**
+   * Whether to show control buttons or not
+   * @default true
+   */
+  showButtons?: boolean;
+  /**
+   * Text on the button in the final step
+   * @default 'Done'
+   */
+  doneBtnText?: string;
+  /**
+   * Text on the close button
+   * @default 'Close'
+   */
+  closeBtnText?: string;
+  /**
+   * Text on the next button
+   * @default 'Next'
+   */
+  nextBtnText?: string;
+  /**
+   * Text on the previous button
+   * @default 'Previous'
+   */
+  prevBtnText?: string;
+  /**
+   * className for the driver popovers
+   */
+  className?: string;
+  /**
+   * Callback to be called when element is about to be highlighted
+   */
+  onHighlightStarted?: (element: BoardingElement) => void;
+  /**
+   * Callback to be called when element has been highlighted
+   * @param {BoardingElement} element
+   */
+  onHighlighted?: (element: BoardingElement) => void;
+  /**
+   * Callback to be called when element has been deselected
+   * @param {BoardingElement} element
+   */
+  onDeselected?: (element: BoardingElement) => void;
+  /**
+   * Is called when the overlay is about to reset
+   */
+  onReset?: (element: BoardingElement) => void;
+  /**
+   * Is called when the next element is about to be highlighted
+   */
+  onNext?: (element: BoardingElement) => void;
+  /**
+   * Is called when the previous element is about to be highlighted
+   */
+  onPrevious?: (element: BoardingElement) => void;
+}
+
+type DriverSteps = BoardingElement[];
+interface PureDriverStepDefinition {
+  /**
+   * Query selector representing the DOM Element
+   */
+  element: string | HTMLElement;
+  /**
+   * Color of stage when this step is active
+   * @default #ffffff
+   */
+  stageBackground?: string;
+  /**
+   * Options representing popover for this step
+   */
+  popover?: DriverPopoverOptions;
+  /**
+   * Is called when the next element is about to be highlighted
+   */
+  onNext?: (element: BoardingElement) => void;
+  /**
+   * Is called when the previous element is about to be highlighted
+   */
+  onPrevious?: (element: BoardingElement) => void;
+}
+type DriverStepDefinition = string | HTMLElement | PureDriverStepDefinition;
 
 /**
  * Plugin class that drives the plugin
  */
 export default class Driver {
-  /**
-   * @param {Object} options
-   */
-  constructor(options = {}) {
+  private options: DriverOptions;
+  private isActivated: boolean;
+  private steps: DriverSteps;
+  private currentStep: number;
+  private currentMovePrevented: boolean;
+
+  private overlay: Overlay;
+
+  constructor(options?: Partial<DriverOptions>) {
     this.options = {
       animate: SHOULD_ANIMATE_OVERLAY, // Whether to animate or not
       opacity: OVERLAY_OPACITY, // Overlay opacity
@@ -36,17 +167,15 @@ export default class Driver {
       keyboardControl: ALLOW_KEYBOARD_CONTROL, // Whether to allow controlling through keyboard or not
       overlayClickNext: SHOULD_OUTSIDE_CLICK_NEXT, // Whether to move next on click outside the element
       stageBackground: "#ffffff", // Background color for the stage
-      onHighlightStarted: () => null, // When element is about to be highlighted
-      onHighlighted: () => null, // When element has been highlighted
-      onDeselected: () => null, // When the element has been deselected
-      onReset: () => null, // When overlay is about to be cleared
-      onNext: () => null, // When next button is clicked
-      onPrevious: () => null, // When previous button is clicked
+      // onHighlightStarted: () => null, // When element is about to be highlighted
+      // onHighlighted: () => null, // When element has been highlighted
+      // onDeselected: () => null, // When the element has been deselected
+      // onReset: () => null, // When overlay is about to be cleared
+      // onNext: () => null, // When next button is clicked
+      // onPrevious: () => null, // When previous button is clicked
       ...options,
     };
 
-    this.document = document;
-    this.window = window;
     this.isActivated = false;
     this.steps = []; // steps to be presented if any
     this.currentStep = 0; // index for the currently highlighted step
@@ -67,48 +196,41 @@ export default class Driver {
 
   /**
    * Getter for steps property
-   * @readonly
-   * @public
    */
-  getSteps() {
+  public getSteps() {
     return this.steps;
   }
 
   /**
    * Setter for steps property
-   * @param steps
-   * @public
    */
-  setSteps(steps) {
+  public setSteps(steps: DriverSteps) {
     this.steps = steps;
   }
 
   /**
    * Binds any DOM events listeners
    * @todo: add throttling in all the listeners
-   * @private
    */
-  bind() {
-    this.window.addEventListener("resize", this.onResize, false);
-    this.window.addEventListener("keyup", this.onKeyUp, false);
+  private bind() {
+    window.addEventListener("resize", this.onResize, false);
+    window.addEventListener("keyup", this.onKeyUp, false);
 
     // Binding both touch and click results in popup getting shown and then immediately get hidden.
     // Adding the check to not bind the click event if the touch is supported i.e. on mobile devices
     // Issue: https://github.com/kamranahmedse/driver.js/issues/150
     if (!("ontouchstart" in document.documentElement)) {
-      this.window.addEventListener("click", this.onClick, false);
+      window.addEventListener("click", this.onClick, false);
     } else {
-      this.window.addEventListener("touchstart", this.onClick, false);
+      window.addEventListener("touchstart", this.onClick, false);
     }
   }
 
   /**
    * Removes the popover if clicked outside the highlighted element
    * or outside the
-   * @param e
-   * @private
    */
-  onClick(e) {
+  private onClick(e: MouseEvent | TouchEvent) {
     if (!this.isActivated || !this.hasHighlightedElement()) {
       return;
     }
@@ -119,8 +241,9 @@ export default class Driver {
     e.stopPropagation();
 
     const highlightedElement = this.overlay.getHighlightedElement();
-    const popover = this.document.getElementById(ID_POPOVER);
+    const popover = document.getElementById(ID_POPOVER);
 
+    assertIsHtmlElement(e.target);
     const clickedHighlightedElement = highlightedElement.node.contains(
       e.target
     );
@@ -165,9 +288,8 @@ export default class Driver {
   /**
    * Handler for the onResize DOM event
    * Makes sure highlighted element stays at valid position
-   * @private
    */
-  onResize() {
+  private onResize() {
     if (!this.isActivated) {
       return;
     }
@@ -178,16 +300,14 @@ export default class Driver {
   /**
    * Refreshes and repositions the popover and the overlay
    */
-  refresh() {
+  public refresh() {
     this.overlay.refresh();
   }
 
   /**
    * Clears the overlay on escape key process
-   * @param event
-   * @private
    */
-  onKeyUp(event) {
+  private onKeyUp(event: KeyboardEvent) {
     // If driver is not active or keyboard control is disabled
     if (!this.isActivated || !this.options.keyboardControl) {
       return;
@@ -216,9 +336,8 @@ export default class Driver {
   /**
    * Moves to the previous step if possible
    * otherwise resets the overlay
-   * @public
    */
-  movePrevious() {
+  public movePrevious() {
     const previousStep = this.steps[this.currentStep - 1];
     if (!previousStep) {
       this.reset();
@@ -232,17 +351,15 @@ export default class Driver {
   /**
    * Prevents the current move. Useful in `onNext` if you want to
    * perform some asynchronous task and manually move to next step
-   * @public
    */
-  preventMove() {
+  public preventMove() {
     this.currentMovePrevented = true;
   }
 
   /**
    * Handles the internal "move to next" event
-   * @private
    */
-  handleNext() {
+  private handleNext() {
     this.currentMovePrevented = false;
 
     // Call the bound `onNext` handler if available
@@ -260,9 +377,8 @@ export default class Driver {
 
   /**
    * Handles the internal "move to previous" event
-   * @private
    */
-  handlePrevious() {
+  private handlePrevious() {
     this.currentMovePrevented = false;
 
     // Call the bound `onPrevious` handler if available
@@ -281,9 +397,8 @@ export default class Driver {
   /**
    * Moves to the next step if possible
    * otherwise resets the overlay
-   * @public
    */
-  moveNext() {
+  public moveNext() {
     const nextStep = this.steps[this.currentStep + 1];
     if (!nextStep) {
       this.reset();
@@ -295,27 +410,23 @@ export default class Driver {
   }
 
   /**
-   * @returns {boolean}
-   * @public
+   * Check if there is a next step
    */
-  hasNextStep() {
+  public hasNextStep() {
     return !!this.steps[this.currentStep + 1];
   }
 
   /**
-   * @returns {boolean}
-   * @public
+   * Check if there is a previous step
    */
-  hasPreviousStep() {
+  public hasPreviousStep() {
     return !!this.steps[this.currentStep - 1];
   }
 
   /**
    * Resets the steps if any and clears the overlay
-   * @param {boolean} immediate
-   * @public
    */
-  reset(immediate = false) {
+  public reset(immediate = false) {
     this.currentStep = 0;
     this.isActivated = false;
     this.overlay.clear(immediate);
@@ -323,44 +434,36 @@ export default class Driver {
 
   /**
    * Checks if there is any highlighted element or not
-   * @returns {boolean}
-   * @public
    */
-  hasHighlightedElement() {
+  public hasHighlightedElement() {
     const highlightedElement = this.overlay.getHighlightedElement();
     return highlightedElement && highlightedElement.node;
   }
 
   /**
    * Gets the currently highlighted element in overlay
-   * @returns {Element}
-   * @public
    */
-  getHighlightedElement() {
+  public getHighlightedElement() {
     return this.overlay.getHighlightedElement();
   }
 
   /**
    * Gets the element that was highlighted before currently highlighted element
-   * @returns {Element}
-   * @public
    */
-  getLastHighlightedElement() {
+  public getLastHighlightedElement() {
     return this.overlay.getLastHighlightedElement();
   }
 
   /**
    * Defines steps to be highlighted
-   * @param {array} steps
-   * @public
    */
-  defineSteps(steps) {
+  public defineSteps(stepDefinitions: DriverStepDefinition[]) {
     this.steps = [];
 
-    for (let counter = 0; counter < steps.length; counter++) {
+    for (let counter = 0; counter < stepDefinitions.length; counter++) {
       const element = this.prepareElementFromStep(
-        steps[counter],
-        steps,
+        stepDefinitions[counter],
+        stepDefinitions,
         counter
       );
       if (!element) {
@@ -374,37 +477,41 @@ export default class Driver {
   /**
    * Prepares the step received from the user and returns an instance
    * of Element
-   *
-   * @param currentStep Step that is being prepared
-   * @param allSteps  List of all the steps
-   * @param index Index of the current step
-   * @returns {null|Element}
-   * @private
    */
-  prepareElementFromStep(currentStep, allSteps = [], index = 0) {
-    let elementOptions = { ...this.options };
-    let querySelector = currentStep;
+  private prepareElementFromStep(
+    currentStep: DriverStepDefinition,
+    allSteps: DriverStepDefinition[] = [],
+    index = 0
+  ) {
+    let elementOptions: Omit<PureDriverStepDefinition, "element"> &
+      DriverOptions = {
+      ...this.options,
+    };
+    let domElementOrSelector: string | HTMLElement | undefined =
+      typeof currentStep === "string" ? currentStep : undefined;
 
-    // If the `currentStep` is step definition
-    // then grab the options and element from the definition
-    const isStepDefinition =
-      typeof currentStep !== "string" && !isDomElement(currentStep);
-
-    if (!currentStep || (isStepDefinition && !currentStep.element)) {
+    if (
+      typeof currentStep !== "string" &&
+      !("nodeType" in currentStep) &&
+      !currentStep.element
+    ) {
       throw new Error(`Element is required in step ${index}`);
     }
 
-    if (isStepDefinition) {
-      querySelector = currentStep.element;
+    // If the `currentStep` is step definition
+    // then grab the options and element from the definition
+    if (typeof currentStep !== "string" && !("nodeType" in currentStep)) {
+      domElementOrSelector = currentStep.element;
       elementOptions = { ...this.options, ...currentStep };
     }
 
     // If the given element is a query selector or a DOM element?
-    const domElement = isDomElement(querySelector)
-      ? querySelector
-      : this.document.querySelector(querySelector);
+    const domElement =
+      typeof domElementOrSelector === "string"
+        ? document.querySelector(domElementOrSelector)
+        : domElementOrSelector;
     if (!domElement) {
-      console.warn(`Element to highlight ${querySelector} not found`);
+      console.warn(`Element to highlight ${domElementOrSelector} not found`);
       return null;
     }
 
@@ -417,7 +524,7 @@ export default class Driver {
         .filter((c) => c)
         .join(" ");
 
-      const popoverOptions = {
+      const popoverOptions: DriverPopoverOptions = {
         ...elementOptions,
         ...elementOptions.popover,
         className: mergedClassNames,
@@ -427,29 +534,26 @@ export default class Driver {
         isLast: allSteps.length === 0 || index === allSteps.length - 1, // Only one item or last item
       };
 
-      popover = new Popover(popoverOptions, this.window, this.document);
+      popover = new Popover(popoverOptions);
     }
 
     const stageOptions = { ...elementOptions };
-    const stage = new Stage(stageOptions, this.window, this.document);
+    const stage = new Stage(stageOptions);
 
-    return new Element({
+    return new BoardingElement({
       node: domElement,
       options: elementOptions,
       popover,
       stage,
       overlay: this.overlay,
-      window: this.window,
-      document: this.document,
     });
   }
 
   /**
    * Initiates highlighting steps from first step
-   * @param {number} index at which highlight is to be started
-   * @public
+   * @param index at which highlight is to be started
    */
-  start(index = 0) {
+  public start(index = 0) {
     if (!this.steps || this.steps.length === 0) {
       throw new Error("There are no steps defined to iterate");
     }
@@ -462,9 +566,8 @@ export default class Driver {
   /**
    * Highlights the given element
    * @param {string|{element: string, popover: {}}} selector Query selector or a step definition
-   * @public
    */
-  highlight(selector) {
+  public highlight(selector: DriverStepDefinition) {
     this.isActivated = true;
 
     const element = this.prepareElementFromStep(selector);
