@@ -1,9 +1,10 @@
 import BoardingJS from "./lib/main";
+import "./lib/boarding.css";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
+    <a id="vitesvg" href="https://vitejs.dev" target="_blank" style="margin: 10px; display: inline-block; position: relative;">
+      XXX
     </a>
     <h1>Vite + TypeScript</h1>
     <div class="card">
@@ -15,4 +16,16 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   </div>
 `;
 
-console.log(BoardingJS);
+const tour = new BoardingJS();
+tour.defineSteps([
+  {
+    element: "#vitesvg",
+    popover: { title: "Test", description: "description" },
+  },
+  {
+    element: "h1",
+    popover: { title: "Test", description: "description" },
+  },
+]);
+
+tour.start();

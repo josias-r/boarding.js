@@ -555,6 +555,9 @@ export default class Driver {
     this.isActivated = true;
     this.currentStep = index;
     this.overlay.highlight(this.steps[index]);
+
+    // call element highlighted event
+    this.overlay.lastActiveHighlightElement?.onHighlighted();
   }
 
   /**
