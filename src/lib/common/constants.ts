@@ -18,6 +18,9 @@ export const CLASS_DRIVER_HIGHLIGHTED_ELEMENT = "driver-highlighted-element";
 export const CLASS_POSITION_RELATIVE = "driver-position-relative";
 export const CLASS_FIX_STACKING_CONTEXT = "driver-fix-stacking";
 
+export const CLASS_CLEARFIX = "driver-clearfix";
+export const CLASS_BTN_GROUP = "driver-btn-group";
+
 export const CLASS_STAGE_NO_ANIMATION = "driver-stage-no-animation";
 export const CLASS_POPOVER_TIP = "driver-popover-tip";
 export const CLASS_POPOVER_TITLE = "driver-popover-title";
@@ -33,20 +36,63 @@ export const CLASS_NAVIGATION_BTNS = "driver-navigation-btns";
 // NOTE: It must match the one set in the animations in CSS file
 export const ANIMATION_DURATION_MS = 300;
 
-// language=HTML
-export const POPOVER_HTML = (className = "") => `
-  <div id="${ID_POPOVER}" class="${className}">
-    <div class="${CLASS_POPOVER_TIP}"></div>
-    <div class="${CLASS_POPOVER_TITLE}">Popover Title</div>
-    <div class="${CLASS_POPOVER_DESCRIPTION}">Popover Description</div>
-    <div class="driver-clearfix ${CLASS_POPOVER_FOOTER}">
-      <button class="${CLASS_CLOSE_BTN}">Close</button>
-      <span class="driver-btn-group ${CLASS_NAVIGATION_BTNS}">
-        <button class="${CLASS_PREV_STEP_BTN}">&larr; Previous</button>
-        <button class="${CLASS_NEXT_STEP_BTN}">Next &rarr;</button>
-      </span>
-    </div>
-  </div>`;
+export const POPOVER_ELEMENT = (className = "") => {
+  // create elements required
+  const popoverWrapper = document.createElement("div");
+  popoverWrapper.id = ID_POPOVER;
+  popoverWrapper.className = className;
 
-export const OVERLAY_HTML = `<div id="${ID_OVERLAY}"></div>`;
-export const STAGE_HTML = `<div id="${ID_STAGE}"></div>`;
+  const popoverTip = document.createElement("div");
+  popoverTip.classList.add(CLASS_POPOVER_TIP);
+
+  const popoverTitle = document.createElement("div");
+  popoverTitle.classList.add(CLASS_POPOVER_TITLE);
+  popoverTitle.innerText = "Popover Title";
+
+  const popoverDescription = document.createElement("div");
+  popoverDescription.classList.add(CLASS_POPOVER_DESCRIPTION);
+  popoverDescription.innerText = "Popover Description";
+
+  const popoverFooter = document.createElement("div");
+  popoverFooter.classList.add(CLASS_POPOVER_FOOTER, CLASS_CLEARFIX);
+
+  const popoverCloseBtn = document.createElement("button");
+  popoverCloseBtn.classList.add(CLASS_CLOSE_BTN);
+  popoverCloseBtn.innerText = "Close";
+
+  const popoverFooterBtnGroup = document.createElement("span");
+  popoverFooterBtnGroup.classList.add(CLASS_BTN_GROUP, CLASS_NAVIGATION_BTNS);
+
+  const popoverPrevBtn = document.createElement("button");
+  popoverPrevBtn.classList.add(CLASS_PREV_STEP_BTN);
+  popoverPrevBtn.innerText = "&larr; Previous";
+
+  const popoverNextBtn = document.createElement("button");
+  popoverNextBtn.classList.add(CLASS_NEXT_STEP_BTN);
+  popoverNextBtn.innerText = "Next &rarr;";
+
+  // piece it all together
+  popoverFooterBtnGroup.appendChild(popoverPrevBtn);
+  popoverFooterBtnGroup.appendChild(popoverNextBtn);
+
+  popoverFooter.appendChild(popoverCloseBtn);
+  popoverFooter.appendChild(popoverFooterBtnGroup);
+
+  popoverWrapper.appendChild(popoverTip);
+  popoverWrapper.appendChild(popoverTitle);
+  popoverWrapper.appendChild(popoverDescription);
+  popoverWrapper.appendChild(popoverFooter);
+
+  return popoverWrapper;
+};
+
+export const OVERLAY_ELEMENT = () => {
+  const overlayElement = document.createElement("div");
+  overlayElement.id = ID_OVERLAY;
+  return overlayElement;
+};
+export const STAGE_ELEMENT = () => {
+  const stageElement = document.createElement("div");
+  stageElement.id = ID_STAGE;
+  return stageElement;
+};
