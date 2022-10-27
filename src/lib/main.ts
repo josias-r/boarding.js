@@ -41,7 +41,7 @@ interface DriverOptions {
    * Options to be passed to scrollIntoView if supported by browser
    * @default { behavior: 'instant', block: 'center' }
    */
-  scrollIntoViewOptions?: ScrollIntoViewOptions;
+  scrollIntoViewOptions?: ScrollIntoViewOptions | null;
   /**
    * Clicking outside the highlighted element should reset driver or not
    * @default true
