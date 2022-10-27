@@ -1,6 +1,6 @@
-import Overlay from './core/overlay';
-import Element from './core/element';
-import Popover from './core/popover';
+import Overlay from "./core/overlay";
+import Element from "./core/element";
+import Popover from "./core/popover";
 import {
   CLASS_CLOSE_BTN,
   CLASS_NEXT_STEP_BTN,
@@ -15,9 +15,9 @@ import {
   SHOULD_OUTSIDE_CLICK_CLOSE,
   SHOULD_OUTSIDE_CLICK_NEXT,
   ALLOW_KEYBOARD_CONTROL,
-} from './common/constants';
-import Stage from './core/stage';
-import { isDomElement } from './common/utils';
+} from "./common/constants";
+import Stage from "./core/stage";
+import { isDomElement } from "./common/utils";
 
 /**
  * Plugin class that drives the plugin
@@ -29,28 +29,28 @@ export default class Driver {
   constructor(options = {}) {
     this.options = {
       animate: SHOULD_ANIMATE_OVERLAY, // Whether to animate or not
-      opacity: OVERLAY_OPACITY,    // Overlay opacity
-      padding: OVERLAY_PADDING,    // Spacing around the element from the overlay
+      opacity: OVERLAY_OPACITY, // Overlay opacity
+      padding: OVERLAY_PADDING, // Spacing around the element from the overlay
       scrollIntoViewOptions: null, // Options to be passed to `scrollIntoView`
-      allowClose: SHOULD_OUTSIDE_CLICK_CLOSE,      // Whether to close overlay on click outside the element
-      keyboardControl: ALLOW_KEYBOARD_CONTROL,     // Whether to allow controlling through keyboard or not
+      allowClose: SHOULD_OUTSIDE_CLICK_CLOSE, // Whether to close overlay on click outside the element
+      keyboardControl: ALLOW_KEYBOARD_CONTROL, // Whether to allow controlling through keyboard or not
       overlayClickNext: SHOULD_OUTSIDE_CLICK_NEXT, // Whether to move next on click outside the element
-      stageBackground: '#ffffff',       // Background color for the stage
-      onHighlightStarted: () => null,   // When element is about to be highlighted
-      onHighlighted: () => null,        // When element has been highlighted
-      onDeselected: () => null,         // When the element has been deselected
-      onReset: () => null,              // When overlay is about to be cleared
-      onNext: () => null,               // When next button is clicked
-      onPrevious: () => null,           // When previous button is clicked
+      stageBackground: "#ffffff", // Background color for the stage
+      onHighlightStarted: () => null, // When element is about to be highlighted
+      onHighlighted: () => null, // When element has been highlighted
+      onDeselected: () => null, // When the element has been deselected
+      onReset: () => null, // When overlay is about to be cleared
+      onNext: () => null, // When next button is clicked
+      onPrevious: () => null, // When previous button is clicked
       ...options,
     };
 
     this.document = document;
     this.window = window;
     this.isActivated = false;
-    this.steps = [];                    // steps to be presented if any
-    this.currentStep = 0;               // index for the currently highlighted step
-    this.currentMovePrevented = false;  // If the current move was prevented
+    this.steps = []; // steps to be presented if any
+    this.currentStep = 0; // index for the currently highlighted step
+    this.currentMovePrevented = false; // If the current move was prevented
 
     this.overlay = new Overlay(this.options, window, document);
 
@@ -89,16 +89,16 @@ export default class Driver {
    * @private
    */
   bind() {
-    this.window.addEventListener('resize', this.onResize, false);
-    this.window.addEventListener('keyup', this.onKeyUp, false);
+    this.window.addEventListener("resize", this.onResize, false);
+    this.window.addEventListener("keyup", this.onKeyUp, false);
 
     // Binding both touch and click results in popup getting shown and then immediately get hidden.
     // Adding the check to not bind the click event if the touch is supported i.e. on mobile devices
     // Issue: https://github.com/kamranahmedse/driver.js/issues/150
-    if (!('ontouchstart' in document.documentElement)) {
-      this.window.addEventListener('click', this.onClick, false);
+    if (!("ontouchstart" in document.documentElement)) {
+      this.window.addEventListener("click", this.onClick, false);
     } else {
-      this.window.addEventListener('touchstart', this.onClick, false);
+      this.window.addEventListener("touchstart", this.onClick, false);
     }
   }
 
@@ -121,17 +121,27 @@ export default class Driver {
     const highlightedElement = this.overlay.getHighlightedElement();
     const popover = this.document.getElementById(ID_POPOVER);
 
-    const clickedHighlightedElement = highlightedElement.node.contains(e.target);
+    const clickedHighlightedElement = highlightedElement.node.contains(
+      e.target
+    );
     const clickedPopover = popover && popover.contains(e.target);
 
     // Perform the 'Next' operation when clicked outside the highlighted element
-    if (!clickedHighlightedElement && !clickedPopover && this.options.overlayClickNext) {
+    if (
+      !clickedHighlightedElement &&
+      !clickedPopover &&
+      this.options.overlayClickNext
+    ) {
       this.handleNext();
       return;
     }
 
     // Remove the overlay If clicked outside the highlighted element
-    if (!clickedHighlightedElement && !clickedPopover && this.options.allowClose) {
+    if (
+      !clickedHighlightedElement &&
+      !clickedPopover &&
+      this.options.allowClose
+    ) {
       this.reset();
       return;
     }
@@ -348,7 +358,11 @@ export default class Driver {
     this.steps = [];
 
     for (let counter = 0; counter < steps.length; counter++) {
-      const element = this.prepareElementFromStep(steps[counter], steps, counter);
+      const element = this.prepareElementFromStep(
+        steps[counter],
+        steps,
+        counter
+      );
       if (!element) {
         continue;
       }
@@ -373,7 +387,8 @@ export default class Driver {
 
     // If the `currentStep` is step definition
     // then grab the options and element from the definition
-    const isStepDefinition = typeof currentStep !== 'string' && !isDomElement(currentStep);
+    const isStepDefinition =
+      typeof currentStep !== "string" && !isDomElement(currentStep);
 
     if (!currentStep || (isStepDefinition && !currentStep.element)) {
       throw new Error(`Element is required in step ${index}`);
@@ -385,7 +400,9 @@ export default class Driver {
     }
 
     // If the given element is a query selector or a DOM element?
-    const domElement = isDomElement(querySelector) ? querySelector : this.document.querySelector(querySelector);
+    const domElement = isDomElement(querySelector)
+      ? querySelector
+      : this.document.querySelector(querySelector);
     if (!domElement) {
       console.warn(`Element to highlight ${querySelector} not found`);
       return null;
@@ -396,7 +413,9 @@ export default class Driver {
       const mergedClassNames = [
         this.options.className,
         elementOptions.popover.className,
-      ].filter(c => c).join(' ');
+      ]
+        .filter((c) => c)
+        .join(" ");
 
       const popoverOptions = {
         ...elementOptions,
@@ -432,7 +451,7 @@ export default class Driver {
    */
   start(index = 0) {
     if (!this.steps || this.steps.length === 0) {
-      throw new Error('There are no steps defined to iterate');
+      throw new Error("There are no steps defined to iterate");
     }
 
     this.isActivated = true;
