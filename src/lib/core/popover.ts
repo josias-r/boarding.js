@@ -8,6 +8,7 @@ import {
 } from "../common/constants";
 import { assertVarIsNotFalsy } from "../common/utils";
 
+// TODO: move interface to other file?
 export interface Position {
   right: number;
   left: number;
@@ -294,9 +295,9 @@ export default class Popover {
         break;
     }
 
-    // Bring the popover in view port once it is displayed
-    // TODO
-    this.bringInView();
+    // TODO: create bringInView helper
+    // // Bring the popover in view port once it is displayed
+    // this.bringInView();
   }
 
   /**

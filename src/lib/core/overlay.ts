@@ -1,137 +1,183 @@
-import { ANIMATION_DURATION_MS, ID_OVERLAY, OVERLAY_HTML } from '../common/constants';
-import { createNodeFromString } from '../common/utils';
+import { OVERLAY_PADDING } from "../common/constants";
+import {
+  createSvgCutout,
+  CutoutDefinition,
+  generateSvgCutoutPathString,
+} from "./cutout";
+import HighlightElement from "./highlight-element";
+
+interface OverlayOptions {
+  padding: number;
+  onReset?: (element: HighlightElement) => void;
+  animate?: boolean;
+}
 
 /**
  * Responsible for overlay creation and manipulation i.e.
  * cutting out the visible part, animating between the sections etc
  */
-export default class Overlay {
-  /**
-   * @param {Object} options
-   * @param {Window} window
-   * @param {Document} document
-   */
-  constructor(options, window, document) {
-    this.options = options;
+class Overlay {
+  private options: OverlayOptions;
+  private cutoutSVGElement?: SVGSVGElement;
 
-    this.highlightedElement = null;              // currently highlighted dom element (instance of Element)
-    this.lastHighlightedElement = null;          // element that was highlighted before current one
-    this.hideTimer = null;
+  public lastActiveHighlightElement?: HighlightElement; // TODO: needed for what?
 
-    this.window = window;
-    this.document = document;
-
-    this.removeNode = this.removeNode.bind(this);
+  constructor(options: Partial<OverlayOptions>) {
+    this.options = {
+      padding: OVERLAY_PADDING,
+      ...options,
+    };
   }
 
-  /**
-   * Prepares the overlay
-   * @private
-   */
-  attachNode() {
-    let pageOverlay = this.document.getElementById(ID_OVERLAY);
-    if (!pageOverlay) {
-      pageOverlay = createNodeFromString(OVERLAY_HTML);
-      document.body.appendChild(pageOverlay);
+  private mountCutoutElement(cutoutDefinition: CutoutDefinition) {
+    if (this.cutoutSVGElement) {
+      throw new Error("Already mounted SVG");
     }
+    const newSvgElement = createSvgCutout(cutoutDefinition);
+    this.cutoutSVGElement = newSvgElement;
+    document.body.appendChild(newSvgElement);
+  }
 
-    this.node = pageOverlay;
-    this.node.style.opacity = '0';
+  public unmountCutoutElement() {
+    if (!this.cutoutSVGElement) {
+      throw new Error("No SVG found to unmount");
+    }
+    // rm lastActiveElementRef
+    this.lastActiveHighlightElement = undefined;
+    // rm from body
+    document.body.removeChild(this.cutoutSVGElement);
+    // rm from memory
+    this.cutoutSVGElement = undefined;
+  }
 
-    if (!this.options.animate) {
-      // For non-animation cases remove the overlay because we achieve this overlay by having
-      // a higher box-shadow on the stage. Why are we doing it that way? Because the stage that
-      // is shown "behind" the highlighted element to make it pop out of the screen, it introduces
-      // some stacking contexts issues. To avoid those issues we just make the stage background
-      // transparent and achieve the overlay using the shadow so to make the element below it visible
-      // through the stage even if there are stacking issues.
-      if (this.node.parentElement) {
-        this.node.parentElement.removeChild(this.node);
+  public updateCutout(highlightElement: HighlightElement) {
+    // update lastActiveElement to new element provided
+    this.lastActiveHighlightElement = highlightElement;
+
+    const boundingClientRect = highlightElement
+      .getDomElement()
+      .getBoundingClientRect();
+
+    const cutoutBoxSettings: CutoutDefinition = {
+      hightlightBox: {
+        x: boundingClientRect.x,
+        y: boundingClientRect.y,
+        width: boundingClientRect.width,
+        height: boundingClientRect.height,
+      },
+      padding: this.options.padding,
+    };
+
+    // mount svg if its not mounted already
+    if (!this.cutoutSVGElement) {
+      this.mountCutoutElement(cutoutBoxSettings);
+    } else {
+      // otherwise update existing SVG path
+      const pathElement = this.cutoutSVGElement.firstElementChild;
+
+      if (pathElement?.tagName === "path") {
+        pathElement.setAttribute(
+          "d",
+          generateSvgCutoutPathString(cutoutBoxSettings)
+        );
+      } else {
+        throw new Error("No existing path found on SVG but we want one :(");
       }
     }
   }
 
+  // /**
+  //  * Prepares the overlay
+  //  */
+  // private attachNode() {
+  //   let pageOverlay = this.document.getElementById(ID_OVERLAY);
+  //   if (!pageOverlay) {
+  //     pageOverlay = OVERLAY_ELEMENT();
+  //     document.body.appendChild(pageOverlay);
+  //   }
+
+  //   this.node = pageOverlay;
+  //   this.node.style.opacity = "0";
+
+  //   if (!this.options.animate) {
+  //     // For non-animation cases remove the overlay because we achieve this overlay by having
+  //     // a higher box-shadow on the stage. Why are we doing it that way? Because the stage that
+  //     // is shown "behind" the highlighted element to make it pop out of the screen, it introduces
+  //     // some stacking contexts issues. To avoid those issues we just make the stage background
+  //     // transparent and achieve the overlay using the shadow so to make the element below it visible
+  //     // through the stage even if there are stacking issues.
+  //     if (this.node.parentElement) {
+  //       this.node.parentElement.removeChild(this.node);
+  //     }
+  //   }
+  // }
+
   /**
    * Highlights the dom element on the screen
-   * @param {Element} element
-   * @public
    */
-  highlight(element) {
-    if (!element || !element.node) {
-      console.warn('Invalid element to highlight. Must be an instance of `Element`');
-      return;
-    }
+  public highlight(element: HighlightElement) {
+    // if (!element || !element.node) {
+    //   console.warn(
+    //     "Invalid element to highlight. Must be an instance of `Element`"
+    //   );
+    //   return;
+    // }
 
     // If highlighted element is not changed from last time
-    if (element.isSame(this.highlightedElement)) {
+    if (element.isSame(this.lastActiveHighlightElement)) {
       return;
     }
 
-    // There might be hide timer from last time
-    // which might be getting triggered
-    this.window.clearTimeout(this.hideTimer);
+    // TODO: implement unmount animation again
+    // // There might be hide timer from last time
+    // // which might be getting triggered
+    // window.clearTimeout(this.hideTimer);
 
     // Trigger the hook for highlight started
     element.onHighlightStarted();
 
     // Old element has been deselected
-    if (this.highlightedElement && !this.highlightedElement.isSame(this.lastHighlightedElement)) {
-      this.highlightedElement.onDeselected();
+    if (
+      this.lastActiveHighlightElement &&
+      !element.isSame(this.lastActiveHighlightElement)
+    ) {
+      this.lastActiveHighlightElement.onDeselected();
     }
 
-    // get the position of element around which we need to draw
-    const position = element.getCalculatedPosition();
-    if (!position.canHighlight()) {
-      return;
-    }
+    // TODO: still needed
+    // // get the position of element around which we need to draw
+    // const position = element.getCalculatedPosition();
+    // if (!position.canHighlight()) {
+    //   return;
+    // }
 
-    this.lastHighlightedElement = this.highlightedElement;
-    this.highlightedElement = element;
+    // this.lastHighlightedElement = this.highlightedElement; // TODO: what was the difference between the two?
 
-    this.show();
+    this.updateCutout(element);
 
     // Element has been highlighted
-    this.highlightedElement.onHighlighted();
+    element.onHighlighted();
+
+    this.lastActiveHighlightElement = element;
   }
 
-  /**
-   * Shows the overlay on whole screen
-   * @public
-   */
-  show() {
-    if (this.node && this.node.parentElement) {
-      return;
-    }
+  // /**
+  //  * Returns the currently selected element
+  //  * @returns {null|*}
+  //  * @public
+  //  */
+  // getHighlightedElement() {
+  //   return this.highlightedElement;
+  // }
 
-    this.attachNode();
-
-    window.setTimeout(() => {
-      this.node.style.opacity = `${this.options.opacity}`;
-      this.node.style.position = 'fixed';
-      this.node.style.left = '0';
-      this.node.style.top = '0';
-      this.node.style.bottom = '0';
-      this.node.style.right = '0';
-    });
-  }
-
-  /**
-   * Returns the currently selected element
-   * @returns {null|*}
-   * @public
-   */
-  getHighlightedElement() {
-    return this.highlightedElement;
-  }
-
-  /**
-   * Gets the element that was highlighted before current element
-   * @returns {null|*}
-   * @public
-   */
-  getLastHighlightedElement() {
-    return this.lastHighlightedElement;
-  }
+  // /**
+  //  * Gets the element that was highlighted before current element
+  //  * @returns {null|*}
+  //  * @public
+  //  */
+  // getLastHighlightedElement() {
+  //   return this.lastHighlightedElement;
+  // }
 
   /**
    * Removes the overlay and cancel any listeners
@@ -139,57 +185,39 @@ export default class Overlay {
    */
   clear(immediate = false) {
     // Callback for when overlay is about to be reset
-    if (this.options.onReset) {
-      this.options.onReset(this.highlightedElement);
+    if (this.lastActiveHighlightElement) {
+      this.options.onReset?.(this.lastActiveHighlightElement);
     }
 
     // Deselect the highlighted element if any
-    if (this.highlightedElement) {
-      const hideStage = true;
-      this.highlightedElement.onDeselected(hideStage);
-    }
+    this.lastActiveHighlightElement?.onDeselected();
 
-    this.highlightedElement = null;
-    this.lastHighlightedElement = null;
-
-    if (!this.node) {
-      return;
-    }
-
-    // Clear any existing timers and remove node
-    this.window.clearTimeout(this.hideTimer);
+    // // Clear any existing timers and remove node
+    // window.clearTimeout(this.hideTimer);
 
     if (this.options.animate && !immediate) {
-      this.node.style.opacity = '0';
-      this.hideTimer = this.window.setTimeout(this.removeNode, ANIMATION_DURATION_MS);
+      // this.node.style.opacity = "0";
+      // this.hideTimer = this.window.setTimeout(
+      //   this.removeNode,
+      //   ANIMATION_DURATION_MS
+      // );
+      // TODO: implement unmount animation again
     } else {
-      this.removeNode();
-    }
-  }
-
-  /**
-   * Removes the overlay node if it exists
-   * @private
-   */
-  removeNode() {
-    if (this.node && this.node.parentElement) {
-      this.node.parentElement.removeChild(this.node);
+      this.unmountCutoutElement();
     }
   }
 
   /**
    * Refreshes the overlay i.e. sets the size according to current window size
    * And moves the highlight around if necessary
-   * @public
    */
-  refresh() {
+  public refresh() {
     // If no highlighted element, cancel the refresh
-    if (!this.highlightedElement) {
+    if (!this.lastActiveHighlightElement) {
       return;
     }
-
-    // Reposition the stage and show popover
-    this.highlightedElement.showPopover();
-    this.highlightedElement.showStage();
+    this.updateCutout(this.lastActiveHighlightElement);
   }
 }
+
+export default Overlay;

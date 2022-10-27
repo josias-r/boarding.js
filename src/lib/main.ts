@@ -1,5 +1,4 @@
 import Overlay from "./core/overlay";
-import BoardingElement from "./core/element";
 import Popover, { DriverPopoverOptions } from "./core/popover";
 import {
   CLASS_CLOSE_BTN,
@@ -16,8 +15,8 @@ import {
   SHOULD_OUTSIDE_CLICK_NEXT,
   ALLOW_KEYBOARD_CONTROL,
 } from "./common/constants";
-import Stage from "./core/stage";
 import { assertIsHtmlElement } from "./common/utils";
+import HighlightElement from "./core/highlight-element";
 
 interface DriverOptions {
   /**
@@ -94,32 +93,30 @@ interface DriverOptions {
   /**
    * Callback to be called when element is about to be highlighted
    */
-  onHighlightStarted?: (element: BoardingElement) => void;
+  onHighlightStarted?: (element: HighlightElement) => void;
   /**
    * Callback to be called when element has been highlighted
-   * @param {BoardingElement} element
    */
-  onHighlighted?: (element: BoardingElement) => void;
+  onHighlighted?: (element: HighlightElement) => void;
   /**
    * Callback to be called when element has been deselected
-   * @param {BoardingElement} element
    */
-  onDeselected?: (element: BoardingElement) => void;
+  onDeselected?: (element: HighlightElement) => void;
   /**
    * Is called when the overlay is about to reset
    */
-  onReset?: (element: BoardingElement) => void;
+  onReset?: (element: HighlightElement) => void;
   /**
    * Is called when the next element is about to be highlighted
    */
-  onNext?: (element: BoardingElement) => void;
+  onNext?: (element: HighlightElement) => void;
   /**
    * Is called when the previous element is about to be highlighted
    */
-  onPrevious?: (element: BoardingElement) => void;
+  onPrevious?: (element: HighlightElement) => void;
 }
 
-type DriverSteps = BoardingElement[];
+type DriverSteps = HighlightElement[];
 interface PureDriverStepDefinition {
   /**
    * Query selector representing the DOM Element
@@ -137,11 +134,11 @@ interface PureDriverStepDefinition {
   /**
    * Is called when the next element is about to be highlighted
    */
-  onNext?: (element: BoardingElement) => void;
+  onNext?: (element: HighlightElement) => void;
   /**
    * Is called when the previous element is about to be highlighted
    */
-  onPrevious?: (element: BoardingElement) => void;
+  onPrevious?: (element: HighlightElement) => void;
 }
 type DriverStepDefinition = string | HTMLElement | PureDriverStepDefinition;
 
@@ -181,7 +178,7 @@ export default class Driver {
     this.currentStep = 0; // index for the currently highlighted step
     this.currentMovePrevented = false; // If the current move was prevented
 
-    this.overlay = new Overlay(this.options, window, document);
+    this.overlay = new Overlay(this.options);
 
     this.onResize = this.onResize.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
@@ -240,13 +237,13 @@ export default class Driver {
     // the click to close the tour
     e.stopPropagation();
 
-    const highlightedElement = this.overlay.getHighlightedElement();
+    const highlightedElement = this.overlay.lastActiveHighlightElement;
     const popover = document.getElementById(ID_POPOVER);
 
     assertIsHtmlElement(e.target);
-    const clickedHighlightedElement = highlightedElement.node.contains(
-      e.target
-    );
+    const clickedHighlightedElement = highlightedElement
+      ?.getDomElement()
+      .contains(e.target);
     const clickedPopover = popover && popover.contains(e.target);
 
     // Perform the 'Next' operation when clicked outside the highlighted element
@@ -365,7 +362,7 @@ export default class Driver {
     // Call the bound `onNext` handler if available
     const currentStep = this.steps[this.currentStep];
     if (currentStep && currentStep.options && currentStep.options.onNext) {
-      currentStep.options.onNext(this.overlay.highlightedElement);
+      currentStep.options.onNext(currentStep);
     }
 
     if (this.currentMovePrevented) {
@@ -384,7 +381,7 @@ export default class Driver {
     // Call the bound `onPrevious` handler if available
     const currentStep = this.steps[this.currentStep];
     if (currentStep && currentStep.options && currentStep.options.onPrevious) {
-      currentStep.options.onPrevious(this.overlay.highlightedElement);
+      currentStep.options.onPrevious(currentStep);
     }
 
     if (this.currentMovePrevented) {
@@ -436,23 +433,24 @@ export default class Driver {
    * Checks if there is any highlighted element or not
    */
   public hasHighlightedElement() {
-    const highlightedElement = this.overlay.getHighlightedElement();
-    return highlightedElement && highlightedElement.node;
+    return !!this.overlay.lastActiveHighlightElement;
   }
 
   /**
    * Gets the currently highlighted element in overlay
    */
   public getHighlightedElement() {
-    return this.overlay.getHighlightedElement();
+    return this.overlay.lastActiveHighlightElement;
   }
 
-  /**
-   * Gets the element that was highlighted before currently highlighted element
-   */
-  public getLastHighlightedElement() {
-    return this.overlay.getLastHighlightedElement();
-  }
+  // TODO: add again
+  // /**
+  //  * Gets the element that was highlighted before currently highlighted element
+  //  *
+  //  */
+  // public getLastHighlightedElement() {
+  //   return this.overlay.getLastHighlightedElement();
+  // }
 
   /**
    * Defines steps to be highlighted
@@ -508,14 +506,14 @@ export default class Driver {
     // If the given element is a query selector or a DOM element?
     const domElement =
       typeof domElementOrSelector === "string"
-        ? document.querySelector(domElementOrSelector)
+        ? (document.querySelector(domElementOrSelector) as HTMLElement) // TODO: "as" alternative?
         : domElementOrSelector;
     if (!domElement) {
       console.warn(`Element to highlight ${domElementOrSelector} not found`);
       return null;
     }
 
-    let popover = null;
+    let popover: Popover | null = null;
     if (elementOptions.popover && elementOptions.popover.title) {
       const mergedClassNames = [
         this.options.className,
@@ -537,14 +535,10 @@ export default class Driver {
       popover = new Popover(popoverOptions);
     }
 
-    const stageOptions = { ...elementOptions };
-    const stage = new Stage(stageOptions);
-
-    return new BoardingElement({
-      node: domElement,
+    return new HighlightElement({
+      highlightDomElement: domElement,
       options: elementOptions,
       popover,
-      stage,
       overlay: this.overlay,
     });
   }
