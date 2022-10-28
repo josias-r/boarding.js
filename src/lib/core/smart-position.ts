@@ -173,8 +173,6 @@ class SmartPosition {
           return from;
         }
         return Math.max(0, posCentered);
-      case "end":
-        return Math.min(end, pos - popoverLength);
     }
   }
 

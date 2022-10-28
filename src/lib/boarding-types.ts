@@ -9,14 +9,6 @@ import {
   PopoverTopLevelOptions,
 } from "./core/popover";
 
-// Class typing structure:
-//
-// each class consists of the following interfaces:
-// [Class]SupportedSharedOptions
-// [Class]TopLevelOptions
-// [Class]StepLevelOptions
-//
-
 export interface BoardingSharedOptions {
   /**
    * Whether to animate while transitioning from one highlighted
