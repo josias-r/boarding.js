@@ -3,29 +3,12 @@ import { OverlayOptions } from "./core/overlay";
 import { PopoverHybridOptions, PopoverUserOptions } from "./core/popover";
 
 export interface BoardingOptions
-  extends Pick<OverlayOptions, "onReset">,
+  extends Pick<OverlayOptions, "onReset" | "opacity">,
     Partial<PopoverHybridOptions>,
     Pick<
       HighlightElementOptions,
       "onHighlightStarted" | "onHighlighted" | "onDeselected"
     > {
-  /**
-   * // TODO: move to overlay
-   * Opacity for the overlay
-   * @default 0.75
-   */
-  opacity: number;
-  /**
-   * Clicking outside the highlighted element should reset driver or not
-   * @default true
-   */
-  allowClose: boolean;
-  /**
-   * Clicking outside the highlighted element should move next
-   * @default false
-   */
-  overlayClickNext: boolean;
-
   /**
    * Whether to animate while transitioning from one highlighted
    * element to another
@@ -52,6 +35,16 @@ export interface BoardingOptions
    * @default true
    */
   strictClickHandling: boolean;
+  /**
+   * Clicking outside the highlighted element should reset driver or not
+   * @default true
+   */
+  allowClose: boolean;
+  /**
+   * Clicking outside the highlighted element should move next
+   * @default false
+   */
+  overlayClickNext: boolean;
   /**
    * className for the driver popovers
    */

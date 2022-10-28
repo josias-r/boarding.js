@@ -1,5 +1,5 @@
 import { BoardingOptions } from "../boarding-types";
-import { OVERLAY_PADDING } from "../common/constants";
+import { OVERLAY_OPACITY } from "../common/constants";
 import { PartialExcept } from "../common/utils";
 import {
   createSvgCutout,
@@ -14,6 +14,11 @@ export interface OverlayOptions
    * Is called when the overlay is about to reset
    */
   onReset?: (element: HighlightElement) => void;
+  /**
+   * Opacity for the overlay
+   * @default 0.75
+   */
+  opacity: number;
 }
 
 /**
@@ -27,9 +32,10 @@ class Overlay {
   public currentHighlightedElement?: HighlightElement;
   public previouslyHighlightedElement?: HighlightElement;
 
-  constructor(options: PartialExcept<OverlayOptions, "animate">) {
+  constructor(options: PartialExcept<OverlayOptions, "animate" | "padding">) {
     this.options = {
-      padding: OVERLAY_PADDING,
+      // padding: Padding default will come from outside, as it affects more then just the overlay
+      opacity: OVERLAY_OPACITY,
       ...options,
     };
   }
