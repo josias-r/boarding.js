@@ -15,14 +15,6 @@ import HighlightElement from "./highlight-element";
 import { OverlayOptions } from "./overlay";
 import SmartPosition, { Alignments, Sides } from "./smart-position";
 
-// TODO: move interface to other file?
-export interface Position {
-  right: number;
-  left: number;
-  bottom: number;
-  top: number;
-}
-
 export interface PopoverHybridOptions {
   /**
    * Whether to show control buttons or not
@@ -119,7 +111,7 @@ type PopoverOptionsWithoutDefaults = PartialSome<
 
 export type PopoverUserOptions = Omit<
   PartialExcept<PopoverOptions, "title" | "description">,
-  "padding" | "offset"
+  "offset"
 >;
 
 /**

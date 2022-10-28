@@ -199,14 +199,12 @@ class Boarding {
     return this.overlay.currentHighlightedElement;
   }
 
-  // TODO: add again
-  // /**
-  //  * Gets the element that was highlighted before currently highlighted element
-  //  *
-  //  */
-  // public getLastHighlightedElement() {
-  //   return this.overlay.getLastHighlightedElement();
-  // }
+  /**
+   * Gets the element that was highlighted before currently highlighted element
+   */
+  public getLastHighlightedElement() {
+    return this.overlay.previouslyHighlightedElement;
+  }
 
   /**
    * Defines steps to be highlighted
@@ -362,8 +360,7 @@ class Boarding {
     }
 
     // Ignore if there is no highlighted element or there is a highlighted element
-    // without popover
-    // TODO: or if the popover does not allow buttons
+    // without popover // TODO: or if the popover does not allow buttons
     const highlightedElement = this.getHighlightedElement();
     if (!highlightedElement || !highlightedElement.getPopover()) {
       return;

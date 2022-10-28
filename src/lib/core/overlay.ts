@@ -72,13 +72,6 @@ class Overlay {
       this.currentHighlightedElement.onDeselected();
     }
 
-    // TODO: still needed
-    // // get the position of element around which we need to draw
-    // const position = element.getCalculatedPosition();
-    // if (!position.canHighlight()) {
-    //   return;
-    // }
-
     this.previouslyHighlightedElement = this.currentHighlightedElement;
     this.currentHighlightedElement = element;
 

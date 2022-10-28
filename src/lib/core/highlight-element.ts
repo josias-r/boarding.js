@@ -1,6 +1,6 @@
 import { BoardingOptions } from "../boarding-types";
 import { bringInView } from "../common/utils";
-import Popover, { Position } from "./popover";
+import Popover from "./popover";
 
 export interface HighlightElementOptions
   extends Pick<BoardingOptions, "scrollIntoViewOptions"> {
@@ -47,21 +47,6 @@ class HighlightElement {
     this.highlightDomElement = highlightDomElement;
     this.options = options;
     this.popover = popover;
-  }
-
-  /**
-   * Gets the calculated position on screen, around which
-   * we need to draw
-   */
-  public getCalculatedPosition(): Position {
-    const elementRect = this.highlightDomElement.getBoundingClientRect();
-
-    return {
-      top: elementRect.top,
-      left: elementRect.left,
-      right: elementRect.left + elementRect.width,
-      bottom: elementRect.top + elementRect.height,
-    };
   }
 
   /**
