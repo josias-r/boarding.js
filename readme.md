@@ -28,7 +28,7 @@
 - **Consistent behavior**: usable across all browsers (including in-famous IE)
 - **MIT Licensed**: free for personal and commercial use
 
-![](./demo/images/split.png)
+![](./public/images/split.png)
 
 For Usage and Examples, [have a look at demo](http://kamranahmed.info/boarding.js)
 
@@ -64,7 +64,7 @@ Or grab the code from `dist` directory and include it directly.
 <script src="/dist/driver.min.js"></script>
 ```
 
-![](./demo/images/split.png)
+![](./public/images/split.png)
 
 ## Usage and Demo
 
@@ -185,7 +185,7 @@ driver.start();
 
 You can also hide the buttons and control the introductions programmatically by using the API methods listed below.
 
-![](./demo/images/split.png)
+![](./public/images/split.png)
 
 ### Asynchronous Actions – [Demo](http://kamranahmed.info/boarding.js)
 
@@ -238,7 +238,7 @@ driver.start();
 
 You can also hide the buttons and control the introductions programmatically by using the API methods listed below.
 
-![](./demo/images/split.png)
+![](./public/images/split.png)
 
 ## API
 
@@ -374,21 +374,15 @@ activeElement.showPopover(); // Show the popover
 activeElement.getNode(); // Gets the DOM Element behind this element
 ```
 
-![](./demo/images/split.png)
+![](./public/images/split.png)
 
 **Note –** Do not forget to add `e.stopPropagation()` to the `click` binding that triggers driver.
 
-![](./demo/images/split.png)
+![](./public/images/split.png)
 
 ## Contributions
 
 Feel free to submit pull requests, create issues or spread the word.
-
-## Sponsored By
-
-Thanks to [BrowserStack](https://browserstack.com) for sponsoring the compatibility testing needs.
-
-[![BrowserStack](./demo/images/browserstack.png)](https://www.browserstack.com)
 
 ## License
 
