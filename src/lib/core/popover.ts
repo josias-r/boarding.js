@@ -206,7 +206,7 @@ export default class Popover {
 
     this.renderFooter();
 
-    this.setPosition();
+    this.setPosition(this.options.position);
 
     bringInView(
       this.popover.popoverWrapper,
@@ -222,7 +222,7 @@ export default class Popover {
       return;
     }
 
-    this.setPosition();
+    this.setPosition(this.options.position);
   }
 
   /**
@@ -285,10 +285,10 @@ export default class Popover {
   /**
    * Position the popover around the given position
    */
-  private setPosition() {
+  private setPosition(positionIdentifier: PopoverOptions["position"]) {
     assertVarIsNotFalsy(this.highlightElement);
     const position: Position = this.highlightElement.getCalculatedPosition();
-    switch (this.options.position) {
+    switch (positionIdentifier) {
       case "left":
       case "left-top":
         this.positionOnLeft(position);
@@ -709,16 +709,21 @@ export default class Popover {
     const popoverHeight = popoverSize.height;
 
     const popOverCanFitBelow =
-      elementPosition.bottom + popoverHeight + popoverMargin > pageHeight;
+      elementPosition.bottom + popoverHeight + popoverMargin < pageHeight;
+
+    let finalPosition: Exclude<PopoverOptions["position"], "auto"> = "bottom";
+
     // const popOverCanFitRight =
     //   elementPosition.right + popoverWidth + popoverMargin > pageWidth;
 
     // If adding popover would go out of the window height, then show it to the top
     if (popOverCanFitBelow) {
-      this.positionOnBottom(elementPosition);
+      finalPosition = "bottom";
     } else {
-      this.positionOnTop(elementPosition);
+      finalPosition = "top";
     }
+
+    this.setPosition(finalPosition);
   }
 
   /**
@@ -726,15 +731,10 @@ export default class Popover {
    */
   private getSize() {
     assertVarIsNotFalsy(this.popover);
+    const rect = this.popover.popoverWrapper.getBoundingClientRect();
     return {
-      height: Math.max(
-        this.popover.popoverWrapper.scrollHeight,
-        this.popover.popoverWrapper.offsetHeight
-      ),
-      width: Math.max(
-        this.popover.popoverWrapper.scrollWidth,
-        this.popover.popoverWrapper.offsetWidth
-      ),
+      height: rect.height,
+      width: rect.width,
     };
   }
 }
