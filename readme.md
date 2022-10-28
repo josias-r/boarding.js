@@ -1,14 +1,14 @@
-<h1 align="center"><img height="150" src="./demo/images/driver.png" /><br> Boarding.js</h1>
+<h1 align="center"><img height="150" src="./public/boarding.svg" /><br> Boarding.js</h1>
 
 <p align="center">
-  <a href="https://github.com/kamranahmedse/driver.js/blob/master/license">
+  <a href="https://github.com/josias-r/boarding.js/blob/master/license">
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg" />
   </a>
-  <a href="https://npmjs.org/package/driver.js">
-    <img src="https://img.shields.io/npm/v/driver.js.svg" alt="version" />
+  <a href="https://npmjs.org/package/boarding.js">
+    <img src="https://img.shields.io/npm/v/boarding.js.svg" alt="version" />
   </a>
-  <a href="https://npmjs.org/package/driver.js">
-    <img src="https://img.shields.io/npm/dt/driver.js.svg" alt="downloads" />
+  <a href="https://npmjs.org/package/boarding.js">
+    <img src="https://img.shields.io/npm/dt/boarding.js.svg" alt="downloads" />
   </a>
 </p>
 
@@ -30,7 +30,7 @@
 
 ![](./demo/images/split.png)
 
-For Usage and Examples, [have a look at demo](http://kamranahmed.info/driver.js)
+For Usage and Examples, [have a look at demo](http://kamranahmed.info/boarding.js)
 
 ## So, yet another tour library?
 
@@ -43,15 +43,18 @@ Boarding.js is written in Vanilla JS, has zero dependencies and is highly custom
 You can install it using `yarn` or `npm`, whatever you prefer.
 
 ```bash
-yarn add driver.js
-npm install driver.js
+yarn add boarding.js
+npm install boarding.js
 ```
 
-Or include it using CDN. If you want a specific version, put it as `driver.js@0.5` in the name
+Or include it using CDN. If you want a specific version, put it as `boarding.js@0.5` in the name
 
 ```html
-<script src="https://unpkg.com/driver.js/dist/driver.min.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/driver.js/dist/driver.min.css" />
+<script src="https://unpkg.com/boarding.js/dist/driver.min.js"></script>
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/boarding.js/dist/driver.min.css"
+/>
 ```
 
 Or grab the code from `dist` directory and include it directly.
@@ -68,15 +71,15 @@ Or grab the code from `dist` directory and include it directly.
 If you are using some sort of module bundler, import the library and the CSS file
 
 ```javascript
-import Driver from "driver.js";
-import "driver.js/dist/driver.min.css";
+import Driver from "boarding.js";
+import "boarding.js/dist/driver.min.css";
 ```
 
 otherwise use the `script` and `link` tags to import the JavaScript and CSS files.
 
-Demos and many more usage examples can be found [in the docs page](http://kamranahmed.info/driver.js).
+Demos and many more usage examples can be found [in the docs page](http://kamranahmed.info/boarding.js).
 
-### Highlighting Single Element – [Demo](http://kamranahmed.info/driver.js#single-element-no-popover)
+### Highlighting Single Element – [Demo](http://kamranahmed.info/boarding.js#single-element-no-popover)
 
 You can highlight a single element by simply passing the selector.
 
@@ -87,7 +90,7 @@ driver.highlight("#create-post");
 
 A real world usage example for this is: using it to dim the background and highlight the required element e.g. the way Facebook does it when creating a post.
 
-### Highlight and Popover – [Demo](http://kamranahmed.info/driver.js#single-element-with-popover)
+### Highlight and Popover – [Demo](http://kamranahmed.info/boarding.js#single-element-with-popover)
 
 You can show additional details beside the highlighted element using the popover.
 
@@ -104,7 +107,7 @@ driver.highlight({
 
 Also, `title` and `description` can have HTML as well.
 
-### Positioning the Popover – [Demo](http://kamranahmed.info/driver.js#single-element-with-popover-position)
+### Positioning the Popover – [Demo](http://kamranahmed.info/boarding.js#single-element-with-popover-position)
 
 By default, driver automatically finds the suitable position for the popover and displays it. You can override it using `position` property.
 
@@ -140,7 +143,7 @@ driver.highlight({
 });
 ```
 
-### Creating Feature Introductions – [Demo](http://kamranahmed.info/driver.js)
+### Creating Feature Introductions – [Demo](http://kamranahmed.info/boarding.js)
 
 Feature introductions are helpful when onboarding new users and giving them an idea about different parts of the application; you can create them seamlessly with Driver. Define the steps and call the `start` when you want to start presenting. User will be able to control the steps using the keyboard or using the buttons on popovers.
 
@@ -184,7 +187,7 @@ You can also hide the buttons and control the introductions programmatically by 
 
 ![](./demo/images/split.png)
 
-### Asynchronous Actions – [Demo](http://kamranahmed.info/driver.js)
+### Asynchronous Actions – [Demo](http://kamranahmed.info/boarding.js)
 
 For any asynchronous actions between the transition steps, you may delay the execution till the action completes. All you have to do is stop the transition using `driver.preventMove()` in your `onNext` or `onPrevious` callbacks and initiate it manually using `driver.moveNext()`. Here is a sample implementation where it will stop at the second step for four seconds and then move on to the next step.
 
@@ -247,7 +250,7 @@ Here are the options that Driver understands:
 
 ```javascript
 const driver = new Driver({
-  className: "scoped-class", // className to wrap driver.js popover
+  className: "scoped-class", // className to wrap boarding.js popover
   animate: true, // Whether to animate or not
   opacity: 0.75, // Background opacity (0 means only popovers and without overlay)
   padding: 10, // Distance of element from around the edges
