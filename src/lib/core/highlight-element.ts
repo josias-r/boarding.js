@@ -80,10 +80,6 @@ class HighlightElement {
   public onDeselected() {
     this.popover?.hide();
 
-    // TODO: animation handling
-    // // If there was any animation in progress, cancel that
-    // window.clearTimeout(this.animationTimeout);
-
     this.options.onDeselected?.(this);
   }
 

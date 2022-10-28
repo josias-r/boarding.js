@@ -6,6 +6,8 @@ export interface CutoutDefinition {
     height: number;
   };
   padding?: number;
+  fillColor?: string;
+  opacity?: number;
 }
 
 export function generateSvgCutoutPathString({
@@ -25,6 +27,8 @@ export function generateSvgCutoutPathString({
 export function createSvgCutout({
   hightlightBox,
   padding = 0,
+  fillColor = "rgb(0,0,0)",
+  opacity = 1,
 }: CutoutDefinition) {
   const windowX = window.innerWidth;
   const windowY = window.innerHeight;
@@ -57,7 +61,8 @@ export function createSvgCutout({
     generateSvgCutoutPathString({ hightlightBox, padding })
   );
   // path styles
-  cutoutPath.style.fill = "rgba(0,0,0,0.5)";
+  cutoutPath.style.fill = fillColor;
+  cutoutPath.style.opacity = `${opacity}`;
   cutoutPath.style.pointerEvents = "auto";
   cutoutPath.style.cursor = "pointer";
   cutoutPath.style.transition = "0.4s ease";

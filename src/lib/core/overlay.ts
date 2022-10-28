@@ -1,6 +1,6 @@
 import { BoardingOptions } from "../boarding-types";
 import { OVERLAY_OPACITY } from "../common/constants";
-import { PartialExcept } from "../common/utils";
+import { assertVarIsNotFalsy, PartialExcept } from "../common/utils";
 import {
   createSvgCutout,
   CutoutDefinition,
@@ -119,22 +119,20 @@ class Overlay {
    * And moves the highlight around if necessary
    */
   public refresh() {
-    // update svg viewBox
-    if (this.cutoutSVGElement) {
-      const windowX = window.innerWidth;
-      const windowY = window.innerHeight;
-      this.cutoutSVGElement.setAttribute(
-        "viewBox",
-        `0 0 ${windowX} ${windowY}`
-      );
-    }
-
     // If no highlighted element, cancel the refresh
     if (!this.currentHighlightedElement) {
       return;
     }
+
+    assertVarIsNotFalsy(this.cutoutSVGElement);
+
+    // update svg viewBox
+    const windowX = window.innerWidth;
+    const windowY = window.innerHeight;
+    this.cutoutSVGElement.setAttribute("viewBox", `0 0 ${windowX} ${windowY}`);
+
     this.currentHighlightedElement.getPopover()?.refresh();
-    this.updateCutout(this.currentHighlightedElement);
+    this.updateCutout(this.currentHighlightedElement, false);
   }
 
   /**
@@ -164,7 +162,10 @@ class Overlay {
     this.cutoutSVGElement = undefined;
   }
 
-  private updateCutout(highlightElement: HighlightElement) {
+  private updateCutout(
+    highlightElement: HighlightElement,
+    animated = this.options.animate
+  ) {
     // update lastActiveElement to new element provided
     this.currentHighlightedElement = highlightElement;
 
@@ -180,6 +181,7 @@ class Overlay {
         height: boundingClientRect.height,
       },
       padding: this.options.padding,
+      opacity: this.options.opacity,
     };
 
     // mount svg if its not mounted already
@@ -187,13 +189,25 @@ class Overlay {
       this.mountCutoutElement(cutoutBoxSettings);
     } else {
       // otherwise update existing SVG path
-      const pathElement = this.cutoutSVGElement.firstElementChild;
+      const pathElement = this.cutoutSVGElement
+        .firstElementChild as SVGPathElement | null;
 
       if (pathElement?.tagName === "path") {
+        const pathElementTransitionBak = pathElement.style.transition;
+        if (!animated) {
+          pathElement.style.transition = "none";
+        }
         pathElement.setAttribute(
           "d",
           generateSvgCutoutPathString(cutoutBoxSettings)
         );
+
+        if (!animated) {
+          // set timeout is necessary, otherwise disabling transition would be ignored, becase it gets added in sync again (immediately)
+          setTimeout(() => {
+            pathElement.style.transition = pathElementTransitionBak;
+          }, 0);
+        }
       } else {
         throw new Error("No existing path found on SVG but we want one :(");
       }
