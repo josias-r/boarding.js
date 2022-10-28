@@ -9,7 +9,7 @@ export const ALLOW_KEYBOARD_CONTROL = true;
 export const SHOULD_OUTSIDE_CLICK_NEXT = false;
 
 const ID_OVERLAY = "driver-page-overlay";
-const ID_POPOVER = "driver-popover-item";
+export const ID_POPOVER = "driver-popover-item";
 
 const CLASS_CLEARFIX = "driver-clearfix";
 const CLASS_BTN_GROUP = "driver-btn-group";
@@ -22,6 +22,7 @@ const CLASS_CLOSE_BTN = "driver-close-btn";
 const CLASS_NEXT_STEP_BTN = "driver-next-btn";
 const CLASS_PREV_STEP_BTN = "driver-prev-btn";
 const CLASS_NAVIGATION_BTNS = "driver-navigation-btns";
+export const CLASS_CUTOUT = "driver-coutout-svg";
 
 export const CLASS_BTN_DISABLED = "driver-disabled";
 export const CLASS_CLOSE_ONLY_BTN = "driver-close-only-btn";

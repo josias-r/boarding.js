@@ -182,6 +182,7 @@ class Overlay {
       },
       padding: this.options.padding,
       opacity: this.options.opacity,
+      animated: this.options.animate,
     };
 
     // mount svg if its not mounted already

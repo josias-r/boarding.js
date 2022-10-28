@@ -1,3 +1,5 @@
+import { CLASS_CUTOUT } from "../common/constants";
+
 export interface CutoutDefinition {
   hightlightBox: {
     x: number;
@@ -8,6 +10,7 @@ export interface CutoutDefinition {
   padding?: number;
   fillColor?: string;
   opacity?: number;
+  animated?: boolean;
 }
 
 export function generateSvgCutoutPathString({
@@ -29,11 +32,16 @@ export function createSvgCutout({
   padding = 0,
   fillColor = "rgb(0,0,0)",
   opacity = 1,
+  animated = true,
 }: CutoutDefinition) {
   const windowX = window.innerWidth;
   const windowY = window.innerHeight;
 
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.classList.add(CLASS_CUTOUT);
+  if (animated) {
+    svg.classList.add(`${CLASS_CUTOUT}-animated`);
+  }
   svg.setAttribute("viewBox", `0 0 ${windowX} ${windowY}`);
   svg.setAttribute("xmlSpace", "preserve");
   svg.setAttribute("xmlnsXlink", "http://www.w3.org/1999/xlink");

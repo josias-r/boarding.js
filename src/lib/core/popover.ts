@@ -2,6 +2,7 @@ import { BoardingOptions } from "../boarding-types";
 import {
   CLASS_BTN_DISABLED,
   CLASS_CLOSE_ONLY_BTN,
+  ID_POPOVER,
   POPOVER_ELEMENT,
   POPOVER_OFFSET,
 } from "../common/constants";
@@ -257,6 +258,9 @@ export default class Popover {
       popoverNextBtn,
       popoverCloseBtn,
     } = POPOVER_ELEMENT(this.options.className);
+    if (this.options.animate) {
+      popoverWrapper.classList.add(`${ID_POPOVER}-animated`);
+    }
     document.body.appendChild(popoverWrapper);
 
     this.popover = {

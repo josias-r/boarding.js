@@ -1,3 +1,16 @@
+@keyframes boardingFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.driver-coutout-svg-animated,
+div#driver-popover-item.driver-popover-item-animated {
+  animation: boardingFadeIn 0.4s;
+}
+
 div#driver-popover-item {
   display: none;
   position: fixed;
