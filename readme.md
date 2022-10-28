@@ -1,8 +1,8 @@
-<small>This is a port of [driver.js](https://github.com/kamranahmedse/driver.js). <br>
-It uses a different highlight technique under the hood, which does not fiddle with z-index. This ensures the layout will always stay instact. With driver.js this is not the case <br>
-<br>
-The port is a WIP, note the // TODO comments in the readme below
-</small>
+> This is a port of [driver.js](https://github.com/kamranahmedse/driver.js).  
+> It uses a different highlight technique under the hood, which does not fiddle with z-index.  
+> This ensures the layout will always stay instact. With driver.js this is not the case
+>
+> The port is a **WIP**, note the _// TODO_ comments in the readme below
 
 <h1 align="center"><img height="150" src="./public/images/boarding.svg" /><br> Boarding.js</h1>
 
@@ -36,7 +36,7 @@ The port is a WIP, note the // TODO comments in the readme below
 
 ![](./public/images/split.png)
 
-For Usage and Examples, [have a look at demo](http://kamranahmed.info/boarding.js)
+For Usage and Examples, [have a look at demo](http://kamranahmed.info/boarding.js) // TODO publish updated demo to github pages
 
 ## So, yet another tour library?
 
