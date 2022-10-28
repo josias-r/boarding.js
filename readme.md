@@ -105,7 +105,7 @@ A real-world usage example for this is: using it to dim the background and highl
 You can show additional details beside the highlighted element using the popover.
 
 ```javascript
-const boarding = new Driver();
+const boarding = new Boarding();
 boarding.highlight({
   element: "#some-element",
   popover: {
@@ -292,7 +292,7 @@ const stepDefinition = {
   element: "#some-item", // Query selector string or Node to be highlighted
   popover: {
     // There will be no popover if empty or not given
-    className: "popover-class", // className to wrap this specific step popover in addition to the general className in Driver options
+    className: "popover-class", // className to wrap this specific step popover in addition to the general className in Boarding options
     title: "Title", // Title on the popover
     description: "Description", // Body of the popover
     showButtons: false, // Do not show control buttons in footer
@@ -383,7 +383,7 @@ const lastActiveElement = boarding.getLastHighlightedElement();
 
 ![](./public/images/split.png)
 
-**Note –** Do not forget to add `e.stopPropagation()` to the `click` binding that triggers driver.
+**Note –** Do not forget to add `e.stopPropagation()` to the `click` binding that triggers boarding.
 
 ![](./public/images/split.png)
 
