@@ -348,7 +348,7 @@ class Boarding {
    * Clears the overlay on escape key process
    */
   private onKeyUp(event: KeyboardEvent) {
-    // Ignore if driver is not active or keyboard control is disabled
+    // Ignore if boarding is not active or keyboard control is disabled
     if (!this.isActivated || !this.options.keyboardControl) {
       return;
     }

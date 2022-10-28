@@ -41,7 +41,7 @@ export interface BoardingOptions
    */
   strictClickHandling: boolean;
   /**
-   * Clicking outside the highlighted element should reset driver or not
+   * Clicking outside the highlighted element should reset boarding or not
    * @default true
    */
   allowClose: boolean;
@@ -51,7 +51,7 @@ export interface BoardingOptions
    */
   overlayClickNext: boolean;
   /**
-   * className for the driver popovers
+   * className for the boarding popovers
    */
   className?: string;
 }

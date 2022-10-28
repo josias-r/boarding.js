@@ -8,24 +8,24 @@ export const SHOULD_OUTSIDE_CLICK_CLOSE = true;
 export const ALLOW_KEYBOARD_CONTROL = true;
 export const SHOULD_OUTSIDE_CLICK_NEXT = false;
 
-const ID_OVERLAY = "driver-page-overlay";
-export const ID_POPOVER = "driver-popover-item";
+const ID_OVERLAY = "boarding-page-overlay";
+export const ID_POPOVER = "boarding-popover-item";
 
-const CLASS_CLEARFIX = "driver-clearfix";
-const CLASS_BTN_GROUP = "driver-btn-group";
+const CLASS_CLEARFIX = "boarding-clearfix";
+const CLASS_BTN_GROUP = "boarding-btn-group";
 
-export const CLASS_POPOVER_TIP = "driver-popover-tip";
-const CLASS_POPOVER_TITLE = "driver-popover-title";
-const CLASS_POPOVER_DESCRIPTION = "driver-popover-description";
-const CLASS_POPOVER_FOOTER = "driver-popover-footer";
-const CLASS_CLOSE_BTN = "driver-close-btn";
-const CLASS_NEXT_STEP_BTN = "driver-next-btn";
-const CLASS_PREV_STEP_BTN = "driver-prev-btn";
-const CLASS_NAVIGATION_BTNS = "driver-navigation-btns";
-export const CLASS_CUTOUT = "driver-coutout-svg";
+export const CLASS_POPOVER_TIP = "boarding-popover-tip";
+const CLASS_POPOVER_TITLE = "boarding-popover-title";
+const CLASS_POPOVER_DESCRIPTION = "boarding-popover-description";
+const CLASS_POPOVER_FOOTER = "boarding-popover-footer";
+const CLASS_CLOSE_BTN = "boarding-close-btn";
+const CLASS_NEXT_STEP_BTN = "boarding-next-btn";
+const CLASS_PREV_STEP_BTN = "boarding-prev-btn";
+const CLASS_NAVIGATION_BTNS = "boarding-navigation-btns";
+export const CLASS_CUTOUT = "boarding-coutout-svg";
 
-export const CLASS_BTN_DISABLED = "driver-disabled";
-export const CLASS_CLOSE_ONLY_BTN = "driver-close-only-btn";
+export const CLASS_BTN_DISABLED = "boarding-disabled";
+export const CLASS_CLOSE_ONLY_BTN = "boarding-close-only-btn";
 
 // NOTE: It must match the one set in the animations in CSS file
 export const ANIMATION_DURATION_MS = 300;
