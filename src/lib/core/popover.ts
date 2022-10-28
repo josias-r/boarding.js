@@ -16,7 +16,7 @@ export interface Position {
   top: number;
 }
 
-interface DriverPopoverOptionsStrict {
+interface BoardingPopoverOptionsStrict {
   /**
    * Title for the popover
    */
@@ -114,8 +114,8 @@ interface DriverPopoverOptionsStrict {
 }
 
 type PartialExcept<T, K extends keyof T> = Pick<T, K> & Partial<T>;
-export type DriverPopoverOptions = PartialExcept<
-  DriverPopoverOptionsStrict,
+export type BoardingPopoverOptions = PartialExcept<
+  BoardingPopoverOptionsStrict,
   "description"
 >;
 
@@ -123,7 +123,7 @@ export type DriverPopoverOptions = PartialExcept<
  * Popover that is displayed on top of the highlighted element
  */
 export default class Popover {
-  private options: DriverPopoverOptionsStrict;
+  private options: BoardingPopoverOptionsStrict;
   private popover?: {
     popoverWrapper: HTMLDivElement;
     popoverTip: HTMLDivElement;
@@ -135,7 +135,7 @@ export default class Popover {
     popoverCloseBtn: HTMLButtonElement;
   };
 
-  constructor(options: DriverPopoverOptions) {
+  constructor(options: BoardingPopoverOptions) {
     this.options = {
       isFirst: true,
       isLast: true,

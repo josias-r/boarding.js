@@ -1,4 +1,4 @@
-import BoardingJS from "./lib/main";
+import { Boarding } from "./lib/main";
 import "./lib/boarding.css";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
@@ -16,7 +16,7 @@ document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   </div>
 `;
 
-const tour = new BoardingJS();
+const tour = new Boarding();
 tour.defineSteps([
   {
     element: "#vitesvg",

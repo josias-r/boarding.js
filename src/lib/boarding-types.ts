@@ -1,0 +1,129 @@
+import HighlightElement from "./core/highlight-element";
+import { BoardingPopoverOptions } from "./core/popover";
+
+export interface BoardingOptions {
+  /**
+   * Whether to animate while transitioning from one highlighted
+   * element to another
+   * @default true
+   */
+  animate?: boolean;
+
+  /**
+   * Opacity for the overlay
+   * @default 0.75
+   */
+  opacity?: number;
+  /**
+   * Distance of elements corner from the edges of the overlay
+   * @default 10
+   */
+  padding?: number;
+  /**
+   * Options to be passed to scrollIntoView if supported by browser
+   * @default { behavior: 'instant', block: 'center' }
+   */
+  scrollIntoViewOptions?: ScrollIntoViewOptions | null;
+  /**
+   * Clicking outside the highlighted element should reset driver or not
+   * @default true
+   */
+  allowClose?: boolean;
+  /**
+   * Whether to allow controlling steps through keyboard
+   * @default true
+   */
+  keyboardControl?: boolean;
+  /**
+   * Clicking outside the highlighted element should move next
+   * @default false
+   */
+  overlayClickNext?: boolean;
+  /**
+   * Background color for the stage behind the highlighted element
+   * @default '#ffffff'
+   */
+  stageBackground?: string;
+  /**
+   * Whether to show control buttons or not
+   * @default true
+   */
+  showButtons?: boolean;
+  /**
+   * Text on the button in the final step
+   * @default 'Done'
+   */
+  doneBtnText?: string;
+  /**
+   * Text on the close button
+   * @default 'Close'
+   */
+  closeBtnText?: string;
+  /**
+   * Text on the next button
+   * @default 'Next'
+   */
+  nextBtnText?: string;
+  /**
+   * Text on the previous button
+   * @default 'Previous'
+   */
+  prevBtnText?: string;
+  /**
+   * className for the driver popovers
+   */
+  className?: string;
+  /**
+   * Callback to be called when element is about to be highlighted
+   */
+  onHighlightStarted?: (element: HighlightElement) => void;
+  /**
+   * Callback to be called when element has been highlighted
+   */
+  onHighlighted?: (element: HighlightElement) => void;
+  /**
+   * Callback to be called when element has been deselected
+   */
+  onDeselected?: (element: HighlightElement) => void;
+  /**
+   * Is called when the overlay is about to reset
+   */
+  onReset?: (element: HighlightElement) => void;
+  /**
+   * Is called when the next element is about to be highlighted
+   */
+  onNext?: (element: HighlightElement) => void;
+  /**
+   * Is called when the previous element is about to be highlighted
+   */
+  onPrevious?: (element: HighlightElement) => void;
+}
+
+export type BoardingSteps = HighlightElement[];
+export interface PureBoardingStepDefinition {
+  /**
+   * Query selector representing the DOM Element
+   */
+  element: string | HTMLElement;
+  /**
+   * Color of stage when this step is active
+   * @default #ffffff
+   */
+  stageBackground?: string;
+  /**
+   * Options representing popover for this step
+   */
+  popover?: BoardingPopoverOptions;
+  /**
+   * Is called when the next element is about to be highlighted
+   */
+  onNext?: (element: HighlightElement) => void;
+  /**
+   * Is called when the previous element is about to be highlighted
+   */
+  onPrevious?: (element: HighlightElement) => void;
+}
+export type BoardingStepDefinition =
+  | string
+  | HTMLElement
+  | PureBoardingStepDefinition;
