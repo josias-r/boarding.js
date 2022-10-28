@@ -202,6 +202,7 @@ class Overlay {
       //   ANIMATION_DURATION_MS
       // );
       // TODO: implement unmount animation again
+      this.unmountCutoutElement();
     } else {
       this.unmountCutoutElement();
     }
