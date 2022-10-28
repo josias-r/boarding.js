@@ -1,3 +1,4 @@
+import { BoardingOptions } from "../boarding-types";
 import { OVERLAY_PADDING } from "../common/constants";
 import { PartialExcept } from "../common/utils";
 import {
@@ -7,13 +8,12 @@ import {
 } from "./cutout";
 import HighlightElement from "./highlight-element";
 
-interface OverlayOptions {
-  padding: number;
+export interface OverlayOptions
+  extends Pick<BoardingOptions, "animate" | "padding"> {
   /**
    * Is called when the overlay is about to reset
    */
   onReset?: (element: HighlightElement) => void;
-  animate: boolean;
 }
 
 /**

@@ -1,5 +1,5 @@
 import Overlay from "./core/overlay";
-import Popover, { BoardingPopoverOptionsWithDefaults } from "./core/popover";
+import Popover from "./core/popover";
 import {
   OVERLAY_OPACITY,
   OVERLAY_PADDING,
@@ -50,7 +50,11 @@ class Boarding {
     this.currentStep = 0; // index for the currently highlighted step
     this.currentMovePrevented = false; // If the current move was prevented
 
-    this.overlay = new Overlay(this.options);
+    this.overlay = new Overlay({
+      animate: this.options.animate,
+      padding: this.options.padding,
+      onReset: this.options.onReset,
+    });
 
     // bind this class to eventHandlers
     this.onResize = this.onResize.bind(this);
@@ -418,25 +422,44 @@ class Boarding {
     }
 
     let popover: Popover | null = null;
-    if (elementOptions.popover && elementOptions.popover.title) {
+    if (currentStep.popover?.title) {
       const mergedClassNames = [
         this.options.className,
-        elementOptions.popover.className,
+        currentStep.popover.className,
       ]
         .filter((c) => c)
         .join(" ");
 
-      const popoverOptions: BoardingPopoverOptionsWithDefaults = {
-        ...elementOptions,
-        ...elementOptions.popover,
+      popover = new Popover({
+        // general options
+        padding: this.options.padding,
+        animate: this.options.animate,
+        scrollIntoViewOptions: this.options.scrollIntoViewOptions,
+        // popover options
+        title: currentStep.popover.title,
+        description: currentStep.popover.description,
+        position: currentStep.popover.position,
+        // hybrid options
+        offset: currentStep.popover.offset || this.options.offset,
+        showButtons:
+          currentStep.popover.showButtons || this.options.showButtons,
+        doneBtnText:
+          currentStep.popover.doneBtnText || this.options.doneBtnText,
+        closeBtnText:
+          currentStep.popover.closeBtnText || this.options.closeBtnText,
+        nextBtnText:
+          currentStep.popover.nextBtnText || this.options.nextBtnText,
+        startBtnText:
+          currentStep.popover.startBtnText || this.options.startBtnText,
+        prevBtnText:
+          currentStep.popover.prevBtnText || this.options.prevBtnText,
         className: mergedClassNames,
+        // inferred options
         totalCount: allSteps.length,
         currentIndex: index,
         isFirst: index === 0,
         isLast: allSteps.length === 0 || index === allSteps.length - 1, // Only one item or last item
-      };
-
-      popover = new Popover(popoverOptions);
+      });
     }
 
     return new HighlightElement({

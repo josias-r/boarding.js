@@ -4,6 +4,12 @@
 export type PartialExcept<T, K extends keyof T> = Pick<T, K> & Partial<T>;
 
 /**
+ * Mark only a few items partial in TS
+ */
+export type PartialSome<T, K extends keyof T> = Omit<T, K> &
+  Partial<Pick<T, K>>;
+
+/**
  * TS runtime check to make sure we are working with an Element
  */
 export function assertIsElement(e: any | null): asserts e is Element {

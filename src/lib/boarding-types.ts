@@ -1,19 +1,33 @@
 import { HighlightElementOptions } from "./core/highlight-element";
-import { BoardingPopoverOptions } from "./core/popover";
+import { OverlayOptions } from "./core/overlay";
+import { PopoverHybridOptions, PopoverUserOptions } from "./core/popover";
 
-export interface BoardingOptions {
+export interface BoardingOptions
+  extends Pick<OverlayOptions, "onReset">,
+    Partial<PopoverHybridOptions> {
+  /**
+   * // TODO: move to overlay
+   * Opacity for the overlay
+   * @default 0.75
+   */
+  opacity: number;
+  /**
+   * Clicking outside the highlighted element should reset driver or not
+   * @default true
+   */
+  allowClose: boolean;
+  /**
+   * Clicking outside the highlighted element should move next
+   * @default false
+   */
+  overlayClickNext: boolean;
+
   /**
    * Whether to animate while transitioning from one highlighted
    * element to another
    * @default true
    */
   animate: boolean;
-
-  /**
-   * Opacity for the overlay
-   * @default 0.75
-   */
-  opacity: number;
   /**
    * Distance of elements corner from the edges of the overlay
    * @default 10
@@ -25,11 +39,6 @@ export interface BoardingOptions {
    */
   scrollIntoViewOptions: ScrollIntoViewOptions;
   /**
-   * Clicking outside the highlighted element should reset driver or not
-   * @default true
-   */
-  allowClose: boolean;
-  /**
    * Whether to allow controlling steps through keyboard
    * @default true
    */
@@ -39,36 +48,6 @@ export interface BoardingOptions {
    * @default true
    */
   strictClickHandling: boolean;
-  /**
-   * Clicking outside the highlighted element should move next
-   * @default false
-   */
-  overlayClickNext: boolean;
-  /**
-   * Whether to show control buttons or not
-   * @default true
-   */
-  showButtons?: boolean;
-  /**
-   * Text on the button in the final step
-   * @default 'Done'
-   */
-  doneBtnText?: string;
-  /**
-   * Text on the close button
-   * @default 'Close'
-   */
-  closeBtnText?: string;
-  /**
-   * Text on the next button
-   * @default 'Next'
-   */
-  nextBtnText?: string;
-  /**
-   * Text on the previous button
-   * @default 'Previous'
-   */
-  prevBtnText?: string;
   /**
    * className for the driver popovers
    */
@@ -84,7 +63,7 @@ export interface BoardingStepDefinition
   /**
    * Options representing popover for this step
    */
-  popover?: BoardingPopoverOptions;
+  popover?: PopoverUserOptions;
 }
 
 export type BoardingSteps = BoardingStepDefinition[];

@@ -1,3 +1,4 @@
+import { BoardingOptions } from "../boarding-types";
 import {
   CLASS_BTN_DISABLED,
   CLASS_CLOSE_ONLY_BTN,
@@ -8,8 +9,10 @@ import {
   assertVarIsNotFalsy,
   bringInView,
   PartialExcept,
+  PartialSome,
 } from "../common/utils";
 import HighlightElement from "./highlight-element";
+import { OverlayOptions } from "./overlay";
 
 // TODO: move interface to other file?
 export interface Position {
@@ -19,15 +22,12 @@ export interface Position {
   top: number;
 }
 
-interface BoardingPopoverOptionsStrict {
+export interface PopoverHybridOptions {
   /**
-   * Title for the popover
+   * Additional offset of the popover
+   * @default 0
    */
-  title?: string;
-  /**
-   * Description for the popover
-   */
-  description: string;
+  offset: number;
   /**
    * Whether to show control buttons or not
    * @default true
@@ -59,35 +59,28 @@ interface BoardingPopoverOptionsStrict {
    */
   prevBtnText: string;
   /**
-   * Total number of elements with popovers
-   * @default 0
+   * className for the popover on element (will also add the main class scope)
    */
-  totalCount: number;
+  className?: string;
+}
+
+interface PopoverOptions
+  extends PopoverHybridOptions,
+    Pick<OverlayOptions, "padding">,
+    Pick<BoardingOptions, "animate" | "scrollIntoViewOptions"> {
   /**
-   * Additional offset of the popover
-   * @default 0
+   * Title for the popover
    */
-  offset: number;
+  title: string;
   /**
-   * Counter for the current popover
-   * @default 0
+   * Description for the popover
    */
-  currentIndex: number;
-  /**
-   * If the current popover is the first one
-   * @default true
-   */
-  isFirst: boolean;
-  /**
-   * If the current popover is the last one
-   * @default true
-   */
-  isLast: boolean;
+  description: string;
   /**
    * Position for the popover on element
    * @default "auto"
    */
-  position?:
+  position:
     | "left"
     | "left-top"
     | "left-center"
@@ -107,30 +100,46 @@ interface BoardingPopoverOptionsStrict {
     | "mid-center"
     | "auto";
   /**
-   * className for the popover on element
+   * Total number of elements with popovers
+   * @default 0
    */
-  className?: string;
+  totalCount: number;
   /**
-   * padding for the popover on element
+   * Index to which highlightElement the current popover belongs to
    */
-  padding: number;
-  scrollIntoViewOptions?: ScrollIntoViewOptions;
+  currentIndex: number;
+  /**
+   * If the current popover is the first one
+   */
+  isFirst: boolean;
+  /**
+   * If the current popover is the last one
+   */
+  isLast: boolean;
 }
 
-export type BoardingPopoverOptions = PartialExcept<
-  BoardingPopoverOptionsStrict,
-  "description"
+type PopoverOptionsWithoutDefaults = PartialSome<
+  PopoverOptions,
+  | "offset"
+  | "position"
+  | "showButtons"
+  | "doneBtnText"
+  | "closeBtnText"
+  | "nextBtnText"
+  | "startBtnText"
+  | "prevBtnText"
 >;
-export type BoardingPopoverOptionsWithDefaults = PartialExcept<
-  BoardingPopoverOptionsStrict,
-  "padding" | "description"
+
+export type PopoverUserOptions = PartialExcept<
+  PopoverOptions,
+  "title" | "description"
 >;
 
 /**
- * Popover that is displayed on top of the highlighted element
+ * Popover that is displayed for the highlighted element
  */
 export default class Popover {
-  private options: BoardingPopoverOptionsStrict;
+  private options: PopoverOptions;
   private popover?: {
     popoverWrapper: HTMLDivElement;
     popoverTip: HTMLDivElement;
@@ -143,14 +152,11 @@ export default class Popover {
   };
   private highlightElement?: HighlightElement;
 
-  constructor(options: BoardingPopoverOptionsWithDefaults) {
+  constructor(options: PopoverOptionsWithoutDefaults) {
     this.options = {
-      isFirst: true,
-      isLast: true,
-      totalCount: 1,
-      currentIndex: 0,
-      offset: 0,
       showButtons: true,
+      offset: 0,
+      position: "auto",
       closeBtnText: "Close",
       doneBtnText: "Done",
       startBtnText: "Next &rarr;",
