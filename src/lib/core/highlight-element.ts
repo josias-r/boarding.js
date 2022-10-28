@@ -1,4 +1,5 @@
 import { ANIMATION_DURATION_MS } from "../common/constants";
+import { bringInView } from "../common/utils";
 import Overlay from "./overlay";
 import Popover, { Position } from "./popover";
 
@@ -8,7 +9,7 @@ export interface HighlightElementOptions {
   onPrevious?: (element: HighlightElement) => void;
   onHighlightStarted?: (element: HighlightElement) => void;
   onHighlighted?: (element: HighlightElement) => void;
-  scrollIntoViewOptions?: ScrollIntoViewOptions | null;
+  scrollIntoViewOptions?: ScrollIntoViewOptions;
   animate?: boolean;
 }
 
@@ -40,57 +41,6 @@ class HighlightElement {
     this.options = options;
     this.overlay = overlay;
     this.popover = popover;
-  }
-
-  /**
-   * Checks if the current element is visible in viewport
-   */
-  public isInView(): boolean {
-    return true;
-    // TODO: create bringInView helper
-
-    // let top = this.node.offsetTop;
-    // let left = this.node.offsetLeft;
-    // const width = this.node.offsetWidth;
-    // const height = this.node.offsetHeight;
-
-    // let el: HTMLElement = this.node;
-
-    // while (el.offsetParent) {
-    //   el = el.offsetParent as HTMLElement | null;
-    //   top += el.offsetTop;
-    //   left += el.offsetLeft;
-    // }
-
-    // return (
-    //   top >= this.window.scrollY &&
-    //   left >= this.window.scrollX &&
-    //   top + height <= this.window.scrollY + this.window.innerHeight &&
-    //   left + width <= this.window.scrollX + this.window.innerWidth
-    // );
-  }
-
-  /**
-   * Brings the element to middle of the view port if not in view
-   */
-  public bringInView() {
-    // If the highlightDomElement is not there or already is in view
-    if (!this.highlightDomElement || this.isInView()) {
-      return;
-    }
-
-    try {
-      this.highlightDomElement.scrollIntoView(
-        this.options.scrollIntoViewOptions || {
-          behavior: "auto",
-          block: "center",
-        }
-      );
-    } catch (e) {
-      // TODO check if this is still a valid concern
-      // // `block` option is not allowed in older versions of firefox, scroll manually
-      // this.scrollManually();
-    }
   }
 
   /**
@@ -162,10 +112,7 @@ class HighlightElement {
    * Is called when the element has been successfully highlighted
    */
   public onHighlighted() {
-    const highlightedElement = this;
-    if (!highlightedElement.isInView()) {
-      highlightedElement.bringInView();
-    }
+    bringInView(this.highlightDomElement, this.options.scrollIntoViewOptions);
 
     // Show the popover once the item has been
     // brought in the view, this would allow us to handle

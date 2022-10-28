@@ -5,7 +5,11 @@ import {
   ID_POPOVER,
   POPOVER_ELEMENT,
 } from "../common/constants";
-import { assertVarIsNotFalsy, PartialExcept } from "../common/utils";
+import {
+  assertVarIsNotFalsy,
+  bringInView,
+  PartialExcept,
+} from "../common/utils";
 
 // TODO: move interface to other file?
 export interface Position {
@@ -110,6 +114,7 @@ interface BoardingPopoverOptionsStrict {
    * padding for the popover on element
    */
   padding: number;
+  scrollIntoViewOptions?: ScrollIntoViewOptions;
 }
 
 export type BoardingPopoverOptions = PartialExcept<
@@ -299,6 +304,10 @@ export default class Popover {
     // TODO: create bringInView helper
     // // Bring the popover in view port once it is displayed
     // this.bringInView();
+    bringInView(
+      this.popover.popoverWrapper,
+      this.options.scrollIntoViewOptions
+    );
   }
 
   /**

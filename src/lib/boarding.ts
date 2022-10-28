@@ -40,7 +40,10 @@ class Boarding {
       animate: SHOULD_ANIMATE_OVERLAY, // Whether to animate or not
       opacity: OVERLAY_OPACITY, // Overlay opacity
       padding: OVERLAY_PADDING, // Spacing around the element from the overlay
-      scrollIntoViewOptions: null, // Options to be passed to `scrollIntoView`
+      scrollIntoViewOptions: {
+        behavior: "auto",
+        block: "center",
+      }, // Options to be passed to `scrollIntoView`
       allowClose: SHOULD_OUTSIDE_CLICK_CLOSE, // Whether to close overlay on click outside the element
       keyboardControl: ALLOW_KEYBOARD_CONTROL, // Whether to allow controlling through keyboard or not
       overlayClickNext: SHOULD_OUTSIDE_CLICK_NEXT, // Whether to move next on click outside the element
@@ -361,7 +364,7 @@ class Boarding {
     // If the given element is a query selector or a DOM element?
     const domElement =
       typeof currentStep.element === "string"
-        ? (document.querySelector(currentStep.element) as HTMLElement | null) // TODO: "as" alternative?
+        ? document.querySelector<HTMLElement>(currentStep.element)
         : currentStep.element;
     if (!domElement) {
       console.warn(`Element to highlight ${currentStep.element} not found`);
@@ -414,7 +417,7 @@ class Boarding {
 
   /**
    * Highlights the given element
-   * @param {string|{element: string, popover: {}}} selector Query selector or a step definition
+   * @param selector Query selector, htmlelement or a step definition
    */
   public highlight(selector: BoardingStepDefinition | string | HTMLElement) {
     this.isActivated = true;

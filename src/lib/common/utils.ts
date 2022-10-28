@@ -26,37 +26,31 @@ export function assertVarIsNotFalsy<T extends any>(e?: T): asserts e is T {
   }
 }
 
-// /**
-//  * Gets the CSS property from the given element
-//  */
-// export const getStyleProperty = (
-//   element: HTMLElement,
-//   propertyName: string,
-//   prefixVendor: boolean = false
-// ): string => {
-//   if (prefixVendor) {
-//     const prefixes = ["", "-webkit-", "-ms-", "moz-", "-o-"];
-//     for (let counter = 0; counter < prefixes.length; counter++) {
-//       const prefixedProperty = prefixes[counter] + propertyName;
-//       const foundValue = getStyleProperty(element, prefixedProperty);
+/**
+ * Checks if an element is visible in viewport
+ */
+function isInView(element: HTMLElement) {
+  const rect = element.getBoundingClientRect();
 
-//       if (foundValue) {
-//         return foundValue;
-//       }
-//     }
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
+}
 
-//     return "";
-//   }
+/**
+ * Brings the element to middle of the view port if not in view
+ */
+export function bringInView(
+  element?: HTMLElement,
+  scrollIntoViewOptions?: ScrollIntoViewOptions
+) {
+  if (!element || isInView(element)) {
+    return;
+  }
 
-//   let propertyValue = "";
-
-//   if (document.defaultView && document.defaultView.getComputedStyle) {
-//     propertyValue = document.defaultView
-//       .getComputedStyle(element, null)
-//       .getPropertyValue(propertyName);
-//   }
-
-//   return propertyValue && propertyValue.toLowerCase
-//     ? propertyValue.toLowerCase()
-//     : propertyValue;
-// };
+  element.scrollIntoView(scrollIntoViewOptions);
+}

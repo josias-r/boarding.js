@@ -23,7 +23,7 @@ export interface BoardingOptions {
    * Options to be passed to scrollIntoView if supported by browser
    * @default { behavior: 'instant', block: 'center' }
    */
-  scrollIntoViewOptions: ScrollIntoViewOptions | null;
+  scrollIntoViewOptions: ScrollIntoViewOptions;
   /**
    * Clicking outside the highlighted element should reset driver or not
    * @default true
