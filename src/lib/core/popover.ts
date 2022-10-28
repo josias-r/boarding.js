@@ -152,16 +152,26 @@ export default class Popover {
   };
   private highlightElement?: HighlightElement;
 
-  constructor(options: PopoverOptionsWithoutDefaults) {
+  constructor({
+    showButtons = true,
+    offset = 0,
+    position = "auto",
+    closeBtnText = "Close",
+    doneBtnText = "Done",
+    startBtnText = "Next &rarr;",
+    nextBtnText = "Next &rarr;",
+    prevBtnText = "&larr; Previous",
+    ...options
+  }: PopoverOptionsWithoutDefaults) {
     this.options = {
-      showButtons: true,
-      offset: 0,
-      position: "auto",
-      closeBtnText: "Close",
-      doneBtnText: "Done",
-      startBtnText: "Next &rarr;",
-      nextBtnText: "Next &rarr;",
-      prevBtnText: "&larr; Previous",
+      showButtons,
+      offset,
+      position,
+      closeBtnText,
+      doneBtnText,
+      startBtnText,
+      nextBtnText,
+      prevBtnText,
       ...options,
     };
   }
@@ -685,49 +695,30 @@ export default class Popover {
   /**
    * Automatically positions the popover around the given position
    * such that the element and popover remain in view
-   * @todo add the left and right positioning decisions
+   * @todo add the left to right positioning decisions
    */
   private autoPosition(elementPosition: Position) {
     assertVarIsNotFalsy(this.popover);
-    const pageSize = this.getFullPageSize();
     const popoverSize = this.getSize();
 
-    const pageHeight = pageSize.height;
-    const popoverHeight = popoverSize.height;
     const popoverMargin = this.options.padding + 10; // adding 10 to give it a little distance from the element
+    // const pageWidth = window.innerHeight;
+    // const popoverWidth = popoverSize.width;
 
-    const pageHeightAfterPopOver =
-      elementPosition.bottom + popoverHeight + popoverMargin;
+    const pageHeight = window.innerHeight;
+    const popoverHeight = popoverSize.height;
+
+    const popOverCanFitBelow =
+      elementPosition.bottom + popoverHeight + popoverMargin > pageHeight;
+    // const popOverCanFitRight =
+    //   elementPosition.right + popoverWidth + popoverMargin > pageWidth;
 
     // If adding popover would go out of the window height, then show it to the top
-    if (pageHeightAfterPopOver >= pageHeight) {
-      this.positionOnTop(elementPosition);
-    } else {
+    if (popOverCanFitBelow) {
       this.positionOnBottom(elementPosition);
+    } else {
+      this.positionOnTop(elementPosition);
     }
-  }
-
-  /**
-   * Gets the full page size
-   */
-  private getFullPageSize() {
-    const body = document.body;
-    const html = document.documentElement;
-
-    return {
-      height: Math.max(
-        body.scrollHeight,
-        body.offsetHeight,
-        html.scrollHeight,
-        html.offsetHeight
-      ),
-      width: Math.max(
-        body.scrollWidth,
-        body.offsetWidth,
-        html.scrollWidth,
-        html.offsetWidth
-      ),
-    };
   }
 
   /**

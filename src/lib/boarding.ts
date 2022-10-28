@@ -30,19 +30,31 @@ class Boarding {
   private overlay: Overlay;
 
   constructor(options?: Partial<BoardingOptions>) {
-    this.options = {
-      strictClickHandling: SHOULD_STRICT_CLICK_HANDLE,
-      animate: SHOULD_ANIMATE_OVERLAY, // Whether to animate or not
-      opacity: OVERLAY_OPACITY, // Overlay opacity
-      padding: OVERLAY_PADDING, // Spacing around the element from the overlay
-      scrollIntoViewOptions: {
+    const {
+      strictClickHandling = SHOULD_STRICT_CLICK_HANDLE,
+      animate = SHOULD_ANIMATE_OVERLAY, // Whether to animate or not
+      opacity = OVERLAY_OPACITY, // Overlay opacity
+      padding = OVERLAY_PADDING, // Spacing around the element from the overlay
+      scrollIntoViewOptions = {
         behavior: "auto",
         block: "center",
       }, // Options to be passed to `scrollIntoView`
-      allowClose: SHOULD_OUTSIDE_CLICK_CLOSE, // Whether to close overlay on click outside the element
-      keyboardControl: ALLOW_KEYBOARD_CONTROL, // Whether to allow controlling through keyboard or not
-      overlayClickNext: SHOULD_OUTSIDE_CLICK_NEXT, // Whether to move next on click outside the element
-      ...options,
+      allowClose = SHOULD_OUTSIDE_CLICK_CLOSE, // Whether to close overlay on click outside the element
+      keyboardControl = ALLOW_KEYBOARD_CONTROL, // Whether to allow controlling through keyboard or not
+      overlayClickNext = SHOULD_OUTSIDE_CLICK_NEXT, // Whether to move next on click outside the element
+      ...defaultOptions
+    } = { ...options };
+
+    this.options = {
+      strictClickHandling,
+      animate,
+      opacity,
+      padding,
+      scrollIntoViewOptions,
+      allowClose,
+      keyboardControl,
+      overlayClickNext,
+      ...defaultOptions,
     };
 
     this.isActivated = false;
