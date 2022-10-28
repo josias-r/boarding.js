@@ -134,11 +134,7 @@ div#driver-popover-item .driver-popover-description {
   content: "";
   display: table;
 }
-.driver-stage-no-animation {
-  transition: none !important;
-  background: transparent !important;
-  outline: 5000px solid rgba(0, 0, 0, 0.75);
-}
+
 div#driver-page-overlay {
   background: #000;
   position: fixed;
@@ -153,18 +149,6 @@ div#driver-page-overlay {
   filter: alpha(opacity=75);
   opacity: 0.75;
   z-index: 100002 !important;
-  transition: all 0.3s;
-}
-div#driver-highlighted-element-stage {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 50px;
-  width: 300px;
-  background: #fff;
-  z-index: 100003 !important;
-  display: none;
-  border-radius: 2px;
   transition: all 0.3s;
 }
 .driver-highlighted-element {

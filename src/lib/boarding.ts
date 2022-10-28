@@ -88,6 +88,7 @@ class Boarding {
    */
   private bind() {
     window.addEventListener("resize", this.onResize, false);
+    window.addEventListener("scroll", this.onResize, false);
     window.addEventListener("keyup", this.onKeyUp, false);
 
     // Binding both touch and click results in popup getting shown and then immediately get hidden.

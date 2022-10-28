@@ -11,7 +11,6 @@ export const LEFT_KEY_CODE = 37;
 export const RIGHT_KEY_CODE = 39;
 
 export const ID_OVERLAY = "driver-page-overlay";
-export const ID_STAGE = "driver-highlighted-element-stage";
 export const ID_POPOVER = "driver-popover-item";
 
 // export const CLASS_DRIVER_HIGHLIGHTED_ELEMENT = "driver-highlighted-element";
@@ -100,9 +99,4 @@ export const OVERLAY_ELEMENT = () => {
   const overlayElement = document.createElement("div");
   overlayElement.id = ID_OVERLAY;
   return overlayElement;
-};
-export const STAGE_ELEMENT = () => {
-  const stageElement = document.createElement("div");
-  stageElement.id = ID_STAGE;
-  return stageElement;
 };
