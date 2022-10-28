@@ -4,7 +4,7 @@ import "./lib/boarding.css";
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
     <a id="vitesvg" href="https://vitejs.dev" target="_blank" style="margin: 10px; display: inline-block; position: relative;">
-      XXX
+      x
     </a>
     <h1>Vite + TypeScript</h1>
     <div class="card">

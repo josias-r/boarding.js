@@ -3,10 +3,9 @@ import {
   CLASS_CLOSE_ONLY_BTN,
   CLASS_POPOVER_TIP,
   ID_POPOVER,
-  OVERLAY_PADDING,
   POPOVER_ELEMENT,
 } from "../common/constants";
-import { assertVarIsNotFalsy } from "../common/utils";
+import { assertVarIsNotFalsy, PartialExcept } from "../common/utils";
 
 // TODO: move interface to other file?
 export interface Position {
@@ -113,10 +112,13 @@ interface BoardingPopoverOptionsStrict {
   padding: number;
 }
 
-type PartialExcept<T, K extends keyof T> = Pick<T, K> & Partial<T>;
 export type BoardingPopoverOptions = PartialExcept<
   BoardingPopoverOptionsStrict,
   "description"
+>;
+export type BoardingPopoverOptionsWithDefaults = PartialExcept<
+  BoardingPopoverOptionsStrict,
+  "padding" | "description"
 >;
 
 /**
@@ -135,7 +137,7 @@ export default class Popover {
     popoverCloseBtn: HTMLButtonElement;
   };
 
-  constructor(options: BoardingPopoverOptions) {
+  constructor(options: BoardingPopoverOptionsWithDefaults) {
     this.options = {
       isFirst: true,
       isLast: true,
@@ -148,7 +150,6 @@ export default class Popover {
       startBtnText: "Next &rarr;",
       nextBtnText: "Next &rarr;",
       prevBtnText: "&larr; Previous",
-      padding: OVERLAY_PADDING, // TODO: seperate from overlay
       ...options,
     };
   }

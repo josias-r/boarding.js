@@ -1,4 +1,5 @@
 import { OVERLAY_PADDING } from "../common/constants";
+import { PartialExcept } from "../common/utils";
 import {
   createSvgCutout,
   CutoutDefinition,
@@ -9,7 +10,7 @@ import HighlightElement from "./highlight-element";
 interface OverlayOptions {
   padding: number;
   onReset?: (element: HighlightElement) => void;
-  animate?: boolean;
+  animate: boolean;
 }
 
 /**
@@ -20,9 +21,10 @@ class Overlay {
   private options: OverlayOptions;
   private cutoutSVGElement?: SVGSVGElement;
 
-  public lastActiveHighlightElement?: HighlightElement; // TODO: needed for what?
+  public currentHighlightedElement?: HighlightElement;
+  public previouslyHighlightedElement?: HighlightElement;
 
-  constructor(options: Partial<OverlayOptions>) {
+  constructor(options: PartialExcept<OverlayOptions, "animate">) {
     this.options = {
       padding: OVERLAY_PADDING,
       ...options,
@@ -42,8 +44,7 @@ class Overlay {
     if (!this.cutoutSVGElement) {
       throw new Error("No SVG found to unmount");
     }
-    // rm lastActiveElementRef
-    this.lastActiveHighlightElement = undefined;
+
     // rm from body
     document.body.removeChild(this.cutoutSVGElement);
     // rm from memory
@@ -52,7 +53,7 @@ class Overlay {
 
   public updateCutout(highlightElement: HighlightElement) {
     // update lastActiveElement to new element provided
-    this.lastActiveHighlightElement = highlightElement;
+    this.currentHighlightedElement = highlightElement;
 
     const boundingClientRect = highlightElement
       .getDomElement()
@@ -86,32 +87,6 @@ class Overlay {
     }
   }
 
-  // /**
-  //  * Prepares the overlay
-  //  */
-  // private attachNode() {
-  //   let pageOverlay = this.document.getElementById(ID_OVERLAY);
-  //   if (!pageOverlay) {
-  //     pageOverlay = OVERLAY_ELEMENT();
-  //     document.body.appendChild(pageOverlay);
-  //   }
-
-  //   this.node = pageOverlay;
-  //   this.node.style.opacity = "0";
-
-  //   if (!this.options.animate) {
-  //     // For non-animation cases remove the overlay because we achieve this overlay by having
-  //     // a higher box-shadow on the stage. Why are we doing it that way? Because the stage that
-  //     // is shown "behind" the highlighted element to make it pop out of the screen, it introduces
-  //     // some stacking contexts issues. To avoid those issues we just make the stage background
-  //     // transparent and achieve the overlay using the shadow so to make the element below it visible
-  //     // through the stage even if there are stacking issues.
-  //     if (this.node.parentElement) {
-  //       this.node.parentElement.removeChild(this.node);
-  //     }
-  //   }
-  // }
-
   /**
    * Highlights the dom element on the screen
    */
@@ -124,7 +99,7 @@ class Overlay {
     // }
 
     // If highlighted element is not changed from last time
-    if (element.isSame(this.lastActiveHighlightElement)) {
+    if (element.isSame(this.currentHighlightedElement)) {
       return;
     }
 
@@ -138,10 +113,10 @@ class Overlay {
 
     // Old element has been deselected
     if (
-      this.lastActiveHighlightElement &&
-      !element.isSame(this.lastActiveHighlightElement)
+      this.currentHighlightedElement &&
+      !this.currentHighlightedElement.isSame(this.previouslyHighlightedElement)
     ) {
-      this.lastActiveHighlightElement.onDeselected();
+      this.currentHighlightedElement.onDeselected();
     }
 
     // TODO: still needed
@@ -151,14 +126,13 @@ class Overlay {
     //   return;
     // }
 
-    // this.lastHighlightedElement = this.highlightedElement; // TODO: what was the difference between the two?
+    this.previouslyHighlightedElement = this.currentHighlightedElement;
+    this.currentHighlightedElement = element;
 
     this.updateCutout(element);
 
     // Element has been highlighted
     element.onHighlighted();
-
-    this.lastActiveHighlightElement = element;
   }
 
   // /**
@@ -185,12 +159,16 @@ class Overlay {
    */
   clear(immediate = false) {
     // Callback for when overlay is about to be reset
-    if (this.lastActiveHighlightElement) {
-      this.options.onReset?.(this.lastActiveHighlightElement);
+    if (this.currentHighlightedElement) {
+      this.options.onReset?.(this.currentHighlightedElement);
     }
 
     // Deselect the highlighted element if any
-    this.lastActiveHighlightElement?.onDeselected();
+    this.currentHighlightedElement?.onDeselected();
+
+    // Unset highlightedElements
+    this.currentHighlightedElement = undefined;
+    this.previouslyHighlightedElement = undefined;
 
     // // Clear any existing timers and remove node
     // window.clearTimeout(this.hideTimer);
@@ -214,10 +192,10 @@ class Overlay {
    */
   public refresh() {
     // If no highlighted element, cancel the refresh
-    if (!this.lastActiveHighlightElement) {
+    if (!this.currentHighlightedElement) {
       return;
     }
-    this.updateCutout(this.lastActiveHighlightElement);
+    this.updateCutout(this.currentHighlightedElement);
   }
 }
 

@@ -1,4 +1,9 @@
 /**
+ * Mark all items partial except a few in TS
+ */
+export type PartialExcept<T, K extends keyof T> = Pick<T, K> & Partial<T>;
+
+/**
  * TS runtime check to make sure we are working with an HTMLElement
  */
 export function assertIsHtmlElement(e: any | null): asserts e is HTMLElement {

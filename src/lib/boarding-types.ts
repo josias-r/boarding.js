@@ -7,43 +7,38 @@ export interface BoardingOptions {
    * element to another
    * @default true
    */
-  animate?: boolean;
+  animate: boolean;
 
   /**
    * Opacity for the overlay
    * @default 0.75
    */
-  opacity?: number;
+  opacity: number;
   /**
    * Distance of elements corner from the edges of the overlay
    * @default 10
    */
-  padding?: number;
+  padding: number;
   /**
    * Options to be passed to scrollIntoView if supported by browser
    * @default { behavior: 'instant', block: 'center' }
    */
-  scrollIntoViewOptions?: ScrollIntoViewOptions | null;
+  scrollIntoViewOptions: ScrollIntoViewOptions | null;
   /**
    * Clicking outside the highlighted element should reset driver or not
    * @default true
    */
-  allowClose?: boolean;
+  allowClose: boolean;
   /**
    * Whether to allow controlling steps through keyboard
    * @default true
    */
-  keyboardControl?: boolean;
+  keyboardControl: boolean;
   /**
    * Clicking outside the highlighted element should move next
    * @default false
    */
-  overlayClickNext?: boolean;
-  /**
-   * Background color for the stage behind the highlighted element
-   * @default '#ffffff'
-   */
-  stageBackground?: string;
+  overlayClickNext: boolean;
   /**
    * Whether to show control buttons or not
    * @default true
@@ -105,11 +100,6 @@ export interface PureBoardingStepDefinition {
    * Query selector representing the DOM Element
    */
   element: string | HTMLElement;
-  /**
-   * Color of stage when this step is active
-   * @default #ffffff
-   */
-  stageBackground?: string;
   /**
    * Options representing popover for this step
    */

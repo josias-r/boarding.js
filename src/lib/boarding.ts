@@ -1,5 +1,5 @@
 import Overlay from "./core/overlay";
-import Popover, { BoardingPopoverOptions } from "./core/popover";
+import Popover, { BoardingPopoverOptionsWithDefaults } from "./core/popover";
 import {
   CLASS_CLOSE_BTN,
   CLASS_NEXT_STEP_BTN,
@@ -45,13 +45,6 @@ class Boarding {
       allowClose: SHOULD_OUTSIDE_CLICK_CLOSE, // Whether to close overlay on click outside the element
       keyboardControl: ALLOW_KEYBOARD_CONTROL, // Whether to allow controlling through keyboard or not
       overlayClickNext: SHOULD_OUTSIDE_CLICK_NEXT, // Whether to move next on click outside the element
-      stageBackground: "#ffffff", // Background color for the stage
-      // onHighlightStarted: () => null, // When element is about to be highlighted
-      // onHighlighted: () => null, // When element has been highlighted
-      // onDeselected: () => null, // When the element has been deselected
-      // onReset: () => null, // When overlay is about to be cleared
-      // onNext: () => null, // When next button is clicked
-      // onPrevious: () => null, // When previous button is clicked
       ...options,
     };
 
@@ -119,7 +112,7 @@ class Boarding {
     // the click to close the tour
     e.stopPropagation();
 
-    const highlightedElement = this.overlay.lastActiveHighlightElement;
+    const highlightedElement = this.overlay.currentHighlightedElement;
     const popover = document.getElementById(ID_POPOVER);
 
     assertIsHtmlElement(e.target);
@@ -315,14 +308,14 @@ class Boarding {
    * Checks if there is any highlighted element or not
    */
   public hasHighlightedElement() {
-    return !!this.overlay.lastActiveHighlightElement;
+    return !!this.overlay.currentHighlightedElement;
   }
 
   /**
    * Gets the currently highlighted element in overlay
    */
   public getHighlightedElement() {
-    return this.overlay.lastActiveHighlightElement;
+    return this.overlay.currentHighlightedElement;
   }
 
   // TODO: add again
@@ -404,7 +397,7 @@ class Boarding {
         .filter((c) => c)
         .join(" ");
 
-      const popoverOptions: BoardingPopoverOptions = {
+      const popoverOptions: BoardingPopoverOptionsWithDefaults = {
         ...elementOptions,
         ...elementOptions.popover,
         className: mergedClassNames,
@@ -437,9 +430,6 @@ class Boarding {
     this.isActivated = true;
     this.currentStep = index;
     this.overlay.highlight(this.steps[index]);
-
-    // call element highlighted event
-    this.overlay.lastActiveHighlightElement?.onHighlighted();
   }
 
   /**

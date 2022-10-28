@@ -206,7 +206,7 @@ class HighlightElement {
     // For first highlight, show it immediately because there won't be any animation
     let showAfterMs = ANIMATION_DURATION_MS;
     // If animation is disabled or  if it is the first display, show it immediately
-    if (!this.options.animate || !this.overlay.lastActiveHighlightElement) {
+    if (!this.options.animate || !this.overlay.currentHighlightedElement) {
       showAfterMs = 0;
     }
 
