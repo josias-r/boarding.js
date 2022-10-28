@@ -3,6 +3,7 @@ import {
   CLASS_BTN_DISABLED,
   CLASS_CLOSE_ONLY_BTN,
   POPOVER_ELEMENT,
+  POPOVER_OFFSET,
 } from "../common/constants";
 import {
   assertVarIsNotFalsy,
@@ -23,11 +24,6 @@ export interface Position {
 }
 
 export interface PopoverHybridOptions {
-  /**
-   * Additional offset of the popover
-   * @default 0
-   */
-  offset: number;
   /**
    * Whether to show control buttons or not
    * @default true
@@ -64,7 +60,7 @@ export interface PopoverHybridOptions {
   className?: string;
 }
 
-interface PopoverOptions
+export interface PopoverOptions
   extends PopoverHybridOptions,
     Pick<OverlayOptions, "padding">,
     Pick<BoardingOptions, "animate" | "scrollIntoViewOptions"> {
@@ -102,6 +98,11 @@ interface PopoverOptions
    * If the current popover is the last one
    */
   isLast: boolean;
+  /**
+   * Additional offset of the popover
+   * @default 10
+   */
+  offset: number;
 }
 
 type PopoverOptionsWithoutDefaults = PartialSome<
@@ -116,9 +117,9 @@ type PopoverOptionsWithoutDefaults = PartialSome<
   | "prevBtnText"
 >;
 
-export type PopoverUserOptions = PartialExcept<
-  PopoverOptions,
-  "title" | "description"
+export type PopoverUserOptions = Omit<
+  PartialExcept<PopoverOptions, "title" | "description">,
+  "padding" | "offset"
 >;
 
 /**
@@ -140,7 +141,7 @@ export default class Popover {
 
   constructor({
     showButtons = true,
-    offset = 0,
+    offset = POPOVER_OFFSET,
     alignment = "start",
     closeBtnText = "Close",
     doneBtnText = "Done",
@@ -239,7 +240,8 @@ export default class Popover {
     new SmartPosition(
       this.highlightElement.getElement(),
       this,
-      this.options.padding + 10
+      this.options.padding,
+      this.options.offset
     ).setBestPosition(this.options.alignment, this.options.prefferedSide);
   }
 

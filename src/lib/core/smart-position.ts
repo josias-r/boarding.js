@@ -18,22 +18,38 @@ interface SideCheckResult {
 class SmartPosition {
   private highlightElement: HTMLElement;
   private popover: Popover;
-  private margin: number;
+  private padding: number;
+  /** padding + offset */
+  private finalOffset: number;
 
-  constructor(highlightElement: HTMLElement, popover: Popover, margin: number) {
+  constructor(
+    highlightElement: HTMLElement,
+    popover: Popover,
+    padding: number,
+    offset: number
+  ) {
     this.highlightElement = highlightElement;
     this.popover = popover;
-    this.margin = margin;
+
+    this.padding = padding;
+    this.finalOffset = padding + offset;
   }
 
-  // /**
-  //  * Checks if the position is valid to be highlighted
-  //  * @returns {boolean}
-  //  * @public
-  //  */
-  // canHighlight() {
-  //   return this.left < this.right && this.top < this.bottom;
-  // }
+  public setBestPosition(alignment: Alignments, preferredSide?: Sides) {
+    const position = this.findOptimalPosition(alignment, preferredSide);
+
+    const popoverWrapper = this.popover.getPopoverElements()?.popoverWrapper;
+    assertVarIsNotFalsy(popoverWrapper);
+
+    popoverWrapper.style.left =
+      typeof position.left === "number" ? `${position.left}px` : "auto";
+    popoverWrapper.style.right =
+      typeof position.right === "number" ? `${position.right}px` : "auto";
+    popoverWrapper.style.top =
+      typeof position.top === "number" ? `${position.top}px` : "auto";
+    popoverWrapper.style.bottom =
+      typeof position.bottom === "number" ? `${position.bottom}px` : "auto";
+  }
 
   /**
    * @returns DOMRect of element that should be highlighted
@@ -54,8 +70,8 @@ class SmartPosition {
 
     // note that we only add margins ONCE because it only matters as a margin to the highlightElement, not the viewport
     return {
-      width: popoverRect.width + this.margin,
-      height: popoverRect.height + this.margin,
+      width: popoverRect.width + this.finalOffset,
+      height: popoverRect.height + this.finalOffset,
     };
   }
 
@@ -124,36 +140,41 @@ class SmartPosition {
   /**
    * Normalize the position on an axis in case it would overflow
    * @param alignment one of start, center or end
-   * @param length the length of the element on the axis in question (x = width, y = height)
+   * @param popoverLength the length of the popover on the axis in question (x = width, y = height)
    * @param pos the position on the axis (x = left, y = top)
    * @param end the max value on the axis (x = maxWidth, y = maxHeight)
+   * @param elementLength the length of the element on the axis in question (x = width, y = height)
    * @returns
    */
   private normalizeAlignment(
     alignment: Alignments,
-    length: number,
-    pos: number,
-    end: number
+    popoverLength: number, // popover height or width
+    pos: number, // element top or left
+    end: number, // window height or width
+    elementLength: number // popover height or width
   ) {
     switch (alignment) {
       case "start":
-        return Math.min(pos, end - length);
+        return Math.min(pos - this.padding, end - popoverLength);
       case "end":
-        return Math.min(pos, end);
+        return Math.min(
+          pos - popoverLength + elementLength + this.padding,
+          end - popoverLength
+        );
       case "center":
-        const posCentered = pos + length / 2;
+        const posCentered = pos - this.padding + popoverLength / 2;
 
-        const from = Math.min(posCentered, end - length);
+        const from = Math.min(posCentered, end - popoverLength);
         const to = Math.min(posCentered, end);
-        if (from !== posCentered) {
-          return from;
-        }
         if (to !== posCentered) {
           return to;
         }
-        return posCentered;
+        if (from !== posCentered) {
+          return from;
+        }
+        return Math.max(0, posCentered);
       case "end":
-        return Math.min(end, pos - length);
+        return Math.min(end, pos - popoverLength);
     }
   }
 
@@ -193,57 +214,45 @@ class SmartPosition {
           position.top = foundSideResult.value;
           position.left = this.normalizeAlignment(
             alignment,
-            popoverDimensions.width,
+            popoverDimensions.width - this.finalOffset, // get the real dimension without the margin
             elemRect.left,
-            window.innerWidth
+            window.innerWidth,
+            elemRect.width
           );
           break;
         case "bottom":
           position.bottom = foundSideResult.value;
           position.left = this.normalizeAlignment(
             alignment,
-            popoverDimensions.width,
+            popoverDimensions.width - this.finalOffset, // get the real dimension without the margin
             elemRect.left,
-            window.innerWidth
+            window.innerWidth,
+            elemRect.width
           );
           break;
         case "left":
           position.left = foundSideResult.value;
           position.top = this.normalizeAlignment(
             alignment,
-            popoverDimensions.height,
+            popoverDimensions.height - this.finalOffset, // get the real dimension without the margin
             elemRect.top,
-            window.innerHeight
+            window.innerHeight,
+            elemRect.height
           );
           break;
         case "right":
           position.right = foundSideResult.value;
           position.top = this.normalizeAlignment(
             alignment,
-            popoverDimensions.height,
+            popoverDimensions.height - this.finalOffset, // get the real dimension without the margin
             elemRect.top,
-            window.innerHeight
+            window.innerHeight,
+            elemRect.height
           );
           break;
       }
       return position;
     }
-  }
-
-  public setBestPosition(alignment: Alignments, preferredSide?: Sides) {
-    const position = this.findOptimalPosition(alignment, preferredSide);
-
-    const popoverWrapper = this.popover.getPopoverElements()?.popoverWrapper;
-    assertVarIsNotFalsy(popoverWrapper);
-
-    popoverWrapper.style.left =
-      typeof position.left === "number" ? `${position.left}px` : "auto";
-    popoverWrapper.style.right =
-      typeof position.right === "number" ? `${position.right}px` : "auto";
-    popoverWrapper.style.top =
-      typeof position.top === "number" ? `${position.top}px` : "auto";
-    popoverWrapper.style.bottom =
-      typeof position.bottom === "number" ? `${position.bottom}px` : "auto";
   }
 }
 

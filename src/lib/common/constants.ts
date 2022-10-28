@@ -1,5 +1,6 @@
 export const OVERLAY_OPACITY = 0.75;
 export const OVERLAY_PADDING = 10;
+export const POPOVER_OFFSET = 10;
 
 export const SHOULD_ANIMATE_OVERLAY = true;
 export const SHOULD_STRICT_CLICK_HANDLE = true;

@@ -442,6 +442,7 @@ class Boarding {
       popover = new Popover({
         // general options
         padding: this.options.padding,
+        offset: this.options.offset,
         animate: this.options.animate,
         scrollIntoViewOptions: this.options.scrollIntoViewOptions,
         // popover options
@@ -450,7 +451,6 @@ class Boarding {
         prefferedSide: currentStep.popover.prefferedSide,
         alignment: currentStep.popover.alignment,
         // hybrid options
-        offset: currentStep.popover.offset || this.options.offset,
         showButtons:
           currentStep.popover.showButtons || this.options.showButtons,
         doneBtnText:

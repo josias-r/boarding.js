@@ -1,10 +1,15 @@
 import { HighlightElementOptions } from "./core/highlight-element";
 import { OverlayOptions } from "./core/overlay";
-import { PopoverHybridOptions, PopoverUserOptions } from "./core/popover";
+import {
+  PopoverOptions,
+  PopoverHybridOptions,
+  PopoverUserOptions,
+} from "./core/popover";
 
 export interface BoardingOptions
   extends Pick<OverlayOptions, "onReset" | "opacity">,
     Partial<PopoverHybridOptions>,
+    Partial<Pick<PopoverOptions, "offset">>,
     Pick<
       HighlightElementOptions,
       "onHighlightStarted" | "onHighlighted" | "onDeselected"
