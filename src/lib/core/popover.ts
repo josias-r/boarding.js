@@ -1,4 +1,4 @@
-import { BoardingOptions } from "../boarding-types";
+import { BoardingSharedOptions } from "../boarding-types";
 import {
   CLASS_BTN_DISABLED,
   CLASS_CLOSE_ONLY_BTN,
@@ -6,57 +6,27 @@ import {
   POPOVER_ELEMENT,
   POPOVER_OFFSET,
 } from "../common/constants";
-import {
-  assertVarIsNotFalsy,
-  bringInView,
-  PartialExcept,
-  PartialSome,
-} from "../common/utils";
+import { assertVarIsNotFalsy, bringInView } from "../common/utils";
 import HighlightElement from "./highlight-element";
-import { OverlayOptions } from "./overlay";
 import SmartPosition, { Alignments, Sides } from "./smart-position";
 
-export interface PopoverHybridOptions {
+/** The top-level options that are shared between multiple classes that popover supports */
+type PopoverSupportedSharedOptions = Pick<
+  BoardingSharedOptions,
+  "animate" | "scrollIntoViewOptions" | "padding"
+>;
+
+/** The options of popover that will come from the top-level */
+export interface PopoverTopLevelOptions {
   /**
-   * Whether to show control buttons or not
-   * @default true
+   * Additional offset of the popover
+   * @default 10
    */
-  showButtons: boolean;
-  /**
-   * Text on the button in the final step
-   * @default 'Done'
-   */
-  doneBtnText: string;
-  /**
-   * Text on the close button
-   * @default 'Close'
-   */
-  closeBtnText: string;
-  /**
-   * Text on the next button
-   * @default 'Next'
-   */
-  nextBtnText: string;
-  /**
-   * Text on the next button
-   * @default 'Next'
-   */
-  startBtnText: string;
-  /**
-   * Text on the previous button
-   * @default 'Previous'
-   */
-  prevBtnText: string;
-  /**
-   * className for the popover on element (will also add the main class scope)
-   */
-  className?: string;
+  offset?: number;
 }
 
-export interface PopoverOptions
-  extends PopoverHybridOptions,
-    Pick<OverlayOptions, "padding">,
-    Pick<BoardingOptions, "animate" | "scrollIntoViewOptions"> {
+/** The options of popover that will be defined on a step-level */
+export interface PopoverStepLevelOptions {
   /**
    * Title for the popover
    */
@@ -73,7 +43,52 @@ export interface PopoverOptions
    * Alignment for the popover
    * @default "start"
    */
-  alignment: Alignments;
+  alignment?: Alignments;
+}
+
+/** The options of popover that will come from the top-level but can also be overwritten */
+export interface PopoverHybridOptions {
+  /**
+   * Whether to show control buttons or not
+   * @default true
+   */
+  showButtons?: boolean;
+  /**
+   * Text on the button in the final step
+   * @default 'Done'
+   */
+  doneBtnText?: string;
+  /**
+   * Text on the close button
+   * @default 'Close'
+   */
+  closeBtnText?: string;
+  /**
+   * Text on the next button
+   * @default 'Next'
+   */
+  nextBtnText?: string;
+  /**
+   * Text on the next button
+   * @default 'Next'
+   */
+  startBtnText?: string;
+  /**
+   * Text on the previous button
+   * @default 'Previous'
+   */
+  prevBtnText?: string;
+  /**
+   * className for the popover on element (will also add the main class scope)
+   */
+  className?: string;
+}
+
+interface PopoverOptions
+  extends PopoverHybridOptions,
+    PopoverStepLevelOptions,
+    PopoverTopLevelOptions,
+    PopoverSupportedSharedOptions {
   /**
    * Total number of elements with popovers
    * @default 0
@@ -91,35 +106,13 @@ export interface PopoverOptions
    * If the current popover is the last one
    */
   isLast: boolean;
-  /**
-   * Additional offset of the popover
-   * @default 10
-   */
-  offset: number;
 }
-
-type PopoverOptionsWithoutDefaults = PartialSome<
-  PopoverOptions,
-  | "offset"
-  | "alignment"
-  | "showButtons"
-  | "doneBtnText"
-  | "closeBtnText"
-  | "nextBtnText"
-  | "startBtnText"
-  | "prevBtnText"
->;
-
-export type PopoverUserOptions = Omit<
-  PartialExcept<PopoverOptions, "title" | "description">,
-  "offset"
->;
 
 /**
  * Popover that is displayed for the highlighted element
  */
 export default class Popover {
-  private options: PopoverOptions;
+  private options; // type will get inferred with default values being required
   private popover?: {
     popoverWrapper: HTMLDivElement;
     popoverTip: HTMLDivElement;
@@ -142,7 +135,7 @@ export default class Popover {
     nextBtnText = "Next &rarr;",
     prevBtnText = "&larr; Previous",
     ...options
-  }: PopoverOptionsWithoutDefaults) {
+  }: PopoverOptions) {
     this.options = {
       showButtons,
       offset,

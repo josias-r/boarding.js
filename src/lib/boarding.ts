@@ -21,7 +21,7 @@ import {
  * Plugin class that drives the plugin
  */
 class Boarding {
-  private options: BoardingOptions;
+  private options; // type will get inferred with default values being required
   private isActivated: boolean;
   private steps: HighlightElement[];
   private currentStep: number;
@@ -29,9 +29,9 @@ class Boarding {
 
   private overlay: Overlay;
 
-  constructor(options?: Partial<BoardingOptions>) {
+  constructor(options?: BoardingOptions) {
     const {
-      strictClickHandling = SHOULD_STRICT_CLICK_HANDLE,
+      strictClickHandling = SHOULD_STRICT_CLICK_HANDLE, // Whether to only allow clicking the highlighted element
       animate = SHOULD_ANIMATE_OVERLAY, // Whether to animate or not
       opacity = OVERLAY_OPACITY, // Overlay opacity
       padding = OVERLAY_PADDING, // Spacing around the element from the overlay

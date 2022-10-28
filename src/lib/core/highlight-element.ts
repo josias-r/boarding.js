@@ -1,9 +1,15 @@
-import { BoardingOptions } from "../boarding-types";
+import { BoardingSharedOptions } from "../boarding-types";
 import { bringInView } from "../common/utils";
 import Popover from "./popover";
 
-export interface HighlightElementOptions
-  extends Pick<BoardingOptions, "scrollIntoViewOptions"> {
+/** The top-level options that are shared between multiple classes that popover supports */
+type HighlightElementSupportedSharedOptions = Pick<
+  BoardingSharedOptions,
+  "scrollIntoViewOptions"
+>;
+
+/** The options of highlight-element that will come from the top-level */
+export interface HighlightElementTopLevelOptions {
   /**
    * Callback to be called when element is about to be highlighted
    */
@@ -16,6 +22,10 @@ export interface HighlightElementOptions
    * Callback to be called when element has been deselected
    */
   onDeselected?: (element: HighlightElement) => void;
+}
+
+/** The options of highlight-element that will be defined on a step-level */
+export interface HighlightElementStepLevelOptions {
   /**
    * Is called when the next element is about to be highlighted
    */
@@ -26,12 +36,17 @@ export interface HighlightElementOptions
   onPrevious?: (element: HighlightElement) => void;
 }
 
+interface HighlightElementOptions
+  extends HighlightElementTopLevelOptions,
+    HighlightElementStepLevelOptions,
+    HighlightElementSupportedSharedOptions {}
+
 /**
  * Wrapper around DOMElements to enrich them
  * with the functionality necessary
  */
 class HighlightElement {
-  private options: HighlightElementOptions;
+  private options; // type will get inferred with default values being required;
   private highlightDomElement: HTMLElement;
   private popover: Popover | null;
 

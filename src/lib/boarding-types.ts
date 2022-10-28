@@ -1,19 +1,23 @@
-import { HighlightElementOptions } from "./core/highlight-element";
-import { OverlayOptions } from "./core/overlay";
 import {
-  PopoverOptions,
+  HighlightElementStepLevelOptions,
+  HighlightElementTopLevelOptions,
+} from "./core/highlight-element";
+import { OverlayTopLevelOptions } from "./core/overlay";
+import {
   PopoverHybridOptions,
-  PopoverUserOptions,
+  PopoverStepLevelOptions,
+  PopoverTopLevelOptions,
 } from "./core/popover";
 
-export interface BoardingOptions
-  extends Pick<OverlayOptions, "onReset" | "opacity">,
-    Partial<PopoverHybridOptions>,
-    Partial<Pick<PopoverOptions, "offset">>,
-    Pick<
-      HighlightElementOptions,
-      "onHighlightStarted" | "onHighlighted" | "onDeselected"
-    > {
+// Class typing structure:
+//
+// each class consists of the following interfaces:
+// [Class]SupportedSharedOptions
+// [Class]TopLevelOptions
+// [Class]StepLevelOptions
+//
+
+export interface BoardingSharedOptions {
   /**
    * Whether to animate while transitioning from one highlighted
    * element to another
@@ -21,35 +25,43 @@ export interface BoardingOptions
    */
   animate: boolean;
   /**
-   * Distance of elements corner from the edges of the overlay
-   * @default 10
-   */
-  padding: number;
-  /**
    * Options to be passed to scrollIntoView if supported by browser
    * @default { behavior: 'instant', block: 'center' }
    */
   scrollIntoViewOptions: ScrollIntoViewOptions;
   /**
+   * Distance of elements corner from the edges of the overlay
+   * @default 10
+   */
+  padding: number;
+}
+
+export interface BoardingOptions
+  extends Partial<BoardingSharedOptions>, // partial because they will get default values
+    OverlayTopLevelOptions,
+    PopoverHybridOptions,
+    PopoverTopLevelOptions,
+    HighlightElementTopLevelOptions {
+  /**
    * Whether to allow controlling steps through keyboard
    * @default true
    */
-  keyboardControl: boolean;
+  keyboardControl?: boolean;
   /**
    * Prevent clicking ANY element except currently active element (or its children)
    * @default true
    */
-  strictClickHandling: boolean;
+  strictClickHandling?: boolean;
   /**
    * Clicking outside the highlighted element should reset boarding or not
    * @default true
    */
-  allowClose: boolean;
+  allowClose?: boolean;
   /**
    * Clicking outside the highlighted element should move next
    * @default false
    */
-  overlayClickNext: boolean;
+  overlayClickNext?: boolean;
   /**
    * className for the boarding popovers
    */
@@ -57,7 +69,7 @@ export interface BoardingOptions
 }
 
 export interface BoardingStepDefinition
-  extends Pick<HighlightElementOptions, "onNext" | "onPrevious"> {
+  extends HighlightElementStepLevelOptions {
   /**
    * Query selector representing the DOM Element
    */
@@ -65,7 +77,7 @@ export interface BoardingStepDefinition
   /**
    * Options representing popover for this step
    */
-  popover?: PopoverUserOptions;
+  popover?: PopoverStepLevelOptions & PopoverHybridOptions;
 }
 
 export type BoardingSteps = BoardingStepDefinition[];

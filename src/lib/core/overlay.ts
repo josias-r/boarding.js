@@ -1,6 +1,6 @@
-import { BoardingOptions } from "../boarding-types";
+import { BoardingSharedOptions } from "../boarding-types";
 import { OVERLAY_OPACITY } from "../common/constants";
-import { assertVarIsNotFalsy, PartialExcept } from "../common/utils";
+import { assertVarIsNotFalsy } from "../common/utils";
 import {
   createSvgCutout,
   CutoutDefinition,
@@ -8,8 +8,14 @@ import {
 } from "./cutout";
 import HighlightElement from "./highlight-element";
 
-export interface OverlayOptions
-  extends Pick<BoardingOptions, "animate" | "padding"> {
+/** The top-level options that are shared between multiple classes that overlay supports */
+type OverlaySupportedSharedOptions = Pick<
+  BoardingSharedOptions,
+  "animate" | "padding"
+>;
+
+/** The options of overlay that will come from the top-level */
+export interface OverlayTopLevelOptions {
   /**
    * Is called when the overlay is about to reset
    */
@@ -18,21 +24,25 @@ export interface OverlayOptions
    * Opacity for the overlay
    * @default 0.75
    */
-  opacity: number;
+  opacity?: number;
 }
+
+interface OverlayOptions
+  extends OverlaySupportedSharedOptions,
+    OverlayTopLevelOptions {}
 
 /**
  * Responsible for overlay creation and manipulation i.e.
  * cutting out the visible part, animating between the sections etc
  */
 class Overlay {
-  private options: OverlayOptions;
+  private options; // type will get inferred with default values being required
   private cutoutSVGElement?: SVGSVGElement;
 
   public currentHighlightedElement?: HighlightElement;
   public previouslyHighlightedElement?: HighlightElement;
 
-  constructor(options: PartialExcept<OverlayOptions, "animate" | "padding">) {
+  constructor(options: OverlayOptions) {
     this.options = {
       // padding: Padding default will come from outside, as it affects more then just the overlay
       opacity: OVERLAY_OPACITY,
