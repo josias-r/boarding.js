@@ -99,8 +99,6 @@ class Boarding {
    * @param selector Query selector, htmlelement or a step definition
    */
   public highlight(selector: BoardingStepDefinition | string | HTMLElement) {
-    this.isActivated = true;
-
     // convert argument to step definition
     const stepDefinition: BoardingStepDefinition =
       typeof selector === "object" && "element" in selector
@@ -111,7 +109,10 @@ class Boarding {
     if (!element) {
       return;
     }
+    // attach eventListeners BEFORE setting highlighting element
+    this.attachEventListeners();
 
+    this.isActivated = true;
     this.overlay.highlight(element);
   }
 
