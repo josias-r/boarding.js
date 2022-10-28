@@ -31,62 +31,6 @@ class Overlay {
     };
   }
 
-  private mountCutoutElement(cutoutDefinition: CutoutDefinition) {
-    if (this.cutoutSVGElement) {
-      throw new Error("Already mounted SVG");
-    }
-    const newSvgElement = createSvgCutout(cutoutDefinition);
-    this.cutoutSVGElement = newSvgElement;
-    document.body.appendChild(newSvgElement);
-  }
-
-  public unmountCutoutElement() {
-    if (!this.cutoutSVGElement) {
-      throw new Error("No SVG found to unmount");
-    }
-
-    // rm from body
-    document.body.removeChild(this.cutoutSVGElement);
-    // rm from memory
-    this.cutoutSVGElement = undefined;
-  }
-
-  public updateCutout(highlightElement: HighlightElement) {
-    // update lastActiveElement to new element provided
-    this.currentHighlightedElement = highlightElement;
-
-    const boundingClientRect = highlightElement
-      .getDomElement()
-      .getBoundingClientRect();
-
-    const cutoutBoxSettings: CutoutDefinition = {
-      hightlightBox: {
-        x: boundingClientRect.x,
-        y: boundingClientRect.y,
-        width: boundingClientRect.width,
-        height: boundingClientRect.height,
-      },
-      padding: this.options.padding,
-    };
-
-    // mount svg if its not mounted already
-    if (!this.cutoutSVGElement) {
-      this.mountCutoutElement(cutoutBoxSettings);
-    } else {
-      // otherwise update existing SVG path
-      const pathElement = this.cutoutSVGElement.firstElementChild;
-
-      if (pathElement?.tagName === "path") {
-        pathElement.setAttribute(
-          "d",
-          generateSvgCutoutPathString(cutoutBoxSettings)
-        );
-      } else {
-        throw new Error("No existing path found on SVG but we want one :(");
-      }
-    }
-  }
-
   /**
    * Highlights the dom element on the screen
    */
@@ -135,29 +79,10 @@ class Overlay {
     element.onHighlighted();
   }
 
-  // /**
-  //  * Returns the currently selected element
-  //  * @returns {null|*}
-  //  * @public
-  //  */
-  // getHighlightedElement() {
-  //   return this.highlightedElement;
-  // }
-
-  // /**
-  //  * Gets the element that was highlighted before current element
-  //  * @returns {null|*}
-  //  * @public
-  //  */
-  // getLastHighlightedElement() {
-  //   return this.lastHighlightedElement;
-  // }
-
   /**
    * Removes the overlay and cancel any listeners
-   * @public
    */
-  clear(immediate = false) {
+  public clear(immediate = false) {
     // Callback for when overlay is about to be reset
     if (this.currentHighlightedElement) {
       this.options.onReset?.(this.currentHighlightedElement);
@@ -206,6 +131,62 @@ class Overlay {
       return;
     }
     this.updateCutout(this.currentHighlightedElement);
+  }
+
+  private mountCutoutElement(cutoutDefinition: CutoutDefinition) {
+    if (this.cutoutSVGElement) {
+      throw new Error("Already mounted SVG");
+    }
+    const newSvgElement = createSvgCutout(cutoutDefinition);
+    this.cutoutSVGElement = newSvgElement;
+    document.body.appendChild(newSvgElement);
+  }
+
+  private unmountCutoutElement() {
+    if (!this.cutoutSVGElement) {
+      throw new Error("No SVG found to unmount");
+    }
+
+    // rm from body
+    document.body.removeChild(this.cutoutSVGElement);
+    // rm from memory
+    this.cutoutSVGElement = undefined;
+  }
+
+  private updateCutout(highlightElement: HighlightElement) {
+    // update lastActiveElement to new element provided
+    this.currentHighlightedElement = highlightElement;
+
+    const boundingClientRect = highlightElement
+      .getDomElement()
+      .getBoundingClientRect();
+
+    const cutoutBoxSettings: CutoutDefinition = {
+      hightlightBox: {
+        x: boundingClientRect.x,
+        y: boundingClientRect.y,
+        width: boundingClientRect.width,
+        height: boundingClientRect.height,
+      },
+      padding: this.options.padding,
+    };
+
+    // mount svg if its not mounted already
+    if (!this.cutoutSVGElement) {
+      this.mountCutoutElement(cutoutBoxSettings);
+    } else {
+      // otherwise update existing SVG path
+      const pathElement = this.cutoutSVGElement.firstElementChild;
+
+      if (pathElement?.tagName === "path") {
+        pathElement.setAttribute(
+          "d",
+          generateSvgCutoutPathString(cutoutBoxSettings)
+        );
+      } else {
+        throw new Error("No existing path found on SVG but we want one :(");
+      }
+    }
   }
 }
 

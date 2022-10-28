@@ -10,6 +10,7 @@ import {
   bringInView,
   PartialExcept,
 } from "../common/utils";
+import HighlightElement from "./highlight-element";
 
 // TODO: move interface to other file?
 export interface Position {
@@ -141,6 +142,7 @@ export default class Popover {
     popoverNextBtn: HTMLButtonElement;
     popoverCloseBtn: HTMLButtonElement;
   };
+  private highlightElement?: HighlightElement;
 
   constructor(options: BoardingPopoverOptionsWithDefaults) {
     this.options = {
@@ -160,10 +162,74 @@ export default class Popover {
   }
 
   /**
-   * Prepares the dom element for popover
-   * @private
+   * Hides the popover
    */
-  attachNode() {
+  public hide() {
+    // If hide is called when the node isn't created yet
+    if (!this.popover) {
+      return;
+    }
+
+    this.highlightElement = undefined;
+
+    this.popover.popoverWrapper.style.display = "none";
+  }
+
+  /**
+   * Shows the popover at the given position
+   */
+  public show(highlightElement: HighlightElement) {
+    this.highlightElement = highlightElement;
+
+    this.attachNode();
+    assertVarIsNotFalsy(this.popover);
+    this.setInitialState();
+
+    // Set the title and descriptions
+    this.popover.popoverTitle.innerHTML = this.options.title || "";
+    this.popover.popoverDescription.innerHTML = this.options.description || "";
+
+    this.renderFooter();
+
+    this.setPosition();
+
+    bringInView(
+      this.popover.popoverWrapper,
+      this.options.scrollIntoViewOptions
+    );
+  }
+
+  /**
+   * Refreshes the popover position based on the highlighted element
+   */
+  public refresh() {
+    if (!this.highlightElement) {
+      return;
+    }
+
+    this.setPosition();
+  }
+
+  /**
+   * Sets the default state for the popover
+   */
+  private setInitialState() {
+    assertVarIsNotFalsy(this.popover);
+    this.popover.popoverWrapper.style.display = "block";
+    this.popover.popoverWrapper.style.left = "0";
+    this.popover.popoverWrapper.style.top = "0";
+    this.popover.popoverWrapper.style.bottom = "";
+    this.popover.popoverWrapper.style.right = "";
+
+    // TODO: check if still necessary
+    // Remove the positional classes from tip
+    this.popover.popoverTip.className = CLASS_POPOVER_TIP;
+  }
+
+  /**
+   * Prepares the dom element for popover
+   */
+  private attachNode() {
     const oldPopover = document.getElementById(ID_POPOVER);
     if (oldPopover) {
       oldPopover.parentElement?.removeChild(oldPopover);
@@ -194,63 +260,11 @@ export default class Popover {
   }
 
   /**
-   * Gets the title element for the popover
+   * Position the popover around the given position
    */
-  public getTitleElement() {
-    return this.popover?.popoverTitle;
-  }
-
-  /**
-   * Gets the description element for the popover
-   */
-  public getDescriptionElement() {
-    return this.popover?.popoverDescription;
-  }
-
-  /**
-   * Hides the popover
-   */
-  public hide() {
-    // If hide is called when the node isn't created yet
-    if (!this.popover) {
-      return;
-    }
-
-    this.popover.popoverWrapper.style.display = "none";
-  }
-
-  /**
-   * Sets the default state for the popover
-   * @private
-   */
-  setInitialState() {
-    assertVarIsNotFalsy(this.popover);
-    this.popover.popoverWrapper.style.display = "block";
-    this.popover.popoverWrapper.style.left = "0";
-    this.popover.popoverWrapper.style.top = "0";
-    this.popover.popoverWrapper.style.bottom = "";
-    this.popover.popoverWrapper.style.right = "";
-
-    // TODO: check if still necessary
-    // Remove the positional classes from tip
-    this.popover.popoverTip.className = CLASS_POPOVER_TIP;
-  }
-
-  /**
-   * Shows the popover at the given position
-   */
-  public show(position: Position) {
-    this.attachNode();
-    assertVarIsNotFalsy(this.popover);
-    this.setInitialState();
-
-    // Set the title and descriptions
-    this.popover.popoverTitle.innerHTML = this.options.title || "";
-    this.popover.popoverDescription.innerHTML = this.options.description || "";
-
-    this.renderFooter();
-
-    // Position the popover around the given position
+  private setPosition() {
+    assertVarIsNotFalsy(this.highlightElement);
+    const position: Position = this.highlightElement.getCalculatedPosition();
     switch (this.options.position) {
       case "left":
       case "left-top":
@@ -300,19 +314,13 @@ export default class Popover {
         this.autoPosition(position);
         break;
     }
-
-    bringInView(
-      this.popover.popoverWrapper,
-      this.options.scrollIntoViewOptions
-    );
   }
 
   /**
    * Enables, disables buttons, sets the text and
    * decides if to show them or not
-   * @private
    */
-  renderFooter() {
+  private renderFooter() {
     assertVarIsNotFalsy(this.popover);
     this.popover.popoverNextBtn.innerHTML = this.options.nextBtnText;
     this.popover.popoverPrevBtn.innerHTML = this.options.prevBtnText;
@@ -689,7 +697,7 @@ export default class Popover {
   /**
    * Gets the full page size
    */
-  public getFullPageSize() {
+  private getFullPageSize() {
     const body = document.body;
     const html = document.documentElement;
 
@@ -712,7 +720,7 @@ export default class Popover {
   /**
    * Gets the size for popover
    */
-  public getSize() {
+  private getSize() {
     assertVarIsNotFalsy(this.popover);
     return {
       height: Math.max(
