@@ -7,27 +7,23 @@ export const SHOULD_OUTSIDE_CLICK_CLOSE = true;
 export const ALLOW_KEYBOARD_CONTROL = true;
 export const SHOULD_OUTSIDE_CLICK_NEXT = false;
 
-export const ID_OVERLAY = "driver-page-overlay";
-export const ID_POPOVER = "driver-popover-item";
+const ID_OVERLAY = "driver-page-overlay";
+const ID_POPOVER = "driver-popover-item";
 
-// export const CLASS_DRIVER_HIGHLIGHTED_ELEMENT = "driver-highlighted-element";
-// export const CLASS_POSITION_RELATIVE = "driver-position-relative";
-// export const CLASS_FIX_STACKING_CONTEXT = "driver-fix-stacking";
+const CLASS_CLEARFIX = "driver-clearfix";
+const CLASS_BTN_GROUP = "driver-btn-group";
 
-export const CLASS_CLEARFIX = "driver-clearfix";
-export const CLASS_BTN_GROUP = "driver-btn-group";
-
-export const CLASS_STAGE_NO_ANIMATION = "driver-stage-no-animation";
 export const CLASS_POPOVER_TIP = "driver-popover-tip";
-export const CLASS_POPOVER_TITLE = "driver-popover-title";
-export const CLASS_POPOVER_DESCRIPTION = "driver-popover-description";
-export const CLASS_POPOVER_FOOTER = "driver-popover-footer";
-export const CLASS_CLOSE_BTN = "driver-close-btn";
-export const CLASS_NEXT_STEP_BTN = "driver-next-btn";
-export const CLASS_PREV_STEP_BTN = "driver-prev-btn";
+const CLASS_POPOVER_TITLE = "driver-popover-title";
+const CLASS_POPOVER_DESCRIPTION = "driver-popover-description";
+const CLASS_POPOVER_FOOTER = "driver-popover-footer";
+const CLASS_CLOSE_BTN = "driver-close-btn";
+const CLASS_NEXT_STEP_BTN = "driver-next-btn";
+const CLASS_PREV_STEP_BTN = "driver-prev-btn";
+const CLASS_NAVIGATION_BTNS = "driver-navigation-btns";
+
 export const CLASS_BTN_DISABLED = "driver-disabled";
 export const CLASS_CLOSE_ONLY_BTN = "driver-close-only-btn";
-export const CLASS_NAVIGATION_BTNS = "driver-navigation-btns";
 
 // NOTE: It must match the one set in the animations in CSS file
 export const ANIMATION_DURATION_MS = 300;

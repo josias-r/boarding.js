@@ -2,7 +2,6 @@ import {
   CLASS_BTN_DISABLED,
   CLASS_CLOSE_ONLY_BTN,
   CLASS_POPOVER_TIP,
-  ID_POPOVER,
   POPOVER_ELEMENT,
 } from "../common/constants";
 import {
@@ -237,9 +236,10 @@ export default class Popover {
    * Prepares the dom element for popover
    */
   private attachNode() {
-    const oldPopover = document.getElementById(ID_POPOVER);
-    if (oldPopover) {
-      oldPopover.parentElement?.removeChild(oldPopover);
+    if (this.popover) {
+      this.popover.popoverWrapper.parentElement?.removeChild(
+        this.popover.popoverWrapper
+      );
     }
 
     const {

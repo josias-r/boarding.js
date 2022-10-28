@@ -1,4 +1,4 @@
-import HighlightElement from "./core/highlight-element";
+import { HighlightElementOptions } from "./core/highlight-element";
 import { BoardingPopoverOptions } from "./core/popover";
 
 export interface BoardingOptions {
@@ -75,8 +75,8 @@ export interface BoardingOptions {
   className?: string;
 }
 
-export type BoardingSteps = HighlightElement[];
-export interface BoardingStepDefinition {
+export interface BoardingStepDefinition
+  extends Pick<HighlightElementOptions, "onNext" | "onPrevious"> {
   /**
    * Query selector representing the DOM Element
    */
@@ -85,12 +85,6 @@ export interface BoardingStepDefinition {
    * Options representing popover for this step
    */
   popover?: BoardingPopoverOptions;
-  /**
-   * Is called when the next element is about to be highlighted
-   */
-  onNext?: (element: HighlightElement) => void;
-  /**
-   * Is called when the previous element is about to be highlighted
-   */
-  onPrevious?: (element: HighlightElement) => void;
 }
+
+export type BoardingSteps = BoardingStepDefinition[];

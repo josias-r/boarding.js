@@ -23,7 +23,6 @@ export interface HighlightElementOptions {
    */
   onPrevious?: (element: HighlightElement) => void;
   scrollIntoViewOptions?: ScrollIntoViewOptions;
-  // animate?: boolean;
 }
 
 /**

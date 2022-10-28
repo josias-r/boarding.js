@@ -1,10 +1,6 @@
 import Overlay from "./core/overlay";
 import Popover, { BoardingPopoverOptionsWithDefaults } from "./core/popover";
 import {
-  CLASS_CLOSE_BTN,
-  CLASS_NEXT_STEP_BTN,
-  CLASS_PREV_STEP_BTN,
-  ID_POPOVER,
   OVERLAY_OPACITY,
   OVERLAY_PADDING,
   SHOULD_ANIMATE_OVERLAY,
@@ -27,7 +23,7 @@ import {
 class Boarding {
   private options: BoardingOptions;
   private isActivated: boolean;
-  private steps: BoardingSteps;
+  private steps: HighlightElement[];
   private currentStep: number;
   private currentMovePrevented: boolean;
 
@@ -199,7 +195,7 @@ class Boarding {
   /**
    * Defines steps to be highlighted
    */
-  public defineSteps(stepDefinitions: BoardingStepDefinition[]) {
+  public defineSteps(stepDefinitions: BoardingSteps) {
     this.steps = [];
 
     for (let counter = 0; counter < stepDefinitions.length; counter++) {
@@ -226,7 +222,7 @@ class Boarding {
   /**
    * Setter for steps property
    */
-  public setSteps(steps: BoardingSteps) {
+  public setSteps(steps: HighlightElement[]) {
     this.steps = steps;
   }
 
@@ -405,7 +401,7 @@ class Boarding {
    */
   private prepareElementFromStep(
     currentStep: BoardingStepDefinition,
-    allSteps: BoardingStepDefinition[] = [],
+    allSteps: BoardingSteps = [],
     index = 0
   ) {
     const elementOptions: Omit<BoardingStepDefinition, "element"> &
