@@ -191,6 +191,16 @@ class Overlay {
    * And moves the highlight around if necessary
    */
   public refresh() {
+    // update svg viewBox
+    if (this.cutoutSVGElement) {
+      const windowX = window.innerWidth;
+      const windowY = window.innerHeight;
+      this.cutoutSVGElement.setAttribute(
+        "viewBox",
+        `0 0 ${windowX} ${windowY}`
+      );
+    }
+
     // If no highlighted element, cancel the refresh
     if (!this.currentHighlightedElement) {
       return;

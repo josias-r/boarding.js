@@ -301,9 +301,6 @@ export default class Popover {
         break;
     }
 
-    // TODO: create bringInView helper
-    // // Bring the popover in view port once it is displayed
-    // this.bringInView();
     bringInView(
       this.popover.popoverWrapper,
       this.options.scrollIntoViewOptions
