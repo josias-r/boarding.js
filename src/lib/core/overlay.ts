@@ -84,6 +84,7 @@ class Overlay {
 
   /**
    * Removes the overlay and cancel any listeners
+   * @param immediate immediately unmount overlay or animate out
    */
   public clear(immediate = false) {
     // Callback for when overlay is about to be reset
@@ -135,6 +136,13 @@ class Overlay {
     }
     this.currentHighlightedElement.getPopover()?.refresh();
     this.updateCutout(this.currentHighlightedElement);
+  }
+
+  /**
+   * Get's the overlay SVG element - required so we can highlight it for the strict click handler
+   */
+  public getOverlayElement() {
+    return this.cutoutSVGElement;
   }
 
   private mountCutoutElement(cutoutDefinition: CutoutDefinition) {

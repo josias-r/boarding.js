@@ -4,9 +4,9 @@
 export type PartialExcept<T, K extends keyof T> = Pick<T, K> & Partial<T>;
 
 /**
- * TS runtime check to make sure we are working with an HTMLElement
+ * TS runtime check to make sure we are working with an Element
  */
-export function assertIsHtmlElement(e: any | null): asserts e is HTMLElement {
+export function assertIsElement(e: any | null): asserts e is Element {
   if (
     !e ||
     !("nodeType" in e && e.nodeType === 1 && typeof e.nodeName === "string")

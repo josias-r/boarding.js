@@ -211,6 +211,13 @@ export default class Popover {
   }
 
   /**
+   * Get the popover HTML Elements
+   */
+  public getPopoverElements() {
+    return this.popover;
+  }
+
+  /**
    * Sets the default state for the popover
    */
   private setInitialState() {

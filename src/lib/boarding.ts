@@ -4,18 +4,16 @@ import {
   CLASS_CLOSE_BTN,
   CLASS_NEXT_STEP_BTN,
   CLASS_PREV_STEP_BTN,
-  ESC_KEY_CODE,
   ID_POPOVER,
-  LEFT_KEY_CODE,
   OVERLAY_OPACITY,
   OVERLAY_PADDING,
-  RIGHT_KEY_CODE,
   SHOULD_ANIMATE_OVERLAY,
   SHOULD_OUTSIDE_CLICK_CLOSE,
   SHOULD_OUTSIDE_CLICK_NEXT,
   ALLOW_KEYBOARD_CONTROL,
+  SHOULD_STRICT_CLICK_HANDLE,
 } from "./common/constants";
-import { assertIsHtmlElement } from "./common/utils";
+import { assertIsElement } from "./common/utils";
 import HighlightElement from "./core/highlight-element";
 import {
   BoardingOptions,
@@ -37,6 +35,7 @@ class Boarding {
 
   constructor(options?: Partial<BoardingOptions>) {
     this.options = {
+      strictClickHandling: SHOULD_STRICT_CLICK_HANDLE,
       animate: SHOULD_ANIMATE_OVERLAY, // Whether to animate or not
       opacity: OVERLAY_OPACITY, // Overlay opacity
       padding: OVERLAY_PADDING, // Spacing around the element from the overlay
@@ -57,119 +56,51 @@ class Boarding {
 
     this.overlay = new Overlay(this.options);
 
+    // bind this class to eventHandlers
     this.onResize = this.onResize.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onClick = this.onClick.bind(this);
     this.moveNext = this.moveNext.bind(this);
     this.movePrevious = this.movePrevious.bind(this);
     this.preventMove = this.preventMove.bind(this);
-
-    // Event bindings
-    this.bind();
   }
 
   /**
-   * Getter for steps property
+   * Initiates highlighting steps from first step
+   * @param index at which highlight is to be started
    */
-  public getSteps() {
-    return this.steps;
+  public start(index = 0) {
+    if (!this.steps || this.steps.length === 0) {
+      throw new Error("There are no steps defined to iterate");
+    }
+
+    // attach eventListeners BEFORE setting highlighting element
+    this.attachEventListeners();
+
+    this.isActivated = true;
+    this.currentStep = index;
+    this.overlay.highlight(this.steps[index]);
   }
 
   /**
-   * Setter for steps property
+   * Highlights the given element
+   * @param selector Query selector, htmlelement or a step definition
    */
-  public setSteps(steps: BoardingSteps) {
-    this.steps = steps;
-  }
+  public highlight(selector: BoardingStepDefinition | string | HTMLElement) {
+    this.isActivated = true;
 
-  /**
-   * Binds any DOM events listeners
-   * @todo: add throttling in all the listeners
-   */
-  private bind() {
-    window.addEventListener("resize", this.onResize, false);
-    window.addEventListener("scroll", this.onResize, false);
-    window.addEventListener("keyup", this.onKeyUp, false);
+    // convert argument to step definition
+    const stepDefinition: BoardingStepDefinition =
+      typeof selector === "object" && "element" in selector
+        ? selector
+        : { element: selector };
 
-    // Binding both touch and click results in popup getting shown and then immediately get hidden.
-    // Adding the check to not bind the click event if the touch is supported i.e. on mobile devices
-    // Issue: https://github.com/kamranahmedse/driver.js/issues/150
-    if (!("ontouchstart" in document.documentElement)) {
-      window.addEventListener("click", this.onClick, false);
-    } else {
-      window.addEventListener("touchstart", this.onClick, false);
-    }
-  }
-
-  /**
-   * Removes the popover if clicked outside the highlighted element
-   * or outside the
-   */
-  private onClick(e: MouseEvent | TouchEvent) {
-    if (!this.isActivated || !this.hasHighlightedElement()) {
+    const element = this.prepareElementFromStep(stepDefinition);
+    if (!element) {
       return;
     }
 
-    // Stop the event propagation on click/tap. `onClick` handles
-    // both touch and click events – which on some browsers causes
-    // the click to close the tour
-    e.stopPropagation();
-
-    const highlightedElement = this.overlay.currentHighlightedElement;
-    const popover = document.getElementById(ID_POPOVER);
-
-    assertIsHtmlElement(e.target);
-    const clickedHighlightedElement = highlightedElement
-      ?.getElement()
-      .contains(e.target);
-    const clickedPopover = popover && popover.contains(e.target);
-
-    // Perform the 'Next' operation when clicked outside the highlighted element
-    if (
-      !clickedHighlightedElement &&
-      !clickedPopover &&
-      this.options.overlayClickNext
-    ) {
-      this.handleNext();
-      return;
-    }
-
-    // Remove the overlay If clicked outside the highlighted element
-    if (
-      !clickedHighlightedElement &&
-      !clickedPopover &&
-      this.options.allowClose
-    ) {
-      this.reset();
-      return;
-    }
-
-    const nextClicked = e.target.classList.contains(CLASS_NEXT_STEP_BTN);
-    const prevClicked = e.target.classList.contains(CLASS_PREV_STEP_BTN);
-    const closeClicked = e.target.classList.contains(CLASS_CLOSE_BTN);
-
-    if (closeClicked) {
-      this.reset();
-      return;
-    }
-
-    if (nextClicked) {
-      this.handleNext();
-    } else if (prevClicked) {
-      this.handlePrevious();
-    }
-  }
-
-  /**
-   * Handler for the onResize DOM event
-   * Makes sure highlighted element stays at valid position
-   */
-  private onResize() {
-    if (!this.isActivated) {
-      return;
-    }
-
-    this.refresh();
+    this.overlay.highlight(element);
   }
 
   /**
@@ -177,36 +108,6 @@ class Boarding {
    */
   public refresh() {
     this.overlay.refresh();
-  }
-
-  /**
-   * Clears the overlay on escape key process
-   */
-  private onKeyUp(event: KeyboardEvent) {
-    // Ignore if driver is not active or keyboard control is disabled
-    if (!this.isActivated || !this.options.keyboardControl) {
-      return;
-    }
-
-    // If escape was pressed and it is allowed to click outside to close -> reset
-    if (event.keyCode === ESC_KEY_CODE && this.options.allowClose) {
-      this.reset();
-      return;
-    }
-
-    // Ignore if there is no highlighted element or there is a highlighted element
-    // without popover
-    // TODO: or if the popover does not allow buttons
-    const highlightedElement = this.getHighlightedElement();
-    if (!highlightedElement || !highlightedElement.getPopover()) {
-      return;
-    }
-
-    if (event.keyCode === RIGHT_KEY_CODE) {
-      this.handleNext();
-    } else if (event.keyCode === LEFT_KEY_CODE) {
-      this.handlePrevious();
-    }
   }
 
   /**
@@ -230,41 +131,6 @@ class Boarding {
    */
   public preventMove() {
     this.currentMovePrevented = true;
-  }
-
-  /**
-   * Handles the internal "move to next" event
-   */
-  private handleNext() {
-    this.currentMovePrevented = false;
-
-    // Call the bound `onNext` handler if available
-    const currentStep = this.steps[this.currentStep];
-
-    currentStep?.onNext();
-
-    if (this.currentMovePrevented) {
-      return;
-    }
-
-    this.moveNext();
-  }
-
-  /**
-   * Handles the internal "move to previous" event
-   */
-  private handlePrevious() {
-    this.currentMovePrevented = false;
-
-    // Call the bound `onPrevious` handler if available
-    const currentStep = this.steps[this.currentStep];
-    currentStep?.onPrevious();
-
-    if (this.currentMovePrevented) {
-      return;
-    }
-
-    this.movePrevious();
   }
 
   /**
@@ -298,11 +164,13 @@ class Boarding {
 
   /**
    * Resets the steps if any and clears the overlay
+   * @param immediate immediately unmount overlay or animate out
    */
   public reset(immediate = false) {
     this.currentStep = 0;
     this.isActivated = false;
     this.overlay.clear(immediate);
+    this.removeEventListeners();
   }
 
   /**
@@ -346,6 +214,189 @@ class Boarding {
 
       this.steps.push(element);
     }
+  }
+
+  /**
+   * Getter for steps property
+   */
+  public getSteps() {
+    return this.steps;
+  }
+
+  /**
+   * Setter for steps property
+   */
+  public setSteps(steps: BoardingSteps) {
+    this.steps = steps;
+  }
+
+  /**
+   * Binds any DOM events listeners
+   * @todo: add throttling in all the listeners
+   */
+  private attachEventListeners() {
+    window.addEventListener("resize", this.onResize, false);
+    window.addEventListener("scroll", this.onResize, false);
+    window.addEventListener("keyup", this.onKeyUp, false);
+
+    // Binding both touch and click results in popup getting shown and then immediately get hidden.
+    // Adding the check to not bind the click event if the touch is supported i.e. on mobile devices
+    // Issue: https://github.com/kamranahmedse/driver.js/issues/150
+    if (!("ontouchstart" in document.documentElement)) {
+      window.addEventListener("click", this.onClick, false);
+    } else {
+      window.addEventListener("touchstart", this.onClick, false);
+    }
+  }
+  /**
+   * Removes all DOM events listeners
+   */
+  private removeEventListeners() {
+    window.removeEventListener("resize", this.onResize, false);
+    window.removeEventListener("scroll", this.onResize, false);
+    window.removeEventListener("keyup", this.onKeyUp, false);
+
+    window.removeEventListener("click", this.onClick, false);
+    window.removeEventListener("touchstart", this.onClick, false);
+  }
+
+  /**
+   * Removes the popover if clicked outside the highlighted element
+   * or outside the
+   */
+  private onClick(e: MouseEvent | TouchEvent) {
+    if (!this.overlay.currentHighlightedElement) {
+      return;
+    }
+    assertIsElement(e.target);
+
+    const highlightedElement = this.overlay.currentHighlightedElement;
+    const clickedHighlightedElement = highlightedElement
+      .getElement()
+      .contains(e.target);
+
+    const popoverElements = highlightedElement
+      .getPopover()
+      ?.getPopoverElements();
+    const clickedPopover = popoverElements?.popoverWrapper.contains(e.target);
+
+    const clickedOverlay = this.overlay.getOverlayElement()?.contains(e.target);
+
+    const clickedUnknown =
+      !clickedPopover && !clickedOverlay && !clickedHighlightedElement;
+
+    // with strict click handling any click that is not the active element (or a UI element of boarding.js) is ignored
+    if (this.options.strictClickHandling && clickedUnknown) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+      return;
+    }
+
+    // Perform the 'Next' operation when clicked outside the highlighted element
+    if (clickedOverlay && this.options.overlayClickNext) {
+      this.handleNext();
+      return;
+    }
+    // Remove the overlay If clicked outside the highlighted element
+    if (clickedOverlay && this.options.allowClose) {
+      this.reset();
+      return;
+    }
+
+    if (popoverElements) {
+      const nextClicked = e.target.contains(popoverElements.popoverNextBtn);
+      const prevClicked = e.target.contains(popoverElements.popoverPrevBtn);
+      const closeClicked = e.target.contains(popoverElements.popoverCloseBtn);
+
+      if (closeClicked) {
+        this.reset();
+        return;
+      }
+
+      if (nextClicked) {
+        this.handleNext();
+      } else if (prevClicked) {
+        this.handlePrevious();
+      }
+    }
+  }
+
+  /**
+   * Handler for the onResize DOM event
+   * Makes sure highlighted element stays at valid position
+   */
+  private onResize() {
+    if (!this.isActivated) {
+      return;
+    }
+
+    this.refresh();
+  }
+
+  /**
+   * Clears the overlay on escape key process
+   */
+  private onKeyUp(event: KeyboardEvent) {
+    // Ignore if driver is not active or keyboard control is disabled
+    if (!this.isActivated || !this.options.keyboardControl) {
+      return;
+    }
+
+    // If escape was pressed and it is allowed to click outside to close -> reset
+    if (event.key === "Escape" && this.options.allowClose) {
+      this.reset();
+      return;
+    }
+
+    // Ignore if there is no highlighted element or there is a highlighted element
+    // without popover
+    // TODO: or if the popover does not allow buttons
+    const highlightedElement = this.getHighlightedElement();
+    if (!highlightedElement || !highlightedElement.getPopover()) {
+      return;
+    }
+
+    if (event.key === "ArrowRight") {
+      this.handleNext();
+    } else if (event.key === "ArrowLeft") {
+      this.handlePrevious();
+    }
+  }
+
+  /**
+   * Handles the internal "move to next" event
+   */
+  private handleNext() {
+    this.currentMovePrevented = false;
+
+    // Call the bound `onNext` handler if available
+    const currentStep = this.steps[this.currentStep];
+
+    currentStep?.onNext();
+
+    if (this.currentMovePrevented) {
+      return;
+    }
+
+    this.moveNext();
+  }
+
+  /**
+   * Handles the internal "move to previous" event
+   */
+  private handlePrevious() {
+    this.currentMovePrevented = false;
+
+    // Call the bound `onPrevious` handler if available
+    const currentStep = this.steps[this.currentStep];
+    currentStep?.onPrevious();
+
+    if (this.currentMovePrevented) {
+      return;
+    }
+
+    this.movePrevious();
   }
 
   /**
@@ -397,41 +448,6 @@ class Boarding {
       options: elementOptions,
       popover,
     });
-  }
-
-  /**
-   * Initiates highlighting steps from first step
-   * @param index at which highlight is to be started
-   */
-  public start(index = 0) {
-    if (!this.steps || this.steps.length === 0) {
-      throw new Error("There are no steps defined to iterate");
-    }
-
-    this.isActivated = true;
-    this.currentStep = index;
-    this.overlay.highlight(this.steps[index]);
-  }
-
-  /**
-   * Highlights the given element
-   * @param selector Query selector, htmlelement or a step definition
-   */
-  public highlight(selector: BoardingStepDefinition | string | HTMLElement) {
-    this.isActivated = true;
-
-    // convert argument to step definition
-    const stepDefinition: BoardingStepDefinition =
-      typeof selector === "object" && "element" in selector
-        ? selector
-        : { element: selector };
-
-    const element = this.prepareElementFromStep(stepDefinition);
-    if (!element) {
-      return;
-    }
-
-    this.overlay.highlight(element);
   }
 }
 

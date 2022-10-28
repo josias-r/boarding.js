@@ -35,6 +35,11 @@ export interface BoardingOptions {
    */
   keyboardControl: boolean;
   /**
+   * Prevent clicking ANY element except currently active element (or its children)
+   * @default true
+   */
+  strictClickHandling: boolean;
+  /**
    * Clicking outside the highlighted element should move next
    * @default false
    */
