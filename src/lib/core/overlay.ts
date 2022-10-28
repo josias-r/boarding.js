@@ -133,6 +133,7 @@ class Overlay {
     if (!this.currentHighlightedElement) {
       return;
     }
+    this.currentHighlightedElement.getPopover()?.refresh();
     this.updateCutout(this.currentHighlightedElement);
   }
 
