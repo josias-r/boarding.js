@@ -1,4 +1,4 @@
-<h1 align="center"><img height="150" src="./public/boarding.svg" /><br> Boarding.js</h1>
+<h1 align="center"><img height="150" src="./public/images/boarding.svg" /><br> Boarding.js</h1>
 
 <p align="center">
   <a href="https://github.com/josias-r/boarding.js/blob/master/license">
