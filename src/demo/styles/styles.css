@@ -1,0 +1,247 @@
+/*============================================= = Generic styling = =============================================*/
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+}
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+html,
+body {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+body {
+  padding-top: 1px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 16px;
+  line-height: 1.4;
+  color: white;
+  background-color: #2e2e30;
+  overflow-x: hidden;
+}
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+p {
+  margin-top: 0;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+hr,
+.hr {
+  display: block;
+  margin: 30px 0;
+  border: 0;
+  border-bottom: 1px solid #eaeaea;
+  height: 1px;
+}
+hr.hr__fancy,
+.hr.hr__fancy {
+  background: url("./images/separator.png") repeat-y;
+  height: 5px;
+  background-size: cover;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+a,
+a:visited,
+a:focus {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+.form-control {
+  display: block;
+  width: 100%;
+  background-color: #f9f9f9;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 2.5px;
+  font-size: 14px;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  margin-bottom: 24px;
+}
+h1,
+.h1 {
+  font-size: 32px;
+}
+h2,
+.h2 {
+  font-size: 24px;
+}
+h3,
+.h3 {
+  font-size: 20px;
+}
+h4,
+.h4 {
+  font-size: 18px;
+}
+h5,
+.h5 {
+  font-size: 16px;
+}
+h6,
+.h6 {
+  font-size: 14px;
+}
+ul li,
+ol li {
+  list-style-type: none;
+  line-height: 1.5;
+  margin-bottom: 3px;
+}
+blockquote {
+  background: #f5f3f1;
+  padding: 10px;
+  margin-bottom: 35px;
+  border-radius: 10px;
+}
+.top-20 {
+  margin-top: 20px;
+}
+.top-30 {
+  margin-top: 30px;
+}
+.zero-bottom {
+  margin-bottom: 0;
+}
+.zero-top {
+  margin-top: 0;
+}
+.text-center {
+  text-align: center;
+}
+/*===== End of Section comment block ======*/
+img.emoji {
+  height: 1em;
+  width: 1em;
+  margin: 0 0.05em 0 0.1em;
+  vertical-align: -0.1em;
+}
+.brand {
+  position: relative;
+}
+.brand img {
+  height: 67px;
+  position: relative;
+  top: 10px;
+}
+.page-wrap {
+  max-width: 550px;
+  margin: 50px auto;
+  background: white;
+  padding: 10px 30px;
+  border-radius: 5px;
+  color: #1f1f1f;
+}
+.page-wrap a,
+.page-wrap a:visited,
+.page-wrap a:focus {
+  color: #1f1f1f;
+  text-decoration: underline;
+}
+.page-wrap a.btn__dark {
+  text-decoration: none;
+  color: #fff;
+  background-color: #f44336;
+  padding: 0 18px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  font-weight: 500;
+  width: 195px;
+  font-size: 17px;
+  display: inline-block;
+  margin-top: 2px;
+}
+.page-wrap a.btn__run-demo {
+  text-decoration: none;
+  background: #f54336;
+  padding: 5px;
+  border-radius: 20px;
+  color: white;
+  display: block;
+  margin: 15px 0 10px;
+  text-align: center;
+}
+section {
+  margin-bottom: 30px;
+}
+.section__header {
+  margin: 10px 0 20px;
+  text-align: center;
+  display: block;
+  padding: 10px;
+}
+.section__header h1 {
+  font-size: 55px;
+}
+.section__header h1 .emoji {
+  font-size: 45px;
+  top: -4px;
+  margin-right: 3px;
+  position: relative;
+}
+.section__header .tagline {
+  max-width: 450px;
+  margin: 0 auto 25px;
+  text-align: center;
+}
+.section__examples .section__example {
+  margin-bottom: 20px;
+}
+.section__examples #creation-input {
+  margin-top: 20px;
+}
+.section__examples input {
+  padding: 10px;
+  background-color: #fafbfc;
+  border: 3px solid #e1e4e8;
+  border-radius: 3px;
+  box-shadow: inset 0 0 10px rgba(27, 31, 35, 0.05);
+  margin-bottom: 0;
+  margin-top: 7px;
+}
+.position-btns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 8px;
+  text-align: center;
+}
+.position-btns #position-btn-mid-center {
+  grid-column: 2 / span 1;
+}
+.position-btns a {
+  text-decoration: none;
+  font-size: 13px;
+  padding: 10px 15px;
+  background: #f54336;
+  color: white !important;
+  border-radius: 6px;
+}
