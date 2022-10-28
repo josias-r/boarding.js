@@ -408,9 +408,6 @@ class Boarding {
     allSteps: BoardingSteps = [],
     index = 0
   ) {
-    const elementOptions: Omit<BoardingStepDefinition, "element"> &
-      BoardingOptions = { ...this.options, ...currentStep };
-
     // If the given element is a query selector or a DOM element?
     const domElement =
       typeof currentStep.element === "string"
@@ -464,7 +461,14 @@ class Boarding {
 
     return new HighlightElement({
       highlightDomElement: domElement,
-      options: elementOptions,
+      options: {
+        scrollIntoViewOptions: this.options.scrollIntoViewOptions,
+        onHighlightStarted: this.options.onHighlightStarted,
+        onHighlighted: this.options.onHighlighted,
+        onDeselected: this.options.onDeselected,
+        onNext: currentStep.onNext,
+        onPrevious: currentStep.onPrevious,
+      },
       popover,
     });
   }

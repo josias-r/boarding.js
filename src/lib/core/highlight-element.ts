@@ -1,7 +1,9 @@
+import { BoardingOptions } from "../boarding-types";
 import { bringInView } from "../common/utils";
 import Popover, { Position } from "./popover";
 
-export interface HighlightElementOptions {
+export interface HighlightElementOptions
+  extends Pick<BoardingOptions, "scrollIntoViewOptions"> {
   /**
    * Callback to be called when element is about to be highlighted
    */
@@ -22,7 +24,6 @@ export interface HighlightElementOptions {
    * Is called when the previous element is about to be highlighted
    */
   onPrevious?: (element: HighlightElement) => void;
-  scrollIntoViewOptions?: ScrollIntoViewOptions;
 }
 
 /**

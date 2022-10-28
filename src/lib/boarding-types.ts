@@ -4,7 +4,11 @@ import { PopoverHybridOptions, PopoverUserOptions } from "./core/popover";
 
 export interface BoardingOptions
   extends Pick<OverlayOptions, "onReset">,
-    Partial<PopoverHybridOptions> {
+    Partial<PopoverHybridOptions>,
+    Pick<
+      HighlightElementOptions,
+      "onHighlightStarted" | "onHighlighted" | "onDeselected"
+    > {
   /**
    * // TODO: move to overlay
    * Opacity for the overlay
