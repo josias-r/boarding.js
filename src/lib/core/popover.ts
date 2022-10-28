@@ -12,7 +12,7 @@ import {
 } from "../common/utils";
 import HighlightElement from "./highlight-element";
 import { OverlayOptions } from "./overlay";
-import SmartPosition from "./smart-position";
+import SmartPosition, { Alignments, Sides } from "./smart-position";
 
 // TODO: move interface to other file?
 export interface Position {
@@ -77,28 +77,14 @@ interface PopoverOptions
    */
   description: string;
   /**
-   * Position for the popover on element
-   * @default "auto"
+   * Preffered side to render the popover
    */
-  position:
-    | "left"
-    | "left-top"
-    | "left-center"
-    | "left-bottom"
-    | "right"
-    | "right-top"
-    | "right-center"
-    | "right-bottom"
-    | "top"
-    | "top-left"
-    | "top-center"
-    | "top-right"
-    | "bottom"
-    | "bottom-left"
-    | "bottom-center"
-    | "bottom-right"
-    | "mid-center"
-    | "auto";
+  prefferedSide?: Sides;
+  /**
+   * Alignment for the popover
+   * @default "start"
+   */
+  alignment: Alignments;
   /**
    * Total number of elements with popovers
    * @default 0
@@ -121,7 +107,7 @@ interface PopoverOptions
 type PopoverOptionsWithoutDefaults = PartialSome<
   PopoverOptions,
   | "offset"
-  | "position"
+  | "alignment"
   | "showButtons"
   | "doneBtnText"
   | "closeBtnText"
@@ -155,7 +141,7 @@ export default class Popover {
   constructor({
     showButtons = true,
     offset = 0,
-    position = "auto",
+    alignment = "start",
     closeBtnText = "Close",
     doneBtnText = "Done",
     startBtnText = "Next &rarr;",
@@ -166,7 +152,7 @@ export default class Popover {
     this.options = {
       showButtons,
       offset,
-      position,
+      alignment,
       closeBtnText,
       doneBtnText,
       startBtnText,
@@ -207,12 +193,7 @@ export default class Popover {
 
     this.renderFooter();
 
-    new SmartPosition(
-      highlightElement.getElement(),
-      this,
-      this.options.padding + 10
-    ).setBestPosition("center");
-
+    this.setPosition();
     bringInView(
       this.popover.popoverWrapper,
       this.options.scrollIntoViewOptions
@@ -227,11 +208,7 @@ export default class Popover {
       return;
     }
 
-    new SmartPosition(
-      this.highlightElement.getElement(),
-      this,
-      this.options.padding + 10
-    ).setBestPosition("center");
+    this.setPosition();
   }
 
   /**
@@ -251,6 +228,19 @@ export default class Popover {
     this.popover.popoverWrapper.style.top = "0";
     this.popover.popoverWrapper.style.bottom = "";
     this.popover.popoverWrapper.style.right = "";
+  }
+
+  /**
+   * Updates the position using SmartPosition
+   */
+  private setPosition() {
+    assertVarIsNotFalsy(this.highlightElement);
+
+    new SmartPosition(
+      this.highlightElement.getElement(),
+      this,
+      this.options.padding + 10
+    ).setBestPosition(this.options.alignment, this.options.prefferedSide);
   }
 
   /**

@@ -447,7 +447,8 @@ class Boarding {
         // popover options
         title: currentStep.popover.title,
         description: currentStep.popover.description,
-        position: currentStep.popover.position,
+        prefferedSide: currentStep.popover.prefferedSide,
+        alignment: currentStep.popover.alignment,
         // hybrid options
         offset: currentStep.popover.offset || this.options.offset,
         showButtons:

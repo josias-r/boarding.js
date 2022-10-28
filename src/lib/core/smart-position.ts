@@ -3,8 +3,8 @@ import Popover from "./popover";
 
 const sideHierarchy = ["top", "bottom", "left", "right"] as const;
 
-type Sides = typeof sideHierarchy[number];
-type Alignments = "start" | "end" | "center";
+export type Sides = typeof sideHierarchy[number];
+export type Alignments = "start" | "end" | "center";
 
 interface SideCheckResult {
   side: Sides;
