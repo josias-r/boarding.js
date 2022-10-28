@@ -120,7 +120,7 @@ class Boarding {
 
     assertIsHtmlElement(e.target);
     const clickedHighlightedElement = highlightedElement
-      ?.getDomElement()
+      ?.getElement()
       .contains(e.target);
     const clickedPopover = popover && popover.contains(e.target);
 
@@ -183,21 +183,22 @@ class Boarding {
    * Clears the overlay on escape key process
    */
   private onKeyUp(event: KeyboardEvent) {
-    // If driver is not active or keyboard control is disabled
+    // Ignore if driver is not active or keyboard control is disabled
     if (!this.isActivated || !this.options.keyboardControl) {
       return;
     }
 
-    // If escape was pressed and it is allowed to click outside to close
+    // If escape was pressed and it is allowed to click outside to close -> reset
     if (event.keyCode === ESC_KEY_CODE && this.options.allowClose) {
       this.reset();
       return;
     }
 
-    // If there is no highlighted element or there is a highlighted element
-    // without popover or if the popover does not allow buttons - ignore
+    // Ignore if there is no highlighted element or there is a highlighted element
+    // without popover
+    // TODO: or if the popover does not allow buttons
     const highlightedElement = this.getHighlightedElement();
-    if (!highlightedElement || !highlightedElement.popover) {
+    if (!highlightedElement || !highlightedElement.getPopover()) {
       return;
     }
 
@@ -239,9 +240,8 @@ class Boarding {
 
     // Call the bound `onNext` handler if available
     const currentStep = this.steps[this.currentStep];
-    if (currentStep && currentStep.options && currentStep.options.onNext) {
-      currentStep.options.onNext(currentStep);
-    }
+
+    currentStep?.onNext();
 
     if (this.currentMovePrevented) {
       return;
@@ -258,9 +258,7 @@ class Boarding {
 
     // Call the bound `onPrevious` handler if available
     const currentStep = this.steps[this.currentStep];
-    if (currentStep && currentStep.options && currentStep.options.onPrevious) {
-      currentStep.options.onPrevious(currentStep);
-    }
+    currentStep?.onPrevious();
 
     if (this.currentMovePrevented) {
       return;
@@ -398,7 +396,6 @@ class Boarding {
       highlightDomElement: domElement,
       options: elementOptions,
       popover,
-      overlay: this.overlay,
     });
   }
 

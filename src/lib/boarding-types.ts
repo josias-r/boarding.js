@@ -68,30 +68,6 @@ export interface BoardingOptions {
    * className for the driver popovers
    */
   className?: string;
-  /**
-   * Callback to be called when element is about to be highlighted
-   */
-  onHighlightStarted?: (element: HighlightElement) => void;
-  /**
-   * Callback to be called when element has been highlighted
-   */
-  onHighlighted?: (element: HighlightElement) => void;
-  /**
-   * Callback to be called when element has been deselected
-   */
-  onDeselected?: (element: HighlightElement) => void;
-  /**
-   * Is called when the overlay is about to reset
-   */
-  onReset?: (element: HighlightElement) => void;
-  /**
-   * Is called when the next element is about to be highlighted
-   */
-  onNext?: (element: HighlightElement) => void;
-  /**
-   * Is called when the previous element is about to be highlighted
-   */
-  onPrevious?: (element: HighlightElement) => void;
 }
 
 export type BoardingSteps = HighlightElement[];

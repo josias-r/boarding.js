@@ -9,6 +9,9 @@ import HighlightElement from "./highlight-element";
 
 interface OverlayOptions {
   padding: number;
+  /**
+   * Is called when the overlay is about to reset
+   */
   onReset?: (element: HighlightElement) => void;
   animate: boolean;
 }
@@ -158,7 +161,7 @@ class Overlay {
     this.currentHighlightedElement = highlightElement;
 
     const boundingClientRect = highlightElement
-      .getDomElement()
+      .getElement()
       .getBoundingClientRect();
 
     const cutoutBoxSettings: CutoutDefinition = {

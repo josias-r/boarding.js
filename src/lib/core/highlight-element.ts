@@ -1,16 +1,29 @@
-import { ANIMATION_DURATION_MS } from "../common/constants";
 import { bringInView } from "../common/utils";
-import Overlay from "./overlay";
 import Popover, { Position } from "./popover";
 
 export interface HighlightElementOptions {
-  onDeselected?: (element: HighlightElement) => void;
-  onNext?: (element: HighlightElement) => void;
-  onPrevious?: (element: HighlightElement) => void;
+  /**
+   * Callback to be called when element is about to be highlighted
+   */
   onHighlightStarted?: (element: HighlightElement) => void;
+  /**
+   * Callback to be called when element has been highlighted
+   */
   onHighlighted?: (element: HighlightElement) => void;
+  /**
+   * Callback to be called when element has been deselected
+   */
+  onDeselected?: (element: HighlightElement) => void;
+  /**
+   * Is called when the next element is about to be highlighted
+   */
+  onNext?: (element: HighlightElement) => void;
+  /**
+   * Is called when the previous element is about to be highlighted
+   */
+  onPrevious?: (element: HighlightElement) => void;
   scrollIntoViewOptions?: ScrollIntoViewOptions;
-  animate?: boolean;
+  // animate?: boolean;
 }
 
 /**
@@ -18,28 +31,21 @@ export interface HighlightElementOptions {
  * with the functionality necessary
  */
 class HighlightElement {
-  public highlightDomElement: HTMLElement;
+  private options: HighlightElementOptions;
+  private highlightDomElement: HTMLElement;
+  private popover: Popover | null;
 
-  public options: HighlightElementOptions;
-  public popover: Popover | null;
-
-  private overlay: Overlay;
-
-  private animationTimeout?: number;
   constructor({
-    highlightDomElement,
     options,
+    highlightDomElement,
     popover,
-    overlay,
   }: {
-    highlightDomElement: HTMLElement;
     options: HighlightElementOptions;
+    highlightDomElement: HTMLElement;
     popover: Popover | null;
-    overlay: Overlay;
   }) {
     this.highlightDomElement = highlightDomElement;
     this.options = options;
-    this.overlay = overlay;
     this.popover = popover;
   }
 
@@ -48,26 +54,35 @@ class HighlightElement {
    * we need to draw
    */
   public getCalculatedPosition(): Position {
-    const body = document.body;
-    const documentElement = document.documentElement;
-
-    const scrollTop =
-      window.scrollY || documentElement.scrollTop || body.scrollTop;
-    const scrollLeft =
-      window.scrollX || documentElement.scrollLeft || body.scrollLeft;
     const elementRect = this.highlightDomElement.getBoundingClientRect();
 
-    // TODO: use element rect only
     return {
-      top: elementRect.top + scrollTop,
-      left: elementRect.left + scrollLeft,
-      right: elementRect.left + scrollLeft + elementRect.width,
-      bottom: elementRect.top + scrollTop + elementRect.height,
+      top: elementRect.top,
+      left: elementRect.left,
+      right: elementRect.left + elementRect.width,
+      bottom: elementRect.top + elementRect.height,
     };
   }
 
   /**
-   * Gets the popover for the current element if any
+   * Checks if the given element has the same underlying DOM element as the current one
+   */
+  public isSame(element?: HighlightElement | null) {
+    if (!element || !element.highlightDomElement) {
+      return false;
+    }
+
+    return element.highlightDomElement === this.highlightDomElement;
+  }
+
+  /**
+   * Gets the DOM Element behind that this class resolves around
+   */
+  public getElement() {
+    return this.highlightDomElement;
+  }
+  /**
+   * Gets the popover that is connected to the element
    */
   public getPopover() {
     return this.popover;
@@ -78,27 +93,13 @@ class HighlightElement {
    * i.e. when moving the focus to next element of closing
    */
   public onDeselected() {
-    this.hidePopover();
+    this.popover?.hide();
 
-    // this.removeHighlightClasses();
+    // TODO: animation handling
+    // // If there was any animation in progress, cancel that
+    // window.clearTimeout(this.animationTimeout);
 
-    // If there was any animation in progress, cancel that
-    window.clearTimeout(this.animationTimeout);
-
-    if (this.options.onDeselected) {
-      this.options.onDeselected(this);
-    }
-  }
-
-  /**
-   * Checks if the given element is same as the current element
-   */
-  public isSame(element?: HighlightElement | null) {
-    if (!element || !element.highlightDomElement) {
-      return false;
-    }
-
-    return element.highlightDomElement === this.highlightDomElement;
+    this.options.onDeselected?.(this);
   }
 
   /**
@@ -117,50 +118,22 @@ class HighlightElement {
     // Show the popover once the item has been
     // brought in the view, this would allow us to handle
     // the cases where the container has scroll overflow
-    this.showPopover();
+    this.popover?.show(this);
 
     this.options.onHighlighted?.(this);
   }
 
   /**
-   * Gets the DOM Element behind that this class resolves around
+   * Is called when the element is about to be highlighted
    */
-  public getDomElement() {
-    return this.highlightDomElement;
+  public onNext() {
+    this.options.onNext?.(this);
   }
-
   /**
-   * Hides the popover if possible
+   * Is called when the element is about to be highlighted
    */
-  public hidePopover() {
-    if (!this.popover) {
-      return;
-    }
-
-    this.popover.hide();
-  }
-
-  /**
-   * Shows the popover on the current element
-   */
-  public showPopover() {
-    if (!this.popover) {
-      return;
-    }
-
-    const showAtPosition = this.getCalculatedPosition();
-
-    // For first highlight, show it immediately because there won't be any animation
-    let showAfterMs = ANIMATION_DURATION_MS;
-    // If animation is disabled or  if it is the first display, show it immediately
-    if (!this.options.animate || !this.overlay.currentHighlightedElement) {
-      showAfterMs = 0;
-    }
-
-    // TODO: remove timeout and handle with CSS
-    this.animationTimeout = window.setTimeout(() => {
-      this.popover?.show(showAtPosition);
-    }, showAfterMs);
+  public onPrevious() {
+    this.options.onPrevious?.(this);
   }
 }
 
