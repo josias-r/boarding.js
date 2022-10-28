@@ -95,7 +95,7 @@ export interface BoardingOptions {
 }
 
 export type BoardingSteps = HighlightElement[];
-export interface PureBoardingStepDefinition {
+export interface BoardingStepDefinition {
   /**
    * Query selector representing the DOM Element
    */
@@ -113,7 +113,3 @@ export interface PureBoardingStepDefinition {
    */
   onPrevious?: (element: HighlightElement) => void;
 }
-export type BoardingStepDefinition =
-  | string
-  | HTMLElement
-  | PureBoardingStepDefinition;

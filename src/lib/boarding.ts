@@ -21,7 +21,6 @@ import {
   BoardingOptions,
   BoardingStepDefinition,
   BoardingSteps,
-  PureBoardingStepDefinition,
 } from "./boarding-types";
 
 /**
@@ -356,35 +355,16 @@ class Boarding {
     allSteps: BoardingStepDefinition[] = [],
     index = 0
   ) {
-    let elementOptions: Omit<PureBoardingStepDefinition, "element"> &
-      BoardingOptions = {
-      ...this.options,
-    };
-    let domElementOrSelector: string | HTMLElement | undefined =
-      typeof currentStep === "string" ? currentStep : undefined;
-
-    if (
-      typeof currentStep !== "string" &&
-      !("nodeType" in currentStep) &&
-      !currentStep.element
-    ) {
-      throw new Error(`Element is required in step ${index}`);
-    }
-
-    // If the `currentStep` is step definition
-    // then grab the options and element from the definition
-    if (typeof currentStep !== "string" && !("nodeType" in currentStep)) {
-      domElementOrSelector = currentStep.element;
-      elementOptions = { ...this.options, ...currentStep };
-    }
+    const elementOptions: Omit<BoardingStepDefinition, "element"> &
+      BoardingOptions = { ...this.options, ...currentStep };
 
     // If the given element is a query selector or a DOM element?
     const domElement =
-      typeof domElementOrSelector === "string"
-        ? (document.querySelector(domElementOrSelector) as HTMLElement) // TODO: "as" alternative?
-        : domElementOrSelector;
+      typeof currentStep.element === "string"
+        ? (document.querySelector(currentStep.element) as HTMLElement | null) // TODO: "as" alternative?
+        : currentStep.element;
     if (!domElement) {
-      console.warn(`Element to highlight ${domElementOrSelector} not found`);
+      console.warn(`Element to highlight ${currentStep.element} not found`);
       return null;
     }
 
@@ -436,10 +416,16 @@ class Boarding {
    * Highlights the given element
    * @param {string|{element: string, popover: {}}} selector Query selector or a step definition
    */
-  public highlight(selector: BoardingStepDefinition) {
+  public highlight(selector: BoardingStepDefinition | string | HTMLElement) {
     this.isActivated = true;
 
-    const element = this.prepareElementFromStep(selector);
+    // convert argument to step definition
+    const stepDefinition: BoardingStepDefinition =
+      typeof selector === "object" && "element" in selector
+        ? selector
+        : { element: selector };
+
+    const element = this.prepareElementFromStep(stepDefinition);
     if (!element) {
       return;
     }
