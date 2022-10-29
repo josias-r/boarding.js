@@ -14,10 +14,6 @@
       content="A light-weight, no-dependency, vanilla JavaScript library to drive the user's focus across the page"
     />
     <link
-      rel="stylesheet"
-      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai.min.css"
-    />
-    <link
       rel="apple-touch-icon"
       sizes="180x180"
       href="/favicons/apple-touch-icon.png"
@@ -155,8 +151,8 @@
             >Show Demo</a
           >
           <pre><code class="javascript">const boarding = new Boarding();
-    boarding.highlight('#create-post');
-    </code></pre>
+boarding.highlight('#create-post');
+</code></pre>
         </div>
 
         <hr class="hr__fancy" />
@@ -167,13 +163,13 @@
             highlighting an element when user is interacting with it
           </p>
           <pre><code class="javascript">const focusBoarding = new Boarding();
-    
-    // Highlight the section on focus
-    document.getElementById('creation-input')
-      .addEventListener('focus', (e) =&gt; {
-        focusBoarding.focus('#creation-input');
-      });
-    </code></pre>
+
+// Highlight the section on focus
+document.getElementById('creation-input')
+  .addEventListener('focus', (e) =&gt; {
+    focusBoarding.focus('#creation-input');
+  });
+</code></pre>
           <p class="top-20">
             Focus any of the inputs and see how it moves the highlight from one
             element to the other
@@ -223,14 +219,14 @@
             >Show Demo</a
           >
           <pre><code class="javascript">const boarding = new Boarding();
-    boarding.highlight({
-      element: '#some-element',
-      popover: {
-        title: 'Title for the Popover',
-        description: 'Description for it',
-      }
-    });
-    </code></pre>
+boarding.highlight({
+  element: '#some-element',
+  popover: {
+    title: 'Title for the Popover',
+    description: 'Description for it',
+  }
+});
+</code></pre>
           <p class="top-20">
             You can modify the behavior of this popover also by a certain set of
             options. More on it below.
@@ -257,18 +253,18 @@
             >Show Demo</a
           >
           <pre><code class="javascript">const boarding = new Boarding();
-    boarding.highlight({
-      element: '#some-element',
-      popover: {
-        title: 'Title for the Popover',
-        description: 'Description for it',
-        // position can be left, left-center, left-bottom, top,
-        // top-center, top-right, right, right-center, right-bottom,
-        // bottom, bottom-center, bottom-right, mid-center
-        position: 'left',
-      }
-    });
-    </code></pre>
+boarding.highlight({
+  element: '#some-element',
+  popover: {
+    title: 'Title for the Popover',
+    description: 'Description for it',
+    // position can be left, left-center, left-bottom, top,
+    // top-center, top-right, right, right-center, right-bottom,
+    // bottom, bottom-center, bottom-right, mid-center
+    position: 'left',
+  }
+});
+</code></pre>
         </div>
         <div class="section__example">
           <div class="top-90 position-btns" id="position-btns">
@@ -329,14 +325,14 @@
             >Show Demo</a
           >
           <pre><code class="javascript">const boarding = new Boarding();
-    boarding.highlight({
-      element: '#some-element',
-      popover: {
-        title: '&lt;em&gt;An italicized title&lt;/em&gt;',
-        description: 'Description may also contain &lt;strong&gt;HTML&lt;/strong&gt;'
-      }
-    });
-    </code></pre>
+boarding.highlight({
+  element: '#some-element',
+  popover: {
+    title: '&lt;em&gt;An italicized title&lt;/em&gt;',
+    description: 'Description may also contain &lt;strong&gt;HTML&lt;/strong&gt;'
+  }
+});
+</code></pre>
         </div>
 
         <p class="top-20">And of course it can be any valid HTML.</p>
@@ -352,17 +348,17 @@
             >Show Demo</a
           >
           <pre><code class="javascript">const boarding = new Boarding({
-        allowClose: false,
-    });
-    
-    boarding.highlight({
-      element: '#some-element',
-      popover: {
-        title: '&lt;em&gt;An italicized title&lt;/em&gt;',
-        description: 'Description may also contain &lt;strong&gt;HTML&lt;/strong&gt;'
-      }
-    });
-    </code></pre>
+    allowClose: false,
+});
+
+boarding.highlight({
+  element: '#some-element',
+  popover: {
+    title: '&lt;em&gt;An italicized title&lt;/em&gt;',
+    description: 'Description may also contain &lt;strong&gt;HTML&lt;/strong&gt;'
+  }
+});
+</code></pre>
           <p class="top-20">
             If you use this option, for multi-step boarding, it would close
             after you are done with the popover or you can close it
@@ -392,37 +388,37 @@
           >
         </div>
         <pre><code class="javascript">const boarding = new Boarding();
-    // Define the steps for introduction
-    boarding.defineSteps([
-      {
-        element: '#first-element-introduction',
-        popover: {
-          className: 'first-step-popover-class',
-          title: 'Title on Popover',
-          description: 'Body of the popover',
-          position: 'left'
-        }
-      },
-      {
-        element: '#second-element-introduction',
-        popover: {
-          title: 'Title on Popover',
-          description: 'Body of the popover',
-          position: 'top'
-        }
-      },
-      {
-        element: '#third-element-introduction',
-        popover: {
-          title: 'Title on Popover',
-          description: 'Body of the popover',
-          position: 'right'
-        }
-      },
-    ]);
-    // Start the introduction
-    boarding.start();
-    </code></pre>
+// Define the steps for introduction
+boarding.defineSteps([
+  {
+    element: '#first-element-introduction',
+    popover: {
+      className: 'first-step-popover-class',
+      title: 'Title on Popover',
+      description: 'Body of the popover',
+      position: 'left'
+    }
+  },
+  {
+    element: '#second-element-introduction',
+    popover: {
+      title: 'Title on Popover',
+      description: 'Body of the popover',
+      position: 'top'
+    }
+  },
+  {
+    element: '#third-element-introduction',
+    popover: {
+      title: 'Title on Popover',
+      description: 'Body of the popover',
+      position: 'right'
+    }
+  },
+]);
+// Start the introduction
+boarding.start();
+</code></pre>
         <p class="top-20">
           This is just a quick example for the feature introduction. For a
           richer one, please have a look at the
@@ -448,18 +444,18 @@
             >Show Demo</a
           >
           <pre><code class="javascript">const boarding = new Boarding({
-        opacity: 0,
-    });
-    
-    boarding.highlight({
-      element: '#run-element-without-popover',
-      popover: {
-        title: 'Title for the Popover',
-        description: 'Description for it',
-        position: 'top', // can be `top`, `left`, `right`, `bottom`
-      }
-    });
-    </code></pre>
+    opacity: 0,
+});
+
+boarding.highlight({
+  element: '#run-element-without-popover',
+  popover: {
+    title: 'Title for the Popover',
+    description: 'Description for it',
+    position: 'top', // can be `top`, `left`, `right`, `bottom`
+  }
+});
+</code></pre>
           <p class="top-20">
             ..and you can do the same for the feature introductions
           </p>
@@ -478,27 +474,27 @@
           <h4>Boarding Definition</h4>
           <p>Here are the options that Boarding understands</p>
           <pre><code class="javascript">const boarding = new Boarding({
-      className: 'scoped-class', // className to wrap boarding.js popover
-      animate: true,  // Animate while changing highlighted element
-      opacity: 0.75,  // Background opacity (0 means only popovers and without overlay)
-      padding: 10,    // Distance of element from around the edges
-      allowClose: true, // Whether clicking on overlay should close or not
-      overlayClickNext: false, // Should it move to next step on overlay click
-      doneBtnText: 'Done', // Text on the final button
-      closeBtnText: 'Close', // Text on the close button for this step
-      nextBtnText: 'Next', // Next button text for this step
-      prevBtnText: 'Previous', // Previous button text for this step
-      showButtons: false, // Do not show control buttons in footer
-      keyboardControl: true, // Allow controlling through keyboard (escape to close, arrow keys to move)
-      scrollIntoViewOptions: {}, // We use `scrollIntoView()` when possible, pass here the options for it if you want any
-      onHighlightStarted: (Element) {}, // Called when element is about to be highlighted
-      onHighlighted: (Element) {}, // Called when element is fully highlighted
-      onDeselected: (Element) {}, // Called when element has been deselected
-      onReset: (Element) {},        // Called when overlay is about to be cleared
-      onNext: (Element) =&gt; {},      // Called when moving to next step on any step
-      onPrevious: (Element) =&gt; {},  // Called when moving to next step on any step
-    });
-    </code></pre>
+  className: 'scoped-class', // className to wrap boarding.js popover
+  animate: true,  // Animate while changing highlighted element
+  opacity: 0.75,  // Background opacity (0 means only popovers and without overlay)
+  padding: 10,    // Distance of element from around the edges
+  allowClose: true, // Whether clicking on overlay should close or not
+  overlayClickNext: false, // Should it move to next step on overlay click
+  doneBtnText: 'Done', // Text on the final button
+  closeBtnText: 'Close', // Text on the close button for this step
+  nextBtnText: 'Next', // Next button text for this step
+  prevBtnText: 'Previous', // Previous button text for this step
+  showButtons: false, // Do not show control buttons in footer
+  keyboardControl: true, // Allow controlling through keyboard (escape to close, arrow keys to move)
+  scrollIntoViewOptions: {}, // We use `scrollIntoView()` when possible, pass here the options for it if you want any
+  onHighlightStarted: (Element) {}, // Called when element is about to be highlighted
+  onHighlighted: (Element) {}, // Called when element is fully highlighted
+  onDeselected: (Element) {}, // Called when element has been deselected
+  onReset: (Element) {},        // Called when overlay is about to be cleared
+  onNext: (Element) =&gt; {},      // Called when moving to next step on any step
+  onPrevious: (Element) =&gt; {},  // Called when moving to next step on any step
+});
+</code></pre>
         </div>
         <p class="top-20">
           Note that all the button options that you provide in the boarding
@@ -513,47 +509,47 @@
             <code>highlight</code> method
           </p>
           <pre><code class="javascript">const stepDefinition = {
-      element: '#some-item',        // Query selector string or Node to be highlighted
-      popover: {                    // There will be no popover if empty or not given
-        className: 'popover-class', // className to wrap this specific step popover in addition to the general className in Boarding options
-        title: 'Title',             // Title on the popover
-        description: 'Description', // Body of the popover
-        showButtons: false,         // Do not show control buttons in footer
-        closeBtnText: 'Close',      // Text on the close button for this step
-        nextBtnText: 'Next',        // Next button text for this step
-        prevBtnText: 'Previous',    // Previous button text for this step
-      }
-    };
-    </code></pre>
+  element: '#some-item',        // Query selector string or Node to be highlighted
+  popover: {                    // There will be no popover if empty or not given
+    className: 'popover-class', // className to wrap this specific step popover in addition to the general className in Boarding options
+    title: 'Title',             // Title on the popover
+    description: 'Description', // Body of the popover
+    showButtons: false,         // Do not show control buttons in footer
+    closeBtnText: 'Close',      // Text on the close button for this step
+    nextBtnText: 'Next',        // Next button text for this step
+    prevBtnText: 'Previous',    // Previous button text for this step
+  }
+};
+</code></pre>
         </div>
         <div class="section__example">
           <h4>API Methods</h4>
           <p>Below are the set of methods that are available to you</p>
           <pre><code class="javascript">const boarding = new Boarding(boardingOptions);
-    
-    const isActivated = boarding.isActivated; // Checks if the boarding is active or not
-    boarding.moveNext();     // Moves to next step in the steps list
-    boarding.movePrevious(); // Moves to previous step in the steps list
-    boarding.start(stepNumber = 0);  // Starts driving through the defined steps
-    boarding.highlight(string|stepDefinition); // highlights the element using query selector or the step definition
-    boarding.reset(); // Resets the overlay and clears the screen
-    boarding.hasHighlightedElement(); // Checks if there is any highlighted element
-    boarding.hasNextStep(); // Checks if there is next step to move to
-    boarding.hasPreviousStep(); // Checks if there is previous step to move to
-    
-    // Prevents the current move. Useful in `onNext` or `onPrevious` if you want to
-    // perform some asynchronous task and manually move to next step
-    boarding.preventMove();
-    
-    // Gets the currently highlighted element on screen
-    const activeElement = boarding.getHighlightedElement();
-    const lastActiveElement = boarding.getLastHighlightedElement();
-    activeElement.getCalculatedPosition(); // Gets screen co-ordinates of the active element
-    activeElement.hidePopover();  // Hide the popover
-    activeElement.showPopover();  // Show the popover
-    
-    activeElement.getNode();  // Gets the DOM Element behind this element
-    </code></pre>
+
+const isActivated = boarding.isActivated; // Checks if the boarding is active or not
+boarding.moveNext();     // Moves to next step in the steps list
+boarding.movePrevious(); // Moves to previous step in the steps list
+boarding.start(stepNumber = 0);  // Starts driving through the defined steps
+boarding.highlight(string|stepDefinition); // highlights the element using query selector or the step definition
+boarding.reset(); // Resets the overlay and clears the screen
+boarding.hasHighlightedElement(); // Checks if there is any highlighted element
+boarding.hasNextStep(); // Checks if there is next step to move to
+boarding.hasPreviousStep(); // Checks if there is previous step to move to
+
+// Prevents the current move. Useful in `onNext` or `onPrevious` if you want to
+// perform some asynchronous task and manually move to next step
+boarding.preventMove();
+
+// Gets the currently highlighted element on screen
+const activeElement = boarding.getHighlightedElement();
+const lastActiveElement = boarding.getLastHighlightedElement();
+activeElement.getCalculatedPosition(); // Gets screen co-ordinates of the active element
+activeElement.hidePopover();  // Hide the popover
+activeElement.showPopover();  // Show the popover
+
+activeElement.getNode();  // Gets the DOM Element behind this element
+</code></pre>
         </div>
         <p class="top-20">
           You can use a variety of options to achieve whatever you may want. I
@@ -612,7 +608,6 @@
       charset="utf-8"
     ></script>
     <script async defer src="//buttons.github.io/buttons.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 
     <script type="module" src="/src/main.ts"></script>
   </body>
