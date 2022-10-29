@@ -35,15 +35,6 @@ export interface PopoverStepLevelOptions {
    * Description for the popover
    */
   description: string;
-  /**
-   * Preffered side to render the popover
-   */
-  prefferedSide?: Sides;
-  /**
-   * Alignment for the popover
-   * @default "start"
-   */
-  alignment?: Alignments;
 }
 
 /** The options of popover that will come from the top-level but can also be overwritten */
@@ -82,6 +73,15 @@ export interface PopoverHybridOptions {
    * className for the popover on element (will also add the main class scope)
    */
   className?: string;
+  /**
+   * Preffered side to render the popover
+   */
+  prefferedSide?: Sides;
+  /**
+   * Alignment for the popover
+   * @default "start"
+   */
+  alignment?: Alignments;
 }
 
 interface PopoverOptions

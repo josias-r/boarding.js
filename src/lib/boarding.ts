@@ -21,8 +21,9 @@ import {
  * Plugin class that drives the plugin
  */
 class Boarding {
+  public isActivated: boolean;
+
   private options; // type will get inferred with default values being required
-  private isActivated: boolean;
   private steps: HighlightElement[];
   private currentStep: number;
   private currentMovePrevented: boolean;
@@ -446,9 +447,10 @@ class Boarding {
         // popover options
         title: currentStep.popover.title,
         description: currentStep.popover.description,
-        prefferedSide: currentStep.popover.prefferedSide,
-        alignment: currentStep.popover.alignment,
         // hybrid options
+        prefferedSide:
+          currentStep.popover.prefferedSide || this.options.prefferedSide,
+        alignment: currentStep.popover.alignment || this.options.alignment,
         showButtons:
           currentStep.popover.showButtons || this.options.showButtons,
         doneBtnText:
