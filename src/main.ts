@@ -245,10 +245,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let alignment = (e.target as HTMLElement).dataset.alignment;
     let preferredside = (e.target as HTMLElement).dataset.preferredside;
 
-    if (!alignment) return;
-
-    console.log(e.target);
-
     positionBtnsBoarding.highlight({
       element: id
         ? `#${id}`
