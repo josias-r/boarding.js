@@ -3,6 +3,7 @@
   "private": false,
   "version": "0.0.0-development",
   "type": "module",
+  "main": "dist/main.js",
   "exports": {
     ".": {
       "import": "./dist/boarding.js",
@@ -11,7 +12,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && tsc src/lib/boarding.ts --declaration --emitDeclarationOnly --esModuleInterop --outDir dist ",
+    "build": "vite build && tsc src/lib/main.ts --declaration --emitDeclarationOnly --esModuleInterop --outDir dist ",
     "preview": "vite preview",
     "semantic-release": "semantic-release"
   },
