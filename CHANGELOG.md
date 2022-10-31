@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/josias-r/boarding.js/compare/v1.0.5...v1.0.6) (2022-10-31)
+
+
+### Bug Fixes
+
+* define package entry point ([ce29e6f](https://github.com/josias-r/boarding.js/commit/ce29e6f87f31487f5f5c9fba0f8f2f2b9d75143c))
+
 ## [1.0.5](https://github.com/josias-r/boarding.js/compare/v1.0.4...v1.0.5) (2022-10-31)
 
 
