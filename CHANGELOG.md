@@ -1,3 +1,10 @@
+## [1.0.9](https://github.com/josias-r/boarding.js/compare/v1.0.8...v1.0.9) (2022-10-31)
+
+
+### Bug Fixes
+
+* expose stylesheets to package exports ([0529c3e](https://github.com/josias-r/boarding.js/commit/0529c3ea8e8df21281bafb87594747ec43da1aa5))
+
 ## [1.0.8](https://github.com/josias-r/boarding.js/compare/v1.0.7...v1.0.8) (2022-10-31)
 
 
