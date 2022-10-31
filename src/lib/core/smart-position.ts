@@ -237,8 +237,6 @@ class SmartPosition {
           );
           break;
         case "bottom":
-          console.log(popoverDimensions.width - this.finalOffset);
-
           position.bottom = foundSideResult.value;
           position.left = this.normalizeAlignment(
             alignment,
