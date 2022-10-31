@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/josias-r/boarding.js/compare/v1.0.1...v1.0.2) (2022-10-31)
+
+
+### Bug Fixes
+
+* make package public ([63a71b3](https://github.com/josias-r/boarding.js/commit/63a71b32470960010dafcb678dc43dd1e2c20dc3))
+
 ## [1.0.1](https://github.com/josias-r/boarding.js/compare/v1.0.0...v1.0.1) (2022-10-31)
 
 
