@@ -1,3 +1,10 @@
+## [1.0.8](https://github.com/josias-r/boarding.js/compare/v1.0.7...v1.0.8) (2022-10-31)
+
+
+### Bug Fixes
+
+* expose BoardingOptions type on the top-lvl ([9203406](https://github.com/josias-r/boarding.js/commit/92034061e12c16b60b93fedec8a022d8525db1c1))
+
 ## [1.0.7](https://github.com/josias-r/boarding.js/compare/v1.0.6...v1.0.7) (2022-10-31)
 
 
