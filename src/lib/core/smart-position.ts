@@ -1,3 +1,4 @@
+import { CLASS_POPOVER_TIP } from "../common/constants";
 import { assertVarIsNotFalsy } from "../common/utils";
 import Popover from "./popover";
 
@@ -213,7 +214,6 @@ class SmartPosition {
           window.innerHeight / 2 -
           (popoverDimensions.height - this.finalOffset) / 2,
       };
-      throw new Error("NO SIDE FOUND");
     } else {
       const popoverDimensions = this.getPopoverDimensions();
       const elemRect = this.getHighlightElemRect();
@@ -267,8 +267,24 @@ class SmartPosition {
           );
           break;
       }
+      this.setPopoverTipPosition(foundSideResult.side, alignment);
       return position;
     }
+  }
+
+  private setPopoverTipPosition(
+    popoverSide: Sides,
+    popoverAlignment: Alignments
+  ) {
+    const popoverTipElem = this.popover.getPopoverElements()?.popoverTip;
+    assertVarIsNotFalsy(popoverTipElem);
+    // reset previous classes
+    popoverTipElem.className = CLASS_POPOVER_TIP;
+
+    popoverTipElem.classList.add(
+      `boarding-tipside-${popoverSide}`,
+      `boarding-tipalign-${popoverAlignment}`
+    );
   }
 }
 
