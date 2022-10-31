@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/josias-r/boarding.js/compare/v1.0.0...v1.0.1) (2022-10-31)
+
+
+### Bug Fixes
+
+* update github action packages ([c7504b1](https://github.com/josias-r/boarding.js/commit/c7504b19846e4f64b8fa6236688bba9bdb5ebba2))
+
 # 1.0.0 (2022-10-31)
 
 
