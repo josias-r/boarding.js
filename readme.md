@@ -75,9 +75,9 @@ import "boarding.js/styles/main.css";
 
 otherwise use the `script` and `link` tags to import the JavaScript and CSS files.
 
-Demos and many more usage examples can be found [in the docs page](http://kamranahmed.info/boarding.js).
+Demos and many more usage examples can be found [in the docs page](https://josias-r.github.io/boarding.js).
 
-### Highlighting Single Element – [Demo](http://kamranahmed.info/boarding.js#single-element-no-popover)
+### Highlighting Single Element – [Demo](https://josias-r.github.io/boarding.js#single-element-no-popover)
 
 You can highlight a single element by simply passing the selector.
 
@@ -88,7 +88,7 @@ boarding.highlight("#create-post");
 
 A real-world usage example for this is: using it to dim the background and highlight the required element e.g. when you want to introduce a new feature
 
-### Highlight and Popover – [Demo](http://kamranahmed.info/boarding.js#single-element-with-popover)
+### Highlight and Popover – [Demo](https://josias-r.github.io/boarding.js#single-element-with-popover)
 
 You can show additional details beside the highlighted element using the popover.
 
@@ -105,7 +105,7 @@ boarding.highlight({
 
 Also, `title` and `description` can have HTML as well.
 
-### Positioning the Popover – [Demo](http://kamranahmed.info/boarding.js#single-element-with-popover-position)
+### Positioning the Popover – [Demo](https://josias-r.github.io/boarding.js#single-element-with-popover-position)
 
 By default, boarding automatically finds the suitable position for the popover and displays it. You can override it using `prefferedSide` and the `alignment` property.
 
@@ -140,7 +140,7 @@ boarding.highlight({
 });
 ```
 
-### Creating Feature Introductions – [Demo](http://kamranahmed.info/boarding.js)
+### Creating Feature Introductions – [Demo](https://josias-r.github.io/boarding.js)
 
 Feature introductions are helpful when onboarding new users and giving them an idea about different parts of the application; you can create them seamlessly with Boarding. Define the steps and call the `start` when you want to start presenting. Users will be able to control the steps using the keyboard or using the buttons on popovers.
 
@@ -184,7 +184,7 @@ You can also hide the buttons and control the introductions programmatically by 
 
 ![](./public/images/split.png)
 
-### Asynchronous Actions – [Demo](http://kamranahmed.info/boarding.js)
+### Asynchronous Actions – [Demo](https://josias-r.github.io/boarding.js)
 
 For any asynchronous actions between the transition steps, you may delay the execution till the action completes. All you have to do is stop the transition using `boarding.preventMove()` in your `onNext` or `onPrevious` callbacks and initiate it manually using `boarding.moveNext()`. Here is a sample implementation where it will stop at the second step for four seconds and then move on to the next step.
 
@@ -380,4 +380,4 @@ Feel free to submit pull requests, create issues or spread the word.
 
 ## License
 
-MIT &copy; [Kamran Ahmed](https://twitter.com/kamranahmedse)
+MIT &copy; [Josias Ribi](https://josias.me)
