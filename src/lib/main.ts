@@ -1,2 +1,2 @@
 export { default as Boarding } from "./boarding";
-export type { BoardingSteps } from "./boarding-types";
+export type { BoardingSteps, BoardingOptions } from "./boarding-types";
