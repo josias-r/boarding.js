@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Boarding</title>
+    <meta
+      name="description"
+      itemprop="description"
+      content="A light-weight, no-dependency, vanilla JavaScript library to drive the user's focus across the page"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/favicons/site.webmanifest" />
+    <link
+      rel="mask-icon"
+      href="/favicons/safari-pinned-tab.svg"
+      color="#c56528"
+    />
+    <link rel="shortcut icon" href="/favicons/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
+    <meta name="theme-color" content="#ffffff" />
+    <script type="module" crossorigin src="/assets/index.363d6e27.js"></script>
+    <link rel="stylesheet" href="/assets/index.c0004d37.css">
+  </head>
+  <body>
+    <div class="page-wrap">
+      <section class="section__header" id="boarding-demo-head">
+        <h1 class="brand">
+          <img id="logo_img" src="./images/boarding.svg" />
+          <span id="name_boarding">Boarding.js</span>
+        </h1>
+        <p class="text-muted tagline">
+          Light-weight, no-dependency, vanilla JavaScript engine to drive user's
+          focus across the page
+        </p>
+
+        <a
+          id="animated-tour"
+          href="javascript:void(0)"
+          class="btn btn__example btn__dark"
+          >With Animation</a
+        >
+        <a
+          id="boring-tour"
+          href="javascript:void(0)"
+          class="btn btn__example btn__dark"
+          >Without Animation</a
+        >
+
+        <div class="github-button top-30">
+          <!-- Place this tag where you want the button to render. -->
+          <a
+            class="github-button"
+            href="https://github.com/josias-r/boarding.js"
+            data-size="large"
+            data-show-count="true"
+            aria-label="Star josias-r/boarding.js on GitHub"
+            >Star</a
+          >
+        </div>
+      </section>
+
+      <blockquote style="font-size: 0.8rem">
+        <p>
+          💡 This library is a a port of
+          <a
+            href="https://github.com/kamranahmedse/driver.js"
+            target="_blank"
+            rel="noopener noreferrer"
+            >driver.js</a
+          >. The reason behind refactoring that library, is because driver.js
+          under the hood works by elevating elements using css with z-index.
+          This means it can very easily break your layout if you rely anywhere
+          on the css stacking context.
+        </p>
+        <p>
+          So how does this library approach the problem? It doesn't touch any
+          styles at all. Instead the library renders the overlay using an SVG
+          element. This means it works with <strong>any</strong> layout.
+        </p>
+        <p class="zero-bottom">
+          It has the small downside that an SVG is less customizable in terms of
+          how it looks visually than the approach that driver.js had. But maybe
+          better support for styling will be added in the future, since there
+          are other ways to approach that problem.
+        </p>
+      </blockquote>
+      <blockquote>
+        <p>
+          A lightweight (~4kb gzipped) yet powerful JavaScript engine that helps
+          you drive the user's focus on page.
+        </p>
+        <p class="zero-bottom">
+          Some sample use-cases can be creating powerful feature introductions,
+          call-to-action components, focus shifters etc.
+        </p>
+      </blockquote>
+
+      <section class="section__purpose">
+        <h3>What are the features?</h3>
+        <p>
+          Boarding is compatible with all the major browsers and can be used for
+          any of your overlay needs. Feature introductions, focus shifters,
+          call-to-action are just a few examples.
+        </p>
+        <ul>
+          <li id="highlight_feature">
+            🔆 <strong>Highlight</strong> any (literally any) item on page
+          </li>
+          <li id="interactions_feature">
+            ✋ <strong>Block user interactions</strong>
+          </li>
+          <li id="feature_introductions_feature">
+            📣 Create <strong>feature introductions</strong>
+          </li>
+          <li id="focus_shifters_feature">
+            👓 Add <strong>focus shifters</strong> for users
+          </li>
+          <li id="customizable_feature">
+            🛠️ Highly customizable – <strong>Use it anywhere</strong> for
+            overlay
+          </li>
+          <li id="keyboard_feature">
+            ⌨️ User Friendly – <strong>Controllable by keys</strong>
+          </li>
+          <li id="free_use_feature">
+            🆓 <strong>MIT Licensed</strong> – Free for personal and commercial
+            use
+          </li>
+          <li id="lightweight_feature">
+            🕊️ Lightweight – Only <strong>~4kb</strong> when gzipped
+          </li>
+          <li id="major_browsers_feature">
+            🌀 <strong>Consistent behavior</strong> across all major browsers
+          </li>
+        </ul>
+      </section>
+      <hr class="hr__fancy" />
+      <section class="section__how">
+        <h3>How does it do that?</h3>
+        <p>
+          In it simplest, it puts the canvas on top of the whole page and then
+          cuts the part that is over the element to be highlighted and provides
+          you several hooks when highlighting, highlighted or un-highlighting
+          elements making it highly customizable.
+        </p>
+      </section>
+      <hr class="hr__fancy" />
+      <section class="section__examples">
+        <div id="examples_section">
+          <h3>Can you show some Examples?</h3>
+          <p>
+            Below you find some of the examples and sample use-cases on how you
+            can use it.
+          </p>
+        </div>
+        <div id="single-element-no-popover" class="section__example">
+          <h4>Highlighting a Single Element – Without Popover</h4>
+          <p class="zero-bottom">
+            If all you want is just highlight a single element, you can do that
+            simply by passing the selector
+          </p>
+          <a href="#" class="btn__run-demo" id="run-single-element-no-popover"
+            >Show Demo</a
+          >
+          <pre><code class="javascript">const boarding = new Boarding();
+boarding.highlight('#create-post');
+</code></pre>
+        </div>
+
+        <hr class="hr__fancy" />
+
+        <div class="section__example">
+          <p>
+            A <strong>real world use-case</strong> for this could be
+            highlighting an element when user is interacting with it
+          </p>
+          <pre><code class="javascript">const focusBoarding = new Boarding();
+
+// Highlight the section on focus
+document.getElementById('creation-input')
+  .addEventListener('focus', (e) =&gt; {
+    focusBoarding.focus('#creation-input');
+  });
+</code></pre>
+          <p class="top-20">
+            Focus any of the inputs and see how it moves the highlight from one
+            element to the other
+          </p>
+          <div id="creation-forms">
+            <input
+              type="text"
+              id="creation-input"
+              class="form-control"
+              placeholder="Focus any of the inputs"
+            />
+            <input
+              type="text"
+              id="creation-input-2"
+              class="form-control"
+              placeholder="Focus any of the inputs"
+            />
+            <input
+              type="text"
+              id="creation-input-3"
+              class="form-control"
+              placeholder="Focus any of the inputs"
+            />
+            <input
+              type="text"
+              id="creation-input-4"
+              class="form-control"
+              placeholder="Focus any of the inputs"
+            />
+          </div>
+        </div>
+
+        <p>
+          You can also turn off the animation or set the padding around the
+          corner. More on it later.
+        </p>
+
+        <hr class="hr__fancy" />
+
+        <div id="single-element-with-popover" class="section__example">
+          <h4>Highlighting a Single Element – With Popover</h4>
+          <p>
+            If you would like to show some details alongside the highlighted
+            element, you can do that easily by specifying title and description
+          </p>
+          <a href="#" class="btn__run-demo" id="run-single-element-with-popover"
+            >Show Demo</a
+          >
+          <pre><code class="javascript">const boarding = new Boarding();
+boarding.highlight({
+  element: '#some-element',
+  popover: {
+    title: 'Title for the Popover',
+    description: 'Description for it',
+  }
+});
+</code></pre>
+          <p class="top-20">
+            You can modify the behavior of this popover also by a certain set of
+            options. More on it below.
+          </p>
+        </div>
+
+        <hr class="hr__fancy" />
+
+        <div id="single-element-with-popover-position" class="section__example">
+          <h4>Popover Positioning</h4>
+          <p>
+            You can also, change the position of the popover to be either
+            <code>left</code>, <code>left-center</code>,
+            <code>left-bottom</code>, <code>top</code>, <code>top-center</code>,
+            <code>top-right</code>, <code>right</code>,
+            <code>right-center</code>, <code>right-bottom</code> or
+            <code>bottom</code>, <code>bottom-center</code>,
+            <code>bottom-right</code>, <code>mid-center</code>.
+          </p>
+          <a
+            href="#"
+            class="btn__run-demo"
+            id="run-single-element-with-popover-position"
+            >Show Demo</a
+          >
+          <pre><code class="javascript">const boarding = new Boarding();
+boarding.highlight({
+  element: '#some-element',
+  popover: {
+    title: 'Title for the Popover',
+    description: 'Description for it',
+    // position can be left, left-center, left-bottom, top,
+    // top-center, top-right, right, right-center, right-bottom,
+    // bottom, bottom-center, bottom-right, mid-center
+    position: 'left',
+  }
+});
+</code></pre>
+        </div>
+        <div class="section__example">
+          <div class="top-90 position-btns" id="position-btns">
+            <a href="#" data-alignment="start" data-preferredside="top"
+              >Top, Start</a
+            >
+            <a href="#" data-alignment="center" data-preferredside="top"
+              >Top, Center</a
+            >
+            <a href="#" data-alignment="end" data-preferredside="top"
+              >Top, End</a
+            >
+            <a href="#" data-alignment="start" data-preferredside="bottom"
+              >Bottom, Start</a
+            >
+            <a href="#" data-alignment="center" data-preferredside="bottom"
+              >Bottom, Center</a
+            >
+            <a href="#" data-alignment="end" data-preferredside="bottom"
+              >Bottom, End</a
+            >
+            <a href="#" data-alignment="start" data-preferredside="left"
+              >Left, Start</a
+            >
+            <a href="#" data-alignment="center" data-preferredside="left"
+              >Left, Center</a
+            >
+            <a href="#" data-alignment="end" data-preferredside="left"
+              >Left, End</a
+            >
+            <a href="#" data-alignment="start" data-preferredside="right"
+              >Right, Start</a
+            >
+            <a href="#" data-alignment="center" data-preferredside="right"
+              >Right, Center</a
+            >
+            <a href="#" data-alignment="end" data-preferredside="right"
+              >Right, End</a
+            >
+          </div>
+          <p class="top-20">
+            If you don't specify the position or specify it to be
+            <code>auto</code>, it will automatically find the suitable position
+            for the popover and show it
+          </p>
+        </div>
+        <hr class="hr__fancy" />
+        <div id="single-element-with-popover-html" class="section__example">
+          <h4>HTML in Popovers</h4>
+          <p>
+            You can also specify HTML in the body or the title of the popovers.
+            Here is an example:
+          </p>
+          <a
+            href="#"
+            class="btn__run-demo"
+            id="run-single-element-with-popover-html"
+            >Show Demo</a
+          >
+          <pre><code class="javascript">const boarding = new Boarding();
+boarding.highlight({
+  element: '#some-element',
+  popover: {
+    title: '&lt;em&gt;An italicized title&lt;/em&gt;',
+    description: 'Description may also contain &lt;strong&gt;HTML&lt;/strong&gt;'
+  }
+});
+</code></pre>
+        </div>
+
+        <p class="top-20">And of course it can be any valid HTML.</p>
+
+        <hr class="hr__fancy" />
+        <div id="single-element-no-close" class="section__example">
+          <h4>Disable Close on Outside Click</h4>
+          <p>
+            By default, boarding.js gets reset if user clicks outside the
+            highlighted element, you can disable this:
+          </p>
+          <a href="#" class="btn__run-demo" id="run-single-element-no-close"
+            >Show Demo</a
+          >
+          <pre><code class="javascript">const boarding = new Boarding({
+    allowClose: false,
+});
+
+boarding.highlight({
+  element: '#some-element',
+  popover: {
+    title: '&lt;em&gt;An italicized title&lt;/em&gt;',
+    description: 'Description may also contain &lt;strong&gt;HTML&lt;/strong&gt;'
+  }
+});
+</code></pre>
+          <p class="top-20">
+            If you use this option, for multi-step boarding, it would close
+            after you are done with the popover or you can close it
+            programmatically. For single element popover, you need to close it
+            properly, otherwise it won't be closed
+          </p>
+          <pre><code class="javascript">boarding.reset()</code>
+        </pre>
+        </div>
+
+        <hr class="hr__fancy" />
+        <div id="third-element-introduction" class="section__example">
+          <h4 id="first-element-introduction">
+            Creating Feature Introductions
+          </h4>
+          <p id="second-para-feature-introductions">
+            You can also make powerful feature introductions to guide the users
+            about the features. Just provide an array of steps where each step
+            specifies an element to highlight.
+          </p>
+          <p id="third-para-feature-introductions">
+            Below is just a quick example showing you how to combine the steps
+            in introduction.
+          </p>
+          <a href="#" class="btn__run-demo" id="run-multi-element-popovers"
+            >Show Demo</a
+          >
+        </div>
+        <pre><code class="javascript">const boarding = new Boarding();
+// Define the steps for introduction
+boarding.defineSteps([
+  {
+    element: '#first-element-introduction',
+    popover: {
+      className: 'first-step-popover-class',
+      title: 'Title on Popover',
+      description: 'Body of the popover',
+      position: 'left'
+    }
+  },
+  {
+    element: '#second-element-introduction',
+    popover: {
+      title: 'Title on Popover',
+      description: 'Body of the popover',
+      position: 'top'
+    }
+  },
+  {
+    element: '#third-element-introduction',
+    popover: {
+      title: 'Title on Popover',
+      description: 'Body of the popover',
+      position: 'right'
+    }
+  },
+]);
+// Start the introduction
+boarding.start();
+</code></pre>
+        <p class="top-20">
+          This is just a quick example for the feature introduction. For a
+          richer one, please have a look at the
+          <a href="#" class="btn__example">"Quick Tour"</a>
+        </p>
+
+        <p>
+          You may also turn off the footer buttons in popover, in which case
+          user can control the popover using the arrows keys on keyboard. Or you
+          may control it using the methods provided by Boarding.
+        </p>
+
+        <hr class="hr__fancy" />
+
+        <div id="element-without-popover" class="section__example">
+          <h4>Without Overlay</h4>
+          <p>
+            You can create feature introductions and do everything listed above
+            without overlays also. All you have to do is just set the opacity to
+            `0`.
+          </p>
+          <a href="#" class="btn__run-demo" id="run-element-without-popover"
+            >Show Demo</a
+          >
+          <pre><code class="javascript">const boarding = new Boarding({
+    opacity: 0,
+});
+
+boarding.highlight({
+  element: '#run-element-without-popover',
+  popover: {
+    title: 'Title for the Popover',
+    description: 'Description for it',
+    position: 'top', // can be `top`, `left`, `right`, `bottom`
+  }
+});
+</code></pre>
+          <p class="top-20">
+            ..and you can do the same for the feature introductions
+          </p>
+        </div>
+
+        <hr class="hr__fancy" />
+
+        <div class="section__example">
+          <div id="api_section">
+            <h3>..and much much more</h3>
+            <p>
+              Boarding comes with many options that you can manipulate to make
+              boarding behave as you may like
+            </p>
+          </div>
+          <h4>Boarding Definition</h4>
+          <p>Here are the options that Boarding understands</p>
+          <pre><code class="javascript">const boarding = new Boarding({
+  className: 'scoped-class', // className to wrap boarding.js popover
+  animate: true,  // Animate while changing highlighted element
+  opacity: 0.75,  // Background opacity (0 means only popovers and without overlay)
+  padding: 10,    // Distance of element from around the edges
+  allowClose: true, // Whether clicking on overlay should close or not
+  overlayClickNext: false, // Should it move to next step on overlay click
+  doneBtnText: 'Done', // Text on the final button
+  closeBtnText: 'Close', // Text on the close button for this step
+  nextBtnText: 'Next', // Next button text for this step
+  prevBtnText: 'Previous', // Previous button text for this step
+  showButtons: false, // Do not show control buttons in footer
+  keyboardControl: true, // Allow controlling through keyboard (escape to close, arrow keys to move)
+  scrollIntoViewOptions: {}, // We use `scrollIntoView()` when possible, pass here the options for it if you want any
+  onHighlightStarted: (Element) {}, // Called when element is about to be highlighted
+  onHighlighted: (Element) {}, // Called when element is fully highlighted
+  onDeselected: (Element) {}, // Called when element has been deselected
+  onReset: (Element) {},        // Called when overlay is about to be cleared
+  onNext: (Element) =&gt; {},      // Called when moving to next step on any step
+  onPrevious: (Element) =&gt; {},  // Called when moving to next step on any step
+});
+</code></pre>
+        </div>
+        <p class="top-20">
+          Note that all the button options that you provide in the boarding
+          definition can be overridden for a specific step by giving them in the
+          step definition
+        </p>
+        <div class="section__example">
+          <h4>Step Definition</h4>
+          <p>
+            Here are the set of options that you can pass in each step i.e. an
+            item in array of steps or the object that you pass to
+            <code>highlight</code> method
+          </p>
+          <pre><code class="javascript">const stepDefinition = {
+  element: '#some-item',        // Query selector string or Node to be highlighted
+  popover: {                    // There will be no popover if empty or not given
+    className: 'popover-class', // className to wrap this specific step popover in addition to the general className in Boarding options
+    title: 'Title',             // Title on the popover
+    description: 'Description', // Body of the popover
+    showButtons: false,         // Do not show control buttons in footer
+    closeBtnText: 'Close',      // Text on the close button for this step
+    nextBtnText: 'Next',        // Next button text for this step
+    prevBtnText: 'Previous',    // Previous button text for this step
+  }
+};
+</code></pre>
+        </div>
+        <div class="section__example">
+          <h4>API Methods</h4>
+          <p>Below are the set of methods that are available to you</p>
+          <pre><code class="javascript">const boarding = new Boarding(boardingOptions);
+
+const isActivated = boarding.isActivated; // Checks if the boarding is active or not
+boarding.moveNext();     // Moves to next step in the steps list
+boarding.movePrevious(); // Moves to previous step in the steps list
+boarding.start(stepNumber = 0);  // Starts driving through the defined steps
+boarding.highlight(string|stepDefinition); // highlights the element using query selector or the step definition
+boarding.reset(); // Resets the overlay and clears the screen
+boarding.hasHighlightedElement(); // Checks if there is any highlighted element
+boarding.hasNextStep(); // Checks if there is next step to move to
+boarding.hasPreviousStep(); // Checks if there is previous step to move to
+
+// Prevents the current move. Useful in `onNext` or `onPrevious` if you want to
+// perform some asynchronous task and manually move to next step
+boarding.preventMove();
+
+// Gets the currently highlighted element on screen
+const activeElement = boarding.getHighlightedElement();
+const lastActiveElement = boarding.getLastHighlightedElement();
+activeElement.getCalculatedPosition(); // Gets screen co-ordinates of the active element
+activeElement.hidePopover();  // Hide the popover
+activeElement.showPopover();  // Show the popover
+
+activeElement.getNode();  // Gets the DOM Element behind this element
+</code></pre>
+        </div>
+        <p class="top-20">
+          You can use a variety of options to achieve whatever you may want. I
+          have some plans on improving it further, make sure to keep an eye on
+          the
+          <a href="https://github.com/josias-r/boarding.js" target="_blank"
+            >GitHub page</a
+          >
+        </p>
+      </section>
+      <hr class="hr__fancy" />
+      <div class="section__example">
+        <h4>Contributing</h4>
+        <p>
+          You can find the contribution instructions on the
+          <a href="https://github.com/josias-r/boarding.js" target="_blank"
+            >GitHub page</a
+          >. Feel free to submit an issue, create a pull request or spread the
+          word
+        </p>
+      </div>
+
+      <!-- Place this tag where you want the button to render. -->
+      <a
+        class="github-button"
+        href="https://github.com/josias-r"
+        data-size="large"
+        data-show-count="true"
+        aria-label="Follow @josias-r on GitHub"
+        >Follow @josias-r</a
+      >
+    </div>
+
+    <script async defer src="//buttons.github.io/buttons.js"></script>
+    
+  </body>
+</html>
