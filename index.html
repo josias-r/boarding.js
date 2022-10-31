@@ -68,10 +68,42 @@
 
         <div class="github-button top-30">
           <!-- Place this tag where you want the button to render. -->
-          <span></span>
+          <a
+            class="github-button"
+            href="https://github.com/josias-r/boarding.js"
+            data-size="large"
+            data-show-count="true"
+            aria-label="Star josias-r/boarding.js on GitHub"
+            >Star</a
+          >
         </div>
       </section>
 
+      <blockquote style="font-size: 0.8rem">
+        <p>
+          💡 This library is a a port of
+          <a
+            href="https://github.com/kamranahmedse/driver.js"
+            target="_blank"
+            rel="noopener noreferrer"
+            >driver.js</a
+          >. The reason behind refactoring that library, is because driver.js
+          under the hood works by elevating elements using css with z-index.
+          This means it can very easily break your layout if you rely anywhere
+          on the css stacking context.
+        </p>
+        <p>
+          So how does this library approach the problem? It doesn't touch any
+          styles at all. Instead the library renders the overlay using an SVG
+          element. This means it works with <strong>any</strong> layout.
+        </p>
+        <p class="zero-bottom">
+          It has the small downside that an SVG is less customizable in terms of
+          how it looks visually than the approach that driver.js had. But maybe
+          better support for styling will be added in the future, since there
+          are other ways to approach that problem.
+        </p>
+      </blockquote>
       <blockquote>
         <p>
           A lightweight (~4kb gzipped) yet powerful JavaScript engine that helps
@@ -555,7 +587,7 @@ activeElement.getNode();  // Gets the DOM Element behind this element
           You can use a variety of options to achieve whatever you may want. I
           have some plans on improving it further, make sure to keep an eye on
           the
-          <a href="https://github.com/kamranahmedse/boarding.js" target="_blank"
+          <a href="https://github.com/josias-r/boarding.js" target="_blank"
             >GitHub page</a
           >
         </p>
@@ -565,50 +597,25 @@ activeElement.getNode();  // Gets the DOM Element behind this element
         <h4>Contributing</h4>
         <p>
           You can find the contribution instructions on the
-          <a href="https://github.com/kamranahmedse/boarding.js" target="_blank"
+          <a href="https://github.com/josias-r/boarding.js" target="_blank"
             >GitHub page</a
           >. Feel free to submit an issue, create a pull request or spread the
           word
         </p>
       </div>
-      <hr class="hr__fancy" />
-      <div class="section__example">
-        <p>
-          A product by
-          <a href="http://twitter.com/kamranahmedse" target="_blank">Kamran</a>
-          produced out of boredom and frustration after he gave up on trying to
-          find a perfect solution to integrate journey introduction and
-          overlays.
-        </p>
-        <iframe
-          id="twitter-widget-0"
-          scrolling="no"
-          frameborder="0"
-          allowtransparency="true"
-          allowfullscreen="true"
-          class="twitter-follow-button twitter-follow-button-rendered"
-          style="
-            position: static;
-            visibility: visible;
-            width: 186px;
-            height: 28px;
-          "
-          title="Twitter Follow Button"
-          src="https://platform.twitter.com/widgets/follow_button.7dae38096d06923d683a2a807172322a.en.html#dnt=false&amp;id=twitter-widget-0&amp;lang=en&amp;screen_name=kamranahmedse&amp;show_count=true&amp;show_screen_name=false&amp;size=l&amp;time=1666945651244"
-          data-screen-name="kamranahmedse"
-        ></iframe>
 
-        <span></span>
-      </div>
+      <!-- Place this tag where you want the button to render. -->
+      <a
+        class="github-button"
+        href="https://github.com/josias-r"
+        data-size="large"
+        data-show-count="true"
+        aria-label="Follow @josias-r on GitHub"
+        >Follow @josias-r</a
+      >
     </div>
 
-    <script
-      async
-      src="//platform.twitter.com/widgets.js"
-      charset="utf-8"
-    ></script>
     <script async defer src="//buttons.github.io/buttons.js"></script>
-
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
