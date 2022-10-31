@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/josias-r/boarding.js/compare/v1.0.4...v1.0.5) (2022-10-31)
+
+
+### Bug Fixes
+
+* add more files to npmignore ([71b4c34](https://github.com/josias-r/boarding.js/commit/71b4c342896d32a439a4e003333dc443c457e83c))
+
 ## [1.0.4](https://github.com/josias-r/boarding.js/compare/v1.0.3...v1.0.4) (2022-10-31)
 
 
