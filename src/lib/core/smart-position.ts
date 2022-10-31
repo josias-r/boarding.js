@@ -163,7 +163,7 @@ class SmartPosition {
           end - popoverLength
         );
       case "center":
-        const posCentered = pos - this.padding + popoverLength / 2;
+        const posCentered = pos - popoverLength / 2 + elementLength / 2;
 
         const from = Math.min(posCentered, end - popoverLength);
         const to = Math.min(posCentered, end);
@@ -237,6 +237,8 @@ class SmartPosition {
           );
           break;
         case "bottom":
+          console.log(popoverDimensions.width - this.finalOffset);
+
           position.bottom = foundSideResult.value;
           position.left = this.normalizeAlignment(
             alignment,
