@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/josias-r/boarding.js/compare/v1.0.2...v1.0.3) (2022-10-31)
+
+
+### Bug Fixes
+
+* include types in production build ([ee349fe](https://github.com/josias-r/boarding.js/commit/ee349fe4d19de755d76ad44eb65174a08af7401f))
+
 ## [1.0.2](https://github.com/josias-r/boarding.js/compare/v1.0.1...v1.0.2) (2022-10-31)
 
 
