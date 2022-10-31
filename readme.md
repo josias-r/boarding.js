@@ -335,7 +335,6 @@ Below are the set of methods that are available:
 const boarding = new Boarding(boardingOptions);
 
 // Checks if the boarding is active or not
-// TODO: make isActivated public
 if (boarding.isActivated) {
   console.log("Boarding is active");
 }
