@@ -206,6 +206,14 @@ export default class Popover {
   }
 
   /**
+   * Expose options.showButtons to outside of class
+   * @returns boolean whether showButtons is on or off for the popover
+   */
+  public getShowButtons() {
+    return this.options.showButtons;
+  }
+
+  /**
    * Sets the default state for the popover
    */
   private setInitialState() {

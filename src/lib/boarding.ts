@@ -362,9 +362,13 @@ class Boarding {
     }
 
     // Ignore if there is no highlighted element or there is a highlighted element
-    // without popover // TODO: or if the popover does not allow buttons
+    // without popover or if the popover does not allow buttons
     const highlightedElement = this.getHighlightedElement();
-    if (!highlightedElement || !highlightedElement.getPopover()) {
+    if (
+      !highlightedElement ||
+      !highlightedElement.getPopover() ||
+      !highlightedElement.getPopover()?.getShowButtons()
+    ) {
       return;
     }
 

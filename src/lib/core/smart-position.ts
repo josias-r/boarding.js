@@ -179,7 +179,15 @@ class SmartPosition {
   /**
    * Find the optimal position for the popover
    */
-  private findOptimalPosition(alignment: Alignments, preferredSide?: Sides) {
+  private findOptimalPosition(
+    alignment: Alignments,
+    preferredSide?: Sides
+  ): {
+    top?: number;
+    bottom?: number;
+    left?: number;
+    right?: number;
+  } {
     let foundSideResult: SideCheckResult | "none";
     // check if prefferd side is optimal
     if (preferredSide) {
@@ -194,7 +202,17 @@ class SmartPosition {
     }
 
     if (foundSideResult === "none") {
-      // TODO: responsive handling
+      // TODO: responsive handling if popover has no space
+      // for now just center in the screen
+      const popoverDimensions = this.getPopoverDimensions();
+      return {
+        left:
+          window.innerWidth / 2 -
+          (popoverDimensions.width - this.finalOffset) / 2,
+        top:
+          window.innerHeight / 2 -
+          (popoverDimensions.height - this.finalOffset) / 2,
+      };
       throw new Error("NO SIDE FOUND");
     } else {
       const popoverDimensions = this.getPopoverDimensions();

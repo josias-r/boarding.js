@@ -1,10 +1,11 @@
-import "./lib/boarding.css";
+import "../styles/main.css";
+import "../styles/themes/basic.css";
 import { BoardingStepDefinition } from "./lib/boarding-types";
 import { Boarding } from "./lib/main";
 import hljs from "highlight.js";
 import "highlight.js/styles/dark.css";
 
-import "./demo/styles/styles.css";
+import "./styles/demo.css";
 
 document.addEventListener("DOMContentLoaded", function () {
   const tourSteps: BoardingStepDefinition[] = [

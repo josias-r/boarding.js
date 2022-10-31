@@ -1,0 +1,111 @@
+/* animations */
+@keyframes boardingFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.boarding-coutout-svg-animated,
+div#boarding-popover-item.boarding-popover-item-animated {
+  animation: boardingFadeIn 0.4s;
+}
+
+/* popover */
+div#boarding-popover-item {
+  display: none;
+  position: fixed;
+  z-index: 1000000000;
+  background: #fff;
+  color: #000;
+}
+
+/* tip */
+div#boarding-popover-item .boarding-popover-tip {
+  border: 5px solid #fff;
+  content: "";
+  position: absolute;
+}
+
+div#boarding-popover-item .boarding-popover-tip.bottom {
+  bottom: -10px;
+  border-top-color: #fff;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+div#boarding-popover-item .boarding-popover-tip.bottom.position-center {
+  left: 49%;
+}
+div#boarding-popover-item .boarding-popover-tip.bottom.position-right {
+  right: 20px;
+}
+div#boarding-popover-item .boarding-popover-tip.left {
+  left: -10px;
+  top: 10px;
+  border-top-color: transparent;
+  border-right-color: #fff;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+div#boarding-popover-item .boarding-popover-tip.bottom {
+  bottom: -10px;
+  border-top-color: #fff;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+div#boarding-popover-item .boarding-popover-tip.bottom.position-center {
+  left: 49%;
+}
+div#boarding-popover-item .boarding-popover-tip.bottom.position-right {
+  right: 20px;
+}
+div#boarding-popover-item .boarding-popover-tip.left {
+  left: -10px;
+  top: 10px;
+  border-top-color: transparent;
+  border-right-color: #fff;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+div#boarding-popover-item .boarding-popover-tip.left.position-center {
+  top: 46%;
+}
+div#boarding-popover-item .boarding-popover-tip.left.position-bottom {
+  top: auto;
+  bottom: 20px;
+}
+div#boarding-popover-item .boarding-popover-tip.right {
+  right: -10px;
+  top: 10px;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: #fff;
+}
+div#boarding-popover-item .boarding-popover-tip.right.position-center {
+  top: 46%;
+}
+div#boarding-popover-item .boarding-popover-tip.right.position-bottom {
+  top: auto;
+  bottom: 20px;
+}
+div#boarding-popover-item .boarding-popover-tip.top {
+  top: -10px;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: #fff;
+  border-left-color: transparent;
+}
+div#boarding-popover-item .boarding-popover-tip.top.position-center {
+  left: 49%;
+}
+div#boarding-popover-item .boarding-popover-tip.top.position-right {
+  right: 20px;
+}
+div#boarding-popover-item .boarding-popover-tip.mid-center {
+  display: none;
+}

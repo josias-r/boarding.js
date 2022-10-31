@@ -8,7 +8,6 @@ export const SHOULD_OUTSIDE_CLICK_CLOSE = true;
 export const ALLOW_KEYBOARD_CONTROL = true;
 export const SHOULD_OUTSIDE_CLICK_NEXT = false;
 
-const ID_OVERLAY = "boarding-page-overlay";
 export const ID_POPOVER = "boarding-popover-item";
 
 const CLASS_CLEARFIX = "boarding-clearfix";
@@ -88,10 +87,4 @@ export const POPOVER_ELEMENT = (className = "") => {
     popoverCloseBtn,
     popoverFooterBtnGroup,
   };
-};
-
-export const OVERLAY_ELEMENT = () => {
-  const overlayElement = document.createElement("div");
-  overlayElement.id = ID_OVERLAY;
-  return overlayElement;
 };
