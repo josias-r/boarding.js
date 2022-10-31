@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/josias-r/boarding.js/compare/v1.0.6...v1.0.7) (2022-10-31)
+
+
+### Bug Fixes
+
+* update readme ([94affce](https://github.com/josias-r/boarding.js/commit/94affce24fb04bf52ef72ff0f37163f04f78bc59))
+
 ## [1.0.6](https://github.com/josias-r/boarding.js/compare/v1.0.5...v1.0.6) (2022-10-31)
 
 
