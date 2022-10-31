@@ -1,8 +1,6 @@
 > This is a port of [driver.js](https://github.com/kamranahmedse/driver.js).  
 > It uses a different highlight technique under the hood, which does not fiddle with z-index.  
 > This ensures the layout will always stay instact. With driver.js this is not the case
->
-> The port is a **WIP**, note the _// TODO_ comments in the readme below
 
 <h1 align="center"><img height="150" src="./public/images/boarding.svg" /><br> Boarding.js</h1>
 
@@ -36,7 +34,7 @@
 
 ![](./public/images/split.png)
 
-For Usage and Examples, [have a look at demo](http://kamranahmed.info/boarding.js) // TODO publish updated demo to github pages
+For Usage and Examples, [have a look at demo](https://josias-r.github.io/boarding.js/)
 
 ## So, yet another tour library?
 
@@ -49,28 +47,19 @@ Boarding.js is written in Vanilla JS (with TypeScript), has zero dependencies an
 You can install it using `yarn` or `npm`, whatever you prefer.
 
 ```bash
-// TODO: publish npm package
 yarn add boarding.js
 npm install boarding.js
 ```
 
-// TODO: setup CDN
-Or include it using CDN. If you want a specific version, put it as `boarding.js@0.5` in the name
+Or include it using CDN. If you want a specific version, put it as `boarding.js@1.0.7` in the name
 
 ```html
-<script src="https://unpkg.com/boarding.js/dist/driver.min.js"></script>
+<script src="https://unpkg.com/boarding.js/dist/main.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/boarding.js/styles/main.css" />
 <link
   rel="stylesheet"
-  href="https://unpkg.com/boarding.js/dist/driver.min.css"
+  href="https://unpkg.com/boarding.js/styles/themes/basic.css"
 />
-```
-
-// TODO: setup build files
-Or grab the code from `dist` directory and include it directly.
-
-```html
-<link rel="stylesheet" href="/dist/driver.min.css" />
-<script src="/dist/driver.min.js"></script>
 ```
 
 ![](./public/images/split.png)
@@ -81,8 +70,7 @@ If you are using some sort of module bundler, import the library and the CSS fil
 
 ```javascript
 import { Boarding } from "boarding.js";
-// TODO: export stylesheet
-import "boarding.js/dist/driver.min.css";
+import "boarding.js/styles/main.css";
 ```
 
 otherwise use the `script` and `link` tags to import the JavaScript and CSS files.
