@@ -9,6 +9,10 @@
 # source code
 /src
 
+# demo page
+/index.html
+/public
+
 # config files
 .gitattributes
 .nvmrc
@@ -18,6 +22,7 @@
 .releaserc
 tsconfig.build.json
 tsconfig.json
+vite.config.js
 
 # informational
 CHANGELOG.md
