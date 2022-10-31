@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/josias-r/boarding.js/compare/v1.0.3...v1.0.4) (2022-10-31)
+
+
+### Bug Fixes
+
+* define npmignore ([363fe53](https://github.com/josias-r/boarding.js/commit/363fe539020ee26c8e634aa68691542e7c3c2f69))
+
 ## [1.0.3](https://github.com/josias-r/boarding.js/compare/v1.0.2...v1.0.3) (2022-10-31)
 
 
