@@ -11,7 +11,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build && tsc src/lib/boarding.ts --declaration --emitDeclarationOnly --esModuleInterop --outDir dist ",
     "preview": "vite preview",
     "semantic-release": "semantic-release"
   },
