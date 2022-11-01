@@ -485,6 +485,7 @@ class Boarding {
         onDeselected: this.options.onDeselected,
         onNext: currentStep.onNext,
         onPrevious: currentStep.onPrevious,
+        padding: currentStep.padding,
       },
       popover,
     });

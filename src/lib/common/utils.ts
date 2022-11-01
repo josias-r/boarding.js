@@ -22,6 +22,19 @@ export function assertIsElement(e: any | null): asserts e is Element {
 }
 
 /**
+ * Receives two arguments. If the second one is "undefined", return the first one, otherwise return the second one.
+ */
+export function checkOptionalValue<T1 extends any>(
+  argOriginal: T1,
+  argOptional?: T1
+) {
+  if (typeof argOptional === "undefined") {
+    return argOriginal;
+  }
+  return argOptional;
+}
+
+/**
  * TS runtime check to ensure var is not falsy
  */
 export function assertVarIsNotFalsy<T extends any>(e?: T): asserts e is T {

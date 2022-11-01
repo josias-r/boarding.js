@@ -25,7 +25,8 @@ export interface HighlightElementTopLevelOptions {
 }
 
 /** The options of highlight-element that will be defined on a step-level */
-export interface HighlightElementStepLevelOptions {
+export interface HighlightElementStepLevelOptions
+  extends Partial<Pick<BoardingSharedOptions, "padding">> {
   /**
    * Is called when the next element is about to be highlighted
    */
@@ -117,6 +118,13 @@ class HighlightElement {
     this.popover?.show(this);
 
     this.options.onHighlighted?.(this);
+  }
+
+  /**
+   * Return the element's custom padding option if available
+   */
+  public getCustomPadding() {
+    return this.options.padding;
   }
 
   /**

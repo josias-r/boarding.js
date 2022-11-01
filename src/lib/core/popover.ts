@@ -6,7 +6,11 @@ import {
   POPOVER_ELEMENT,
   POPOVER_OFFSET,
 } from "../common/constants";
-import { assertVarIsNotFalsy, bringInView } from "../common/utils";
+import {
+  assertVarIsNotFalsy,
+  bringInView,
+  checkOptionalValue,
+} from "../common/utils";
 import HighlightElement from "./highlight-element";
 import SmartPosition, { Alignments, Sides } from "./smart-position";
 
@@ -231,10 +235,12 @@ export default class Popover {
   private setPosition() {
     assertVarIsNotFalsy(this.highlightElement);
 
+    const customPadding = this.highlightElement.getCustomPadding();
+
     new SmartPosition(
       this.highlightElement.getElement(),
       this,
-      this.options.padding,
+      checkOptionalValue(this.options.padding, customPadding),
       this.options.offset
     ).setBestPosition(this.options.alignment, this.options.prefferedSide);
   }

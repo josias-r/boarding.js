@@ -1,6 +1,6 @@
 import { BoardingSharedOptions } from "../boarding-types";
 import { OVERLAY_OPACITY } from "../common/constants";
-import { assertVarIsNotFalsy } from "../common/utils";
+import { assertVarIsNotFalsy, checkOptionalValue } from "../common/utils";
 import {
   createSvgCutout,
   CutoutDefinition,
@@ -183,6 +183,8 @@ class Overlay {
       .getElement()
       .getBoundingClientRect();
 
+    const customPadding = highlightElement.getCustomPadding();
+
     const cutoutBoxSettings: CutoutDefinition = {
       hightlightBox: {
         x: boundingClientRect.x,
@@ -190,7 +192,7 @@ class Overlay {
         width: boundingClientRect.width,
         height: boundingClientRect.height,
       },
-      padding: this.options.padding,
+      padding: checkOptionalValue(this.options.padding, customPadding),
       opacity: this.options.opacity,
       animated: this.options.animate,
     };

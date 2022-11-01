@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     {
       element: "#logo_img",
+      padding: 50,
       popover: {
         title: "Focus Anything",
         description:
