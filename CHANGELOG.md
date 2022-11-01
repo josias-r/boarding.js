@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/josias-r/boarding.js/compare/v1.0.10...v1.1.0) (2022-11-01)
+
+
+### Features
+
+* highlight elements on the fly ([eda08ba](https://github.com/josias-r/boarding.js/commit/eda08ba45dd069f89d43e5b91eae67fe9d9cdbcb))
+
 ## [1.0.10](https://github.com/josias-r/boarding.js/compare/v1.0.9...v1.0.10) (2022-11-01)
 
 
