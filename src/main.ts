@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     {
       element: "#logo_img",
-      padding: 50,
+      padding: 5,
       popover: {
         title: "Focus Anything",
         description:
@@ -128,14 +128,13 @@ document.addEventListener("DOMContentLoaded", function () {
     animate: true,
     opacity: 0.8,
     padding: 10,
-    offset: 20,
     showButtons: true,
   });
 
   const boringTourBoarding = new Boarding({
     animate: false,
     opacity: 0.8,
-    padding: 5,
+    padding: 10,
     showButtons: true,
     className: "boring-scope",
   });
