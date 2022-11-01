@@ -24,7 +24,7 @@ class Boarding {
   public isActivated: boolean;
 
   private options; // type will get inferred with default values being required
-  private steps: HighlightElement[];
+  private steps: BoardingSteps;
   private currentStep: number;
   private currentMovePrevented: boolean;
 
@@ -86,13 +86,19 @@ class Boarding {
     if (!this.steps || this.steps.length === 0) {
       throw new Error("There are no steps defined to iterate");
     }
+    const element = this.prepareElementFromStep(index);
+    if (!element) {
+      throw new Error(
+        `The step with starting index ${index} could not resolve to an element.`
+      );
+    }
 
     // attach eventListeners BEFORE setting highlighting element
     this.attachEventListeners();
 
     this.isActivated = true;
     this.currentStep = index;
-    this.overlay.highlight(this.steps[index]);
+    this.overlay.highlight(element);
   }
 
   /**
@@ -129,13 +135,13 @@ class Boarding {
    * otherwise resets the overlay
    */
   public movePrevious() {
-    const previousStep = this.steps[this.currentStep - 1];
-    if (!previousStep) {
+    const previousElem = this.prepareElementFromStep(this.currentStep - 1);
+    if (!previousElem) {
       this.reset();
       return;
     }
 
-    this.overlay.highlight(previousStep);
+    this.overlay.highlight(previousElem);
     this.currentStep -= 1;
   }
 
@@ -152,13 +158,13 @@ class Boarding {
    * otherwise resets the overlay
    */
   public moveNext() {
-    const nextStep = this.steps[this.currentStep + 1];
-    if (!nextStep) {
+    const nextElem = this.prepareElementFromStep(this.currentStep + 1);
+    if (!nextElem) {
       this.reset();
       return;
     }
 
-    this.overlay.highlight(nextStep);
+    this.overlay.highlight(nextElem);
     this.currentStep += 1;
   }
 
@@ -212,20 +218,7 @@ class Boarding {
    * Defines steps to be highlighted
    */
   public defineSteps(stepDefinitions: BoardingSteps) {
-    this.steps = [];
-
-    for (let counter = 0; counter < stepDefinitions.length; counter++) {
-      const element = this.prepareElementFromStep(
-        stepDefinitions[counter],
-        stepDefinitions,
-        counter
-      );
-      if (!element) {
-        continue;
-      }
-
-      this.steps.push(element);
-    }
+    this.steps = stepDefinitions;
   }
 
   /**
@@ -233,13 +226,6 @@ class Boarding {
    */
   public getSteps() {
     return this.steps;
-  }
-
-  /**
-   * Setter for steps property
-   */
-  public setSteps(steps: HighlightElement[]) {
-    this.steps = steps;
   }
 
   /**
@@ -386,9 +372,9 @@ class Boarding {
     this.currentMovePrevented = false;
 
     // Call the bound `onNext` handler if available
-    const currentStep = this.steps[this.currentStep];
+    const currentElem = this.prepareElementFromStep(this.currentStep);
 
-    currentStep?.onNext();
+    currentElem?.onNext();
 
     if (this.currentMovePrevented) {
       return;
@@ -404,7 +390,7 @@ class Boarding {
     this.currentMovePrevented = false;
 
     // Call the bound `onPrevious` handler if available
-    const currentStep = this.steps[this.currentStep];
+    const currentStep = this.prepareElementFromStep(this.currentStep);
     currentStep?.onPrevious();
 
     if (this.currentMovePrevented) {
@@ -416,13 +402,26 @@ class Boarding {
 
   /**
    * Prepares the step received from the user and returns an instance
-   * of Element
+   * of HighlightElement
+   * @param currentStepOrIndex An index is expected in case the its a step from the steps array. Otherwise a full step definition can be passed as a one-off case
    */
   private prepareElementFromStep(
-    currentStep: BoardingStepDefinition,
-    allSteps: BoardingSteps = [],
-    index = 0
+    currentStepOrIndex: number | BoardingStepDefinition
   ) {
+    const currentStep =
+      typeof currentStepOrIndex === "number"
+        ? (this.steps[currentStepOrIndex] as BoardingStepDefinition | undefined)
+        : currentStepOrIndex;
+    const index =
+      typeof currentStepOrIndex === "number" ? currentStepOrIndex : 0;
+    const stepsCount =
+      typeof currentStepOrIndex === "number" ? this.steps.length : 1;
+
+    if (currentStep === undefined) {
+      console.warn(`No step with index ${index} exists`);
+      return null;
+    }
+
     // If the given element is a query selector or a DOM element?
     const domElement =
       typeof currentStep.element === "string"
@@ -469,10 +468,10 @@ class Boarding {
           currentStep.popover.prevBtnText || this.options.prevBtnText,
         className: mergedClassNames,
         // inferred options
-        totalCount: allSteps.length,
+        totalCount: stepsCount,
         currentIndex: index,
         isFirst: index === 0,
-        isLast: allSteps.length === 0 || index === allSteps.length - 1, // Only one item or last item
+        isLast: stepsCount === 0 || index === stepsCount - 1, // Only one item or last item
       });
     }
 
