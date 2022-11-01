@@ -1,3 +1,10 @@
+## [1.0.10](https://github.com/josias-r/boarding.js/compare/v1.0.9...v1.0.10) (2022-11-01)
+
+
+### Bug Fixes
+
+* allow defining a custom padding settings for each step if wanted ([7e940a6](https://github.com/josias-r/boarding.js/commit/7e940a63055b2d1927b8dccf1b7975b0170f2aee))
+
 ## [1.0.9](https://github.com/josias-r/boarding.js/compare/v1.0.8...v1.0.9) (2022-10-31)
 
 
