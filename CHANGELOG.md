@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/josias-r/boarding.js/compare/v1.1.0...v1.1.1) (2022-11-02)
+
+
+### Bug Fixes
+
+* use ResizeObserver to watch for element size changes ([cbf835a](https://github.com/josias-r/boarding.js/commit/cbf835ac9bb3801a5825530612ace0a03d48ce4f))
+
 # [1.1.0](https://github.com/josias-r/boarding.js/compare/v1.0.10...v1.1.0) (2022-11-01)
 
 
