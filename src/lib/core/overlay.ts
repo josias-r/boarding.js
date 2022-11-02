@@ -158,7 +158,7 @@ class Overlay {
       // this will be false, if startElementTracking gets called a second time -> prevents multiple transitions to run at the same time
       if (this.currentTransitionInProgress === animateOverlay) {
         // transition
-        if (ellapsed < duration) {
+        if (this.options.animate && ellapsed < duration) {
           this.transitionCutoutToPosition(
             ellapsed,
             duration,
@@ -180,7 +180,7 @@ class Overlay {
   }
 
   /**
-   *
+   * This method calculates the animated new position of the cutout (called for each frame by requestAnimationFrame)
    */
   private transitionCutoutToPosition(
     ellapsed: number,
