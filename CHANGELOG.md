@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/josias-r/boarding.js/compare/v1.1.3...v1.2.0) (2022-11-02)
+
+
+### Features
+
+* switch underlying highlighted-element tracking method. at the cost of a bit more performance usage, the element tracking is now much more stable (i.e. css transformations + animations are also tracked) ([d6f2fcc](https://github.com/josias-r/boarding.js/commit/d6f2fcc685c0dc5cbac3e27b713b0854aecb6e98))
+
 ## [1.1.3](https://github.com/josias-r/boarding.js/compare/v1.1.2...v1.1.3) (2022-11-02)
 
 
