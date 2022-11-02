@@ -1,3 +1,18 @@
+## [1.1.3](https://github.com/josias-r/boarding.js/compare/v1.1.2...v1.1.3) (2022-11-02)
+
+
+### Bug Fixes
+
+* popover hide should actually unmount element not just hide it ([f5650e3](https://github.com/josias-r/boarding.js/commit/f5650e34ddaa9a1331b6328e82bf4fad488bec18))
+
+## [1.1.2](https://github.com/josias-r/boarding.js/compare/v1.1.1...v1.1.2) (2022-11-02)
+
+
+### Bug Fixes
+
+* remove ResizeObserver and event listeners. Will be replaced by custom element tracking logic ([0fe479f](https://github.com/josias-r/boarding.js/commit/0fe479f2ba1e3671fa1a453e4599316bf7c86eb8))
+* track active element on screen using requestAnimationFrame ([b32bbb7](https://github.com/josias-r/boarding.js/commit/b32bbb71ac44b3e01e62944f43e85c8fd53f4685))
+
 ## [1.1.1](https://github.com/josias-r/boarding.js/compare/v1.1.0...v1.1.1) (2022-11-02)
 
 

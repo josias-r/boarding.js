@@ -73,7 +73,6 @@ export function createSvgCutout({
   cutoutPath.style.opacity = `${opacity}`;
   cutoutPath.style.pointerEvents = "auto";
   cutoutPath.style.cursor = "pointer";
-  cutoutPath.style.transition = "0.4s ease";
 
   svg.appendChild(cutoutPath);
   return svg;

@@ -162,9 +162,10 @@ export default class Popover {
       return;
     }
 
-    this.highlightElement = undefined;
-
-    this.popover.popoverWrapper.style.display = "none";
+    // unmount node
+    this.popover.popoverWrapper.parentElement?.removeChild(
+      this.popover.popoverWrapper
+    );
   }
 
   /**
