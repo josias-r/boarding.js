@@ -1,6 +1,10 @@
 import { BoardingSharedOptions } from "../boarding-types";
 import { OVERLAY_OPACITY } from "../common/constants";
-import { assertVarIsNotFalsy, checkOptionalValue } from "../common/utils";
+import {
+  assertVarIsNotFalsy,
+  checkOptionalValue,
+  easeInOutQuad,
+} from "../common/utils";
 import {
   createSvgCutout,
   CutoutDefinition,
@@ -31,6 +35,11 @@ interface OverlayOptions
   extends OverlaySupportedSharedOptions,
     OverlayTopLevelOptions {}
 
+type AnimatableCutoutDefinition = Pick<
+  CutoutDefinition,
+  "padding" | "hightlightBox"
+>;
+
 /**
  * Responsible for overlay creation and manipulation i.e.
  * cutting out the visible part, animating between the sections etc
@@ -38,6 +47,9 @@ interface OverlayOptions
 class Overlay {
   private options; // type will get inferred with default values being required
   private cutoutSVGElement?: SVGSVGElement;
+  private currentTransitionInProgress?: () => void;
+  private activeSvgCutoutDefinition?: AnimatableCutoutDefinition;
+  private highlightElemRect?: DOMRect;
 
   public currentHighlightedElement?: HighlightElement;
   public previouslyHighlightedElement?: HighlightElement;
@@ -82,10 +94,14 @@ class Overlay {
       this.currentHighlightedElement.onDeselected();
     }
 
+    // transition to new element + start tracking element on screen
+    this.startElementTracking(
+      this.currentHighlightedElement || element,
+      element
+    );
+
     this.previouslyHighlightedElement = this.currentHighlightedElement;
     this.currentHighlightedElement = element;
-
-    this.updateCutout(element);
 
     // Element has been highlighted
     element.onHighlighted();
@@ -111,6 +127,9 @@ class Overlay {
     // // Clear any existing timers and remove node
     // window.clearTimeout(this.hideTimer);
 
+    // stop tracking element
+    this.cancelElementTracking();
+
     if (this.options.animate && !immediate) {
       // this.node.style.opacity = "0";
       // this.hideTimer = this.window.setTimeout(
@@ -125,24 +144,160 @@ class Overlay {
   }
 
   /**
-   * Refreshes the overlay i.e. sets the size according to current window size
-   * And moves the highlight around if necessary
+   * Initialize requestAnimationFrame tracking of active element
    */
-  public refresh() {
-    // If no highlighted element, cancel the refresh
-    if (!this.currentHighlightedElement) {
-      return;
+  private startElementTracking(
+    fromElement: HighlightElement,
+    toElement: HighlightElement
+  ) {
+    const duration = 400;
+    const start = Date.now();
+
+    const animateOverlay = () => {
+      const ellapsed = Date.now() - start;
+      // this will be false, if startElementTracking gets called a second time -> prevents multiple transitions to run at the same time
+      if (this.currentTransitionInProgress === animateOverlay) {
+        // transition
+        if (ellapsed < duration) {
+          this.transitionCutoutToPosition(
+            ellapsed,
+            duration,
+            fromElement,
+            toElement
+          );
+        } else {
+          // once transition is finished, just track the element on the screen
+          this.trackElementOnScreen();
+        }
+
+        this.refreshSvgAndPopover();
+        window.requestAnimationFrame(animateOverlay);
+      }
+    };
+    this.currentTransitionInProgress = animateOverlay;
+
+    window.requestAnimationFrame(animateOverlay);
+  }
+
+  /**
+   *
+   */
+  private transitionCutoutToPosition(
+    ellapsed: number,
+    duration: number,
+    fromElement: HighlightElement,
+    toElement: HighlightElement
+  ) {
+    const fromDefinition: AnimatableCutoutDefinition = this
+      .activeSvgCutoutDefinition
+      ? {
+          ...this.activeSvgCutoutDefinition,
+          hightlightBox: { ...this.activeSvgCutoutDefinition.hightlightBox }, // deep copy in case it was mutated
+        }
+      : {
+          hightlightBox: fromElement.getElement().getBoundingClientRect(),
+          padding: fromElement.getCustomPadding(),
+        };
+
+    const toRect = toElement.getElement().getBoundingClientRect();
+    const toPadding = checkOptionalValue(
+      this.options.padding,
+      toElement.getCustomPadding()
+    );
+    const fromPadding = checkOptionalValue(
+      this.options.padding,
+      fromDefinition.padding
+    );
+
+    const x = easeInOutQuad(
+      ellapsed,
+      fromDefinition.hightlightBox.x,
+      toRect.x - fromDefinition.hightlightBox.x,
+      duration
+    );
+    const y = easeInOutQuad(
+      ellapsed,
+      fromDefinition.hightlightBox.y,
+      toRect.y - fromDefinition.hightlightBox.y,
+      duration
+    );
+    const width = easeInOutQuad(
+      ellapsed,
+      fromDefinition.hightlightBox.width,
+      toRect.width - fromDefinition.hightlightBox.width,
+      duration
+    );
+    const height = easeInOutQuad(
+      ellapsed,
+      fromDefinition.hightlightBox.height,
+      toRect.height - fromDefinition.hightlightBox.height,
+      duration
+    );
+    const padding = easeInOutQuad(
+      ellapsed,
+      fromPadding,
+      toPadding - fromPadding,
+      duration
+    );
+
+    const newCutoutPosition: AnimatableCutoutDefinition = {
+      hightlightBox: { x: x, y: y, width: width, height: height },
+      padding: padding,
+    };
+    this.activeSvgCutoutDefinition = newCutoutPosition;
+    this.updateCutoutPosition(newCutoutPosition);
+  }
+
+  /**
+   * Stop tracking active highlight element on screen
+   */
+  private cancelElementTracking() {
+    this.currentTransitionInProgress = undefined; // will cancel the requestAnimationFrame loop
+    this.activeSvgCutoutDefinition = undefined; // set back to default
+    this.highlightElemRect = undefined; // set back to default
+  }
+
+  /**
+   * Get active element on screen ad set cutoutposition to it
+   */
+  private trackElementOnScreen() {
+    if (this.currentHighlightedElement) {
+      const currEl = this.currentHighlightedElement.getElement();
+      const rect = currEl.getBoundingClientRect();
+      if (JSON.stringify(rect) !== JSON.stringify(this.highlightElemRect)) {
+        const newCutoutPosition: AnimatableCutoutDefinition = {
+          hightlightBox: {
+            x: rect.x,
+            y: rect.y,
+            width: rect.width,
+            height: rect.height,
+          },
+          padding: checkOptionalValue(
+            this.options.padding,
+            this.currentHighlightedElement.getCustomPadding()
+          ),
+        };
+        // update cutout
+        this.updateCutoutPosition(newCutoutPosition);
+        // update activeSvgCutoutDefinition cache
+        this.activeSvgCutoutDefinition = newCutoutPosition;
+      }
+      this.highlightElemRect = rect;
     }
+  }
 
+  /**
+   * Update popover position and SVG viewBox
+   */
+  private refreshSvgAndPopover() {
     assertVarIsNotFalsy(this.cutoutSVGElement);
-
+    assertVarIsNotFalsy(this.currentHighlightedElement);
     // update svg viewBox
     const windowX = window.innerWidth;
     const windowY = window.innerHeight;
     this.cutoutSVGElement.setAttribute("viewBox", `0 0 ${windowX} ${windowY}`);
 
     this.currentHighlightedElement.getPopover()?.refresh();
-    this.updateCutout(this.currentHighlightedElement, false);
   }
 
   /**
@@ -172,27 +327,13 @@ class Overlay {
     this.cutoutSVGElement = undefined;
   }
 
-  private updateCutout(
-    highlightElement: HighlightElement,
-    animated = this.options.animate
-  ) {
-    // update lastActiveElement to new element provided
-    this.currentHighlightedElement = highlightElement;
-
-    const boundingClientRect = highlightElement
-      .getElement()
-      .getBoundingClientRect();
-
-    const customPadding = highlightElement.getCustomPadding();
-
+  /**
+   * Generate a SVG cutout <Path> based on definition passed as argument
+   */
+  private updateCutoutPosition(definition: AnimatableCutoutDefinition) {
     const cutoutBoxSettings: CutoutDefinition = {
-      hightlightBox: {
-        x: boundingClientRect.x,
-        y: boundingClientRect.y,
-        width: boundingClientRect.width,
-        height: boundingClientRect.height,
-      },
-      padding: checkOptionalValue(this.options.padding, customPadding),
+      hightlightBox: definition.hightlightBox,
+      padding: definition.padding,
       opacity: this.options.opacity,
       animated: this.options.animate,
     };
@@ -206,21 +347,10 @@ class Overlay {
         .firstElementChild as SVGPathElement | null;
 
       if (pathElement?.tagName === "path") {
-        const pathElementTransitionBak = pathElement.style.transition;
-        if (!animated) {
-          pathElement.style.transition = "none";
-        }
         pathElement.setAttribute(
           "d",
           generateSvgCutoutPathString(cutoutBoxSettings)
         );
-
-        if (!animated) {
-          // set timeout is necessary, otherwise disabling transition would be ignored, becase it gets added in sync again (immediately)
-          setTimeout(() => {
-            pathElement.style.transition = pathElementTransitionBak;
-          }, 0);
-        }
       } else {
         throw new Error("No existing path found on SVG but we want one :(");
       }
