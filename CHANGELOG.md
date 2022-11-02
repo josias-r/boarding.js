@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/josias-r/boarding.js/compare/v1.1.2...v1.1.3) (2022-11-02)
+
+
+### Bug Fixes
+
+* popover hide should actually unmount element not just hide it ([f5650e3](https://github.com/josias-r/boarding.js/commit/f5650e34ddaa9a1331b6328e82bf4fad488bec18))
+
 ## [1.1.2](https://github.com/josias-r/boarding.js/compare/v1.1.1...v1.1.2) (2022-11-02)
 
 
