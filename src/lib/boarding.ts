@@ -28,6 +28,8 @@ class Boarding {
   private currentStep: number;
   private currentMovePrevented: boolean;
 
+  private resizeObserver: ResizeObserver;
+
   private overlay: Overlay;
 
   constructor(options?: BoardingOptions) {
@@ -69,6 +71,10 @@ class Boarding {
       onReset: this.options.onReset,
     });
 
+    this.resizeObserver = new ResizeObserver(() => {
+      this.refresh();
+    });
+
     // bind this class to eventHandlers
     this.onResize = this.onResize.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
@@ -95,6 +101,8 @@ class Boarding {
 
     // attach eventListeners BEFORE setting highlighting element
     this.attachEventListeners();
+    // attach resizeObserver for size changes
+    this.updateResizeObserver();
 
     this.isActivated = true;
     this.currentStep = index;
@@ -118,6 +126,8 @@ class Boarding {
     }
     // attach eventListeners BEFORE setting highlighting element
     this.attachEventListeners();
+    // attach resizeObserver for size changes
+    this.updateResizeObserver();
 
     this.isActivated = true;
     this.overlay.highlight(element);
@@ -142,6 +152,8 @@ class Boarding {
     }
 
     this.overlay.highlight(previousElem);
+    // attach resizeObserver for size changes
+    this.updateResizeObserver();
     this.currentStep -= 1;
   }
 
@@ -165,6 +177,8 @@ class Boarding {
     }
 
     this.overlay.highlight(nextElem);
+    // attach resizeObserver for size changes
+    this.updateResizeObserver();
     this.currentStep += 1;
   }
 
@@ -189,6 +203,11 @@ class Boarding {
   public reset(immediate = false) {
     this.currentStep = 0;
     this.isActivated = false;
+    const domElement = this.overlay.currentHighlightedElement?.getElement();
+    if (domElement) {
+      this.resizeObserver.unobserve(domElement);
+    }
+
     this.overlay.clear(immediate);
     this.removeEventListeners();
   }
@@ -246,6 +265,7 @@ class Boarding {
       window.addEventListener("touchstart", this.onClick, false);
     }
   }
+
   /**
    * Removes all DOM events listeners
    */
@@ -256,6 +276,17 @@ class Boarding {
 
     window.removeEventListener("click", this.onClick, false);
     window.removeEventListener("touchstart", this.onClick, false);
+  }
+
+  private updateResizeObserver() {
+    const previousElement = this.overlay.previouslyHighlightedElement;
+    if (previousElement) {
+      this.resizeObserver.unobserve(previousElement.getElement());
+    }
+    const element = this.overlay.currentHighlightedElement;
+    if (element) {
+      this.resizeObserver.observe(element.getElement());
+    }
   }
 
   /**
