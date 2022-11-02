@@ -28,8 +28,6 @@ class Boarding {
   private currentStep: number;
   private currentMovePrevented: boolean;
 
-  private resizeObserver: ResizeObserver;
-
   private overlay: Overlay;
 
   constructor(options?: BoardingOptions) {
@@ -71,12 +69,7 @@ class Boarding {
       onReset: this.options.onReset,
     });
 
-    this.resizeObserver = new ResizeObserver(() => {
-      this.refresh();
-    });
-
     // bind this class to eventHandlers
-    this.onResize = this.onResize.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onClick = this.onClick.bind(this);
     this.moveNext = this.moveNext.bind(this);
@@ -101,8 +94,6 @@ class Boarding {
 
     // attach eventListeners BEFORE setting highlighting element
     this.attachEventListeners();
-    // attach resizeObserver for size changes
-    this.updateResizeObserver();
 
     this.isActivated = true;
     this.currentStep = index;
@@ -126,18 +117,9 @@ class Boarding {
     }
     // attach eventListeners BEFORE setting highlighting element
     this.attachEventListeners();
-    // attach resizeObserver for size changes
-    this.updateResizeObserver();
 
     this.isActivated = true;
     this.overlay.highlight(element);
-  }
-
-  /**
-   * Refreshes and repositions the popover and the overlay
-   */
-  public refresh() {
-    this.overlay.refresh();
   }
 
   /**
@@ -152,8 +134,6 @@ class Boarding {
     }
 
     this.overlay.highlight(previousElem);
-    // attach resizeObserver for size changes
-    this.updateResizeObserver();
     this.currentStep -= 1;
   }
 
@@ -177,8 +157,6 @@ class Boarding {
     }
 
     this.overlay.highlight(nextElem);
-    // attach resizeObserver for size changes
-    this.updateResizeObserver();
     this.currentStep += 1;
   }
 
@@ -203,11 +181,6 @@ class Boarding {
   public reset(immediate = false) {
     this.currentStep = 0;
     this.isActivated = false;
-    const domElement = this.overlay.currentHighlightedElement?.getElement();
-    if (domElement) {
-      this.resizeObserver.unobserve(domElement);
-    }
-
     this.overlay.clear(immediate);
     this.removeEventListeners();
   }
@@ -252,8 +225,6 @@ class Boarding {
    * @todo: add throttling in all the listeners
    */
   private attachEventListeners() {
-    window.addEventListener("resize", this.onResize, false);
-    window.addEventListener("scroll", this.onResize, false);
     window.addEventListener("keyup", this.onKeyUp, false);
 
     // Binding both touch and click results in popup getting shown and then immediately get hidden.
@@ -270,23 +241,10 @@ class Boarding {
    * Removes all DOM events listeners
    */
   private removeEventListeners() {
-    window.removeEventListener("resize", this.onResize, false);
-    window.removeEventListener("scroll", this.onResize, false);
     window.removeEventListener("keyup", this.onKeyUp, false);
 
     window.removeEventListener("click", this.onClick, false);
     window.removeEventListener("touchstart", this.onClick, false);
-  }
-
-  private updateResizeObserver() {
-    const previousElement = this.overlay.previouslyHighlightedElement;
-    if (previousElement) {
-      this.resizeObserver.unobserve(previousElement.getElement());
-    }
-    const element = this.overlay.currentHighlightedElement;
-    if (element) {
-      this.resizeObserver.observe(element.getElement());
-    }
   }
 
   /**
@@ -349,18 +307,6 @@ class Boarding {
         this.handlePrevious();
       }
     }
-  }
-
-  /**
-   * Handler for the onResize DOM event
-   * Makes sure highlighted element stays at valid position
-   */
-  private onResize() {
-    if (!this.isActivated) {
-      return;
-    }
-
-    this.refresh();
   }
 
   /**
