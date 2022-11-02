@@ -1,6 +1,6 @@
 > This is a port of [driver.js](https://github.com/kamranahmedse/driver.js).  
 > It uses a different highlight technique under the hood, which does not fiddle with z-index.  
-> This ensures the layout will always stay instact. With driver.js this is not the case
+> This ensures the layout will always stay intact. With driver.js this is not the case
 
 <h1 align="center"><img height="150" src="./public/images/boarding.svg" /><br> Boarding.js</h1>
 
@@ -341,9 +341,6 @@ boarding.preventMove();
 
 // Highlights the element using query selector or the step definition
 boarding.highlight(string | stepDefinition);
-
-// Reposition the popover and highlighted element
-boarding.refresh();
 
 // Resets the overlay and clears the screen
 boarding.reset();
