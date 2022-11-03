@@ -1,3 +1,11 @@
+## [1.2.1](https://github.com/josias-r/boarding.js/compare/v1.2.0...v1.2.1) (2022-11-03)
+
+
+### Bug Fixes
+
+* fix overlay opacity option being ignored ([597eac3](https://github.com/josias-r/boarding.js/commit/597eac3c8e08b1c84ae289b06698510bdeb8a863))
+* set popover pointer-events to "auto", so it won't get overwritten by parent styles that might come from outside ([39f468c](https://github.com/josias-r/boarding.js/commit/39f468c99208164ddb2e52405a7ac252a287b073))
+
 # [1.2.0](https://github.com/josias-r/boarding.js/compare/v1.1.3...v1.2.0) (2022-11-02)
 
 
