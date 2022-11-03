@@ -40,7 +40,7 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
     <meta name="theme-color" content="#ffffff" />
-    <script type="module" crossorigin src="/boarding.js/assets/index.5643126f.js"></script>
+    <script type="module" crossorigin src="/boarding.js/assets/index.7a94a455.js"></script>
     <link rel="stylesheet" href="/boarding.js/assets/index.318443cb.css">
   </head>
   <body>
@@ -523,7 +523,7 @@ boarding.highlight({
   showButtons: false, // Do not show control buttons in footer
   keyboardControl: true, // Allow controlling through keyboard (escape to close, arrow keys to move)
   scrollIntoViewOptions: {}, // We use `scrollIntoView()` when possible, pass here the options for it if you want any
-  onHighlightStarted: (Element) {}, // Called when element is about to be highlighted
+  onBeforeHighlighted: (Element) {}, // Called when element is about to be highlighted
   onHighlighted: (Element) {}, // Called when element is fully highlighted
   onDeselected: (Element) {}, // Called when element has been deselected
   onReset: (Element) {},        // Called when overlay is about to be cleared
