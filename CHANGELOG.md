@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/josias-r/boarding.js/compare/v1.2.2...v1.2.3) (2022-11-03)
+
+
+### Bug Fixes
+
+* allow defining all HihglightedElement eventhandlers both on top-level or on step-level ([8ae590d](https://github.com/josias-r/boarding.js/commit/8ae590dadf2d9b969dbe63bd00ca60d430133b4d))
+
 ## [1.2.2](https://github.com/josias-r/boarding.js/compare/v1.2.1...v1.2.2) (2022-11-03)
 
 
