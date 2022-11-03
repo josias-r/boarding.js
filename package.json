@@ -12,6 +12,13 @@
     "./styles/main.css": "./styles/main.css",
     "./styles/themes/basic.css": "./styles/themes/basic.css"
   },
+  "files": [
+    "dist/**",
+    "!**/.DS_Store",
+    "!dist/favicons/**",
+    "!dist/images/**",
+    "styles/**"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "vite build --config lib-build.vite.config.js && tsc src/lib/main.ts --declaration --emitDeclarationOnly --esModuleInterop --outDir dist ",
