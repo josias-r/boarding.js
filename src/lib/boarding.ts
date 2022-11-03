@@ -454,8 +454,8 @@ class Boarding {
       highlightDomElement: domElement,
       options: {
         scrollIntoViewOptions: this.options.scrollIntoViewOptions,
-        onHighlightStarted:
-          currentStep.onHighlightStarted || this.options.onHighlightStarted,
+        onBeforeHighlighted:
+          currentStep.onBeforeHighlighted || this.options.onBeforeHighlighted,
         onHighlighted: currentStep.onHighlighted || this.options.onHighlighted,
         onDeselected: currentStep.onDeselected || this.options.onDeselected,
         onNext: currentStep.onNext || this.options.onNext,

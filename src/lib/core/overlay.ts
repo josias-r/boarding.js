@@ -84,7 +84,7 @@ class Overlay {
     // window.clearTimeout(this.hideTimer);
 
     // Trigger the hook for highlight started
-    element.onHighlightStarted();
+    element.onBeforeHighlighted();
 
     // Old element has been deselected
     if (

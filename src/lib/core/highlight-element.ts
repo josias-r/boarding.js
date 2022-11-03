@@ -14,7 +14,7 @@ export interface HighlightElementHybridOptions
   /**
    * Callback to be called when element is about to be highlighted
    */
-  onHighlightStarted?: (element: HighlightElement) => void;
+  onBeforeHighlighted?: (element: HighlightElement) => void;
   /**
    * Callback to be called when element has been highlighted
    */
@@ -96,8 +96,8 @@ class HighlightElement {
   /**
    * Is called when the element is about to be highlighted
    */
-  public onHighlightStarted() {
-    this.options.onHighlightStarted?.(this);
+  public onBeforeHighlighted() {
+    this.options.onBeforeHighlighted?.(this);
   }
 
   /**
