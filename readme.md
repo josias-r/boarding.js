@@ -260,7 +260,7 @@ const boarding = new Boarding({
   showButtons: false, // Do not show control buttons in footer
   keyboardControl: true, // Allow controlling through keyboard (escape to close, arrow keys to move)
   scrollIntoViewOptions: {}, // We use `scrollIntoView()` when possible, pass here the options for it if you want any
-  onBeforeHighlighted: (HighlightElement) => {}, // Called when element is about to be highlighted
+  onBeforeHighlighted: (HighlightElement) => {}, // Called when element is about to be highlighted 
   onHighlighted: (HighlightElement) => {}, // Called when element is fully highlighted
   onDeselected: (HighlightElement) => {}, // Called when element has been deselected
   onReset: (HighlightElement) => {}, // Called when overlay is about to be cleared
