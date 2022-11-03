@@ -454,12 +454,13 @@ class Boarding {
       highlightDomElement: domElement,
       options: {
         scrollIntoViewOptions: this.options.scrollIntoViewOptions,
-        onHighlightStarted: this.options.onHighlightStarted,
-        onHighlighted: this.options.onHighlighted,
-        onDeselected: this.options.onDeselected,
-        onNext: currentStep.onNext,
-        onPrevious: currentStep.onPrevious,
-        padding: currentStep.padding,
+        onHighlightStarted:
+          currentStep.onHighlightStarted || this.options.onHighlightStarted,
+        onHighlighted: currentStep.onHighlighted || this.options.onHighlighted,
+        onDeselected: currentStep.onDeselected || this.options.onDeselected,
+        onNext: currentStep.onNext || this.options.onNext,
+        onPrevious: currentStep.onPrevious || this.options.onPrevious,
+        padding: currentStep.padding, // note this is ONLY the stepLvl padding, the "custom padding", so we can later check if it exists using getCustomPadding
       },
       popover,
     });

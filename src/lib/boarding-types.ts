@@ -1,7 +1,4 @@
-import {
-  HighlightElementStepLevelOptions,
-  HighlightElementTopLevelOptions,
-} from "./core/highlight-element";
+import { HighlightElementHybridOptions } from "./core/highlight-element";
 import { OverlayTopLevelOptions } from "./core/overlay";
 import {
   PopoverHybridOptions,
@@ -33,7 +30,7 @@ export interface BoardingOptions
     OverlayTopLevelOptions,
     PopoverHybridOptions,
     PopoverTopLevelOptions,
-    HighlightElementTopLevelOptions {
+    HighlightElementHybridOptions {
   /**
    * Whether to allow controlling steps through keyboard
    * @default true
@@ -60,8 +57,7 @@ export interface BoardingOptions
   className?: string;
 }
 
-export interface BoardingStepDefinition
-  extends HighlightElementStepLevelOptions {
+export interface BoardingStepDefinition extends HighlightElementHybridOptions {
   /**
    * Query selector representing the DOM Element
    */

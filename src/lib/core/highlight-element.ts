@@ -8,8 +8,9 @@ type HighlightElementSupportedSharedOptions = Pick<
   "scrollIntoViewOptions"
 >;
 
-/** The options of highlight-element that will come from the top-level */
-export interface HighlightElementTopLevelOptions {
+/** The options of popover that will come from the top-level but can also be overwritten */
+export interface HighlightElementHybridOptions
+  extends Partial<Pick<BoardingSharedOptions, "padding">> {
   /**
    * Callback to be called when element is about to be highlighted
    */
@@ -22,11 +23,6 @@ export interface HighlightElementTopLevelOptions {
    * Callback to be called when element has been deselected
    */
   onDeselected?: (element: HighlightElement) => void;
-}
-
-/** The options of highlight-element that will be defined on a step-level */
-export interface HighlightElementStepLevelOptions
-  extends Partial<Pick<BoardingSharedOptions, "padding">> {
   /**
    * Is called when the next element is about to be highlighted
    */
@@ -36,10 +32,8 @@ export interface HighlightElementStepLevelOptions
    */
   onPrevious?: (element: HighlightElement) => void;
 }
-
 interface HighlightElementOptions
-  extends HighlightElementTopLevelOptions,
-    HighlightElementStepLevelOptions,
+  extends HighlightElementHybridOptions,
     HighlightElementSupportedSharedOptions {}
 
 /**
