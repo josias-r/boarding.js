@@ -21,6 +21,7 @@ div#boarding-popover-item {
   z-index: 1000000000;
   background: #fff;
   color: #000;
+  pointer-events: auto;
 }
 
 /* tip */
