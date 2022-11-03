@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/josias-r/boarding.js/compare/v1.2.1...v1.2.2) (2022-11-03)
+
+
+### Bug Fixes
+
+* optimze npm package files published ([72ff08a](https://github.com/josias-r/boarding.js/commit/72ff08a647e925749a8cea405e311c1fd8fa78a4))
+
 ## [1.2.1](https://github.com/josias-r/boarding.js/compare/v1.2.0...v1.2.1) (2022-11-03)
 
 
