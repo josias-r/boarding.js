@@ -1,7 +1,6 @@
 import Overlay from "./core/overlay";
 import Popover from "./core/popover";
 import {
-  OVERLAY_OPACITY,
   OVERLAY_PADDING,
   SHOULD_ANIMATE_OVERLAY,
   SHOULD_OUTSIDE_CLICK_CLOSE,
@@ -34,7 +33,6 @@ class Boarding {
     const {
       strictClickHandling = SHOULD_STRICT_CLICK_HANDLE, // Whether to only allow clicking the highlighted element
       animate = SHOULD_ANIMATE_OVERLAY, // Whether to animate or not
-      opacity = OVERLAY_OPACITY, // Overlay opacity
       padding = OVERLAY_PADDING, // Spacing around the element from the overlay
       scrollIntoViewOptions = {
         behavior: "auto",
@@ -49,7 +47,6 @@ class Boarding {
     this.options = {
       strictClickHandling,
       animate,
-      opacity,
       padding,
       scrollIntoViewOptions,
       allowClose,
@@ -67,6 +64,7 @@ class Boarding {
       animate: this.options.animate,
       padding: this.options.padding,
       onReset: this.options.onReset,
+      opacity: this.options.opacity,
     });
 
     // bind this class to eventHandlers
