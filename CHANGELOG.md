@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/josias-r/boarding.js/compare/v1.2.3...v2.0.0) (2022-11-03)
+
+
+### Bug Fixes
+
+* rename `onHighlightStarted` to `onBeforeHighlighted` to make the naming more intuitive ([b619248](https://github.com/josias-r/boarding.js/commit/b61924837771f00159855b935e830fef8bbe87a2))
+
+
+### BREAKING CHANGES
+
+* you need to migrate all uses of onHighlightStarted to onBeforeHighlighted
+
 ## [1.2.3](https://github.com/josias-r/boarding.js/compare/v1.2.2...v1.2.3) (2022-11-03)
 
 
