@@ -51,7 +51,7 @@ yarn add boarding.js
 npm install boarding.js
 ```
 
-Or include it using CDN. If you want a specific version, put it as `boarding.js@1.0.7` in the name
+Or include it using CDN. If you want a specific version, put it as `boarding.js@1.3.0` in the name
 
 ```html
 <script src="https://unpkg.com/boarding.js/dist/main.js"></script>
