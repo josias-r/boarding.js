@@ -1,3 +1,10 @@
+## [2.1.2](https://github.com/josias-r/boarding.js/compare/v2.1.1...v2.1.2) (2022-11-04)
+
+
+### Bug Fixes
+
+* make clickevent even more isolated by listening on `document` during capture phase ([7c7bc74](https://github.com/josias-r/boarding.js/commit/7c7bc740ad8597a04687ac5ade1182b5ae5e9d3f))
+
 ## [2.1.1](https://github.com/josias-r/boarding.js/compare/v2.1.0...v2.1.1) (2022-11-04)
 
 
