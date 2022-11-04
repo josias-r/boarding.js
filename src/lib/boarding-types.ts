@@ -64,6 +64,14 @@ export interface BoardingStepDefinition extends HighlightElementHybridOptions {
    * Query selector representing the DOM Element
    */
   element: string | HTMLElement;
+
+  /**
+   * A method that will run very early for the element to-be highlighted. The method will run right before `onNext` (or `onPrevious` when going backwards)
+   *
+   * Note: This method won't run for the first step when starting
+   * @param initiator either "next", "prev" or "init"
+   */
+  prepareElement?: (initiator: "next" | "prev" | "init") => void;
   /**
    * Options representing popover for this step
    */

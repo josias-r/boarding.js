@@ -94,9 +94,16 @@ class Boarding {
    * @param index at which highlight is to be started
    */
   public start(index = 0) {
+    this.currentMovePrevented = false;
+
     if (!this.steps || this.steps.length === 0) {
       throw new Error("There are no steps defined to iterate");
     }
+    this.prepareFirstElement(this.steps[index]);
+    if (this.currentMovePrevented) {
+      return;
+    }
+
     const element = this.prepareElementFromStep(index);
     if (!element) {
       throw new Error(
@@ -113,11 +120,18 @@ class Boarding {
    * @param selector Query selector, htmlelement or a step definition
    */
   public highlight(selector: BoardingStepDefinition | string | HTMLElement) {
+    this.currentMovePrevented = false;
+
     // convert argument to step definition
     const stepDefinition: BoardingStepDefinition =
       typeof selector === "object" && "element" in selector
         ? selector
         : { element: selector };
+
+    this.prepareFirstElement(stepDefinition);
+    if (this.currentMovePrevented) {
+      return;
+    }
 
     const element = this.prepareElementFromStep(stepDefinition);
     if (!element) {
@@ -143,7 +157,7 @@ class Boarding {
   }
 
   /**
-   * Prevents the current move. Useful in `onNext` if you want to
+   * Prevents the current move. Useful in `prepareElement`, `onNext`, `onPrevious` if you want to
    * perform some asynchronous task and manually move to next step
    */
   public preventMove() {
@@ -228,6 +242,13 @@ class Boarding {
    */
   public getSteps() {
     return this.steps;
+  }
+
+  /**
+   * Runs `prepareElement` for the first element.
+   */
+  private prepareFirstElement(fistStep: BoardingStepDefinition) {
+    fistStep.prepareElement?.("init");
   }
 
   /**
@@ -342,6 +363,13 @@ class Boarding {
     // Call the bound `onNext` handler if available
     const currentElem = this.prepareElementFromStep(this.currentStep);
 
+    // call prepareElement for coming element if available
+    this.steps[this.currentStep + 1]?.prepareElement?.("next");
+    // check if prepareElement wants to stop
+    if (this.currentMovePrevented) {
+      return;
+    }
+
     currentElem?.onNext();
 
     if (this.currentMovePrevented) {
@@ -359,6 +387,14 @@ class Boarding {
 
     // Call the bound `onPrevious` handler if available
     const currentStep = this.prepareElementFromStep(this.currentStep);
+
+    // call prepareElement for coming element if available
+    this.steps[this.currentStep - 1]?.prepareElement?.("prev");
+    // check if prepareElement wants to stop
+    if (this.currentMovePrevented) {
+      return;
+    }
+
     currentStep?.onPrevious();
 
     if (this.currentMovePrevented) {
