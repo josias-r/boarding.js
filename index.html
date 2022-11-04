@@ -509,9 +509,9 @@ boarding.highlight({
           <p>Here are the options that Boarding understands</p>
           <pre><code class="javascript">const boarding = new Boarding({
   className: 'scoped-class', // className to wrap boarding.js popover
-  animate: true,  // Animate while changing highlighted element
-  opacity: 0.75,  // Background opacity (0 means only popovers and without overlay)
-  padding: 10,    // Distance of element from around the edges
+  animate: true, // Animate while changing highlighted element
+  opacity: 0.75, // Background opacity (0 means only popovers and without overlay)
+  padding: 10, // Distance of element from around the edges
   allowClose: true, // Whether clicking on overlay should close or not
   overlayClickNext: false, // Should it move to next step on overlay click
   doneBtnText: 'Done', // Text on the final button
@@ -524,9 +524,11 @@ boarding.highlight({
   onBeforeHighlighted: (Element) {}, // Called when element is about to be highlighted
   onHighlighted: (Element) {}, // Called when element is fully highlighted
   onDeselected: (Element) {}, // Called when element has been deselected
-  onReset: (Element) {},        // Called when overlay is about to be cleared
-  onNext: (Element) =&gt; {},      // Called when moving to next step on any step
-  onPrevious: (Element) =&gt; {},  // Called when moving to next step on any step
+  onReset: (Element) {}, // Called when overlay is about to be cleared
+  onNext: (Element) =&gt; {}, // Called when moving to next step on any step
+  onPrevious: (Element) =&gt; {}, // Called when moving to next step on any step
+  strictClickHandling: "block-all", // Can also be `true` or if not wanted at all, `false`. Either block ALL pointer events, or isolate pointer-events to only allow on the highlighted element (`true`). Popover and overlay pointer-events are of course always allowed to be clicked
+
 });
 </code></pre>
         </div>

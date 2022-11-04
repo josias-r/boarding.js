@@ -260,12 +260,13 @@ const boarding = new Boarding({
   showButtons: false, // Do not show control buttons in footer
   keyboardControl: true, // Allow controlling through keyboard (escape to close, arrow keys to move)
   scrollIntoViewOptions: {}, // We use `scrollIntoView()` when possible, pass here the options for it if you want any
-  onBeforeHighlighted: (HighlightElement) => {}, // Called when element is about to be highlighted 
+  onBeforeHighlighted: (HighlightElement) => {}, // Called when element is about to be highlighted
   onHighlighted: (HighlightElement) => {}, // Called when element is fully highlighted
   onDeselected: (HighlightElement) => {}, // Called when element has been deselected
   onReset: (HighlightElement) => {}, // Called when overlay is about to be cleared
   onNext: (HighlightElement) => {}, // Called when moving to next step on any step
   onPrevious: (HighlightElement) => {}, // Called when moving to previous step on any step
+  strictClickHandling: true, // Can also be `"block-all"` or if not wanted at all, `false`. Either block ALL pointer events, or isolate pointer-events to only allow on the highlighted element (`true`). Popover and overlay pointer-events are of course always allowed to be clicked
 });
 ```
 
