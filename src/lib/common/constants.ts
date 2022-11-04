@@ -3,7 +3,6 @@ export const OVERLAY_PADDING = 10;
 export const POPOVER_OFFSET = 10;
 
 export const SHOULD_ANIMATE_OVERLAY = true;
-export const SHOULD_STRICT_CLICK_HANDLE = true;
 export const SHOULD_OUTSIDE_CLICK_CLOSE = true;
 export const ALLOW_KEYBOARD_CONTROL = true;
 export const SHOULD_OUTSIDE_CLICK_NEXT = false;
@@ -23,6 +22,10 @@ const CLASS_PREV_STEP_BTN = "boarding-prev-btn";
 const CLASS_NAVIGATION_BTNS = "boarding-navigation-btns";
 export const CLASS_CUTOUT = "boarding-coutout-svg";
 export const CLASS_ACTIVE_HIGHLIGHTED_ELEMENT = "boarding-highlighted-element";
+
+export const SHOULD_STRICT_CLICK_HANDLE = true;
+export const CLASS_NO_CLICK_BODY = "boarding-no-pointer-events";
+export const CLASS_STRICT_CLICK_BODY = "boarding-strict-pointer-events";
 
 export const CLASS_BTN_DISABLED = "boarding-disabled";
 export const CLASS_CLOSE_ONLY_BTN = "boarding-close-only-btn";

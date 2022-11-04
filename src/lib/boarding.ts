@@ -7,6 +7,8 @@ import {
   SHOULD_OUTSIDE_CLICK_NEXT,
   ALLOW_KEYBOARD_CONTROL,
   SHOULD_STRICT_CLICK_HANDLE,
+  CLASS_NO_CLICK_BODY,
+  CLASS_STRICT_CLICK_BODY,
 } from "./common/constants";
 import { assertIsElement } from "./common/utils";
 import HighlightElement from "./core/highlight-element";
@@ -102,12 +104,8 @@ class Boarding {
       );
     }
 
-    // attach eventListeners BEFORE setting highlighting element
-    this.attachEventListeners();
-
-    this.isActivated = true;
     this.currentStep = index;
-    this.overlay.highlight(element);
+    this.activateBoarding(element);
   }
 
   /**
@@ -125,11 +123,8 @@ class Boarding {
     if (!element) {
       return;
     }
-    // attach eventListeners BEFORE setting highlighting element
-    this.attachEventListeners();
 
-    this.isActivated = true;
-    this.overlay.highlight(element);
+    this.activateBoarding(element);
   }
 
   /**
@@ -193,6 +188,11 @@ class Boarding {
     this.isActivated = false;
     this.overlay.clear(immediate);
     this.removeEventListeners();
+    // remove strict click handling classes, in case they got added
+    document.body.classList.remove(
+      CLASS_NO_CLICK_BODY,
+      CLASS_STRICT_CLICK_BODY
+    );
   }
 
   /**
@@ -228,6 +228,23 @@ class Boarding {
    */
   public getSteps() {
     return this.steps;
+  }
+
+  /**
+   * Everything that needs to happen everytime boarding is activated (started tour, or highlighted specific element)
+   */
+  private activateBoarding(element: HighlightElement) {
+    // attach eventListeners BEFORE setting highlighting element
+    this.attachEventListeners();
+
+    this.isActivated = true;
+    this.overlay.highlight(element);
+
+    if (this.options.strictClickHandling === "block-all") {
+      document.body.classList.add(CLASS_NO_CLICK_BODY);
+    } else if (this.options.strictClickHandling) {
+      document.body.classList.add(CLASS_STRICT_CLICK_BODY);
+    }
   }
 
   /**
