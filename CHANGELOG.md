@@ -1,3 +1,18 @@
+# [2.1.0](https://github.com/josias-r/boarding.js/compare/v2.0.0...v2.1.0) (2022-11-04)
+
+
+### Bug Fixes
+
+* add class to highlighted element, while it is highlighted ([e43307f](https://github.com/josias-r/boarding.js/commit/e43307f5379a2384dcda1d5d12a811cfa6b5b714))
+* handle `strictClickHandling` visa CSS + pointer-events instead of complex/unstable JS ([8f86bbe](https://github.com/josias-r/boarding.js/commit/8f86bbed6255af557ff36d10eb4581b939403147))
+* use specific clickhandler for overlay element to improve stability ([7be6bb8](https://github.com/josias-r/boarding.js/commit/7be6bb8887c38451bfaf5aaa43d41525a91a5c25))
+* use specific clickhandler for popover elements to improve stability ([be26c00](https://github.com/josias-r/boarding.js/commit/be26c0056bb9adaddcdf0ea38e46545b91e1a2ed))
+
+
+### Features
+
+* add new `"block-all"` option for `strictClickHandling` ([377fcf5](https://github.com/josias-r/boarding.js/commit/377fcf5783217befe1bc734e2b8310e9793ccab1))
+
 # [2.0.0](https://github.com/josias-r/boarding.js/compare/v1.2.3...v2.0.0) (2022-11-03)
 
 
