@@ -33,7 +33,12 @@ export interface OverlayTopLevelOptions {
 
 interface OverlayOptions
   extends OverlaySupportedSharedOptions,
-    OverlayTopLevelOptions {}
+    OverlayTopLevelOptions {
+  /**
+   * Click handler attached to overlay element
+   */
+  onOverlayClick: () => void;
+}
 
 type AnimatableCutoutDefinition = Pick<
   CutoutDefinition,
@@ -314,6 +319,15 @@ class Overlay {
     const newSvgElement = createSvgCutout(cutoutDefinition);
     this.cutoutSVGElement = newSvgElement;
     document.body.appendChild(newSvgElement);
+
+    // attach eventListener
+    newSvgElement.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.options.onOverlayClick();
+    });
+
+    // note - garbage collection will take of "removeEventListener", since element will get removed from the dom without reference at some point
   }
 
   private unmountCutoutElement() {

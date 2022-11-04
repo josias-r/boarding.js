@@ -65,6 +65,18 @@ class Boarding {
       padding: this.options.padding,
       onReset: this.options.onReset,
       opacity: this.options.opacity,
+      onOverlayClick: () => {
+        // Perform the 'Next' operation when clicked outside the highlighted element
+        if (this.options.overlayClickNext) {
+          this.handleNext();
+          return;
+        }
+        // Remove the overlay If clicked outside the highlighted element
+        if (this.options.allowClose) {
+          this.reset();
+          return;
+        }
+      },
     });
 
     // bind this class to eventHandlers
@@ -260,26 +272,13 @@ class Boarding {
       .getElement()
       .contains(e.target);
 
-    const clickedOverlay = this.overlay.getOverlayElement()?.contains(e.target);
-
-    const clickedUnknown = !clickedOverlay && !clickedHighlightedElement;
+    const clickedUnknown = !clickedHighlightedElement;
 
     // with strict click handling any click that is not the active element (or a UI element of boarding.js) is ignored
     if (this.options.strictClickHandling && clickedUnknown) {
       e.preventDefault();
       e.stopImmediatePropagation();
       e.stopPropagation();
-      return;
-    }
-
-    // Perform the 'Next' operation when clicked outside the highlighted element
-    if (clickedOverlay && this.options.overlayClickNext) {
-      this.handleNext();
-      return;
-    }
-    // Remove the overlay If clicked outside the highlighted element
-    if (clickedOverlay && this.options.allowClose) {
-      this.reset();
       return;
     }
   }
