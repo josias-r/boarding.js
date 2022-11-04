@@ -110,6 +110,18 @@ interface PopoverOptions
    * If the current popover is the last one
    */
   isLast: boolean;
+  /**
+   * Click handler attached to popover "Next" or "Finish" button
+   */
+  onNextClick: () => void;
+  /**
+   * Click handler attached to popover "Previous" button
+   */
+  onPreviousClick: () => void;
+  /**
+   * Click handler attached to popover "Close" button
+   */
+  onCloseClick: () => void;
 }
 
 /**
@@ -270,6 +282,28 @@ export default class Popover {
       popoverWrapper.classList.add(`${ID_POPOVER}-animated`);
     }
     document.body.appendChild(popoverWrapper);
+
+    const isolateEvent = (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    // add btn eventlisteners
+    popoverNextBtn.addEventListener("click", (e) => {
+      isolateEvent(e);
+      this.options.onNextClick();
+    });
+    popoverPrevBtn.addEventListener("click", (e) => {
+      isolateEvent(e);
+      this.options.onPreviousClick();
+    });
+    popoverCloseBtn.addEventListener("click", (e) => {
+      isolateEvent(e);
+      this.options.onCloseClick();
+    });
+    // for popover otherwise, just isolate all events
+    popoverWrapper.addEventListener("click", (e) => isolateEvent(e));
+
+    // note - garbage collection will take of "removeEventListeners", since elements will get removed from the dom without reference at some point
 
     this.popover = {
       popoverWrapper,

@@ -260,15 +260,9 @@ class Boarding {
       .getElement()
       .contains(e.target);
 
-    const popoverElements = highlightedElement
-      .getPopover()
-      ?.getPopoverElements();
-    const clickedPopover = popoverElements?.popoverWrapper.contains(e.target);
-
     const clickedOverlay = this.overlay.getOverlayElement()?.contains(e.target);
 
-    const clickedUnknown =
-      !clickedPopover && !clickedOverlay && !clickedHighlightedElement;
+    const clickedUnknown = !clickedOverlay && !clickedHighlightedElement;
 
     // with strict click handling any click that is not the active element (or a UI element of boarding.js) is ignored
     if (this.options.strictClickHandling && clickedUnknown) {
@@ -287,23 +281,6 @@ class Boarding {
     if (clickedOverlay && this.options.allowClose) {
       this.reset();
       return;
-    }
-
-    if (popoverElements) {
-      const nextClicked = e.target.contains(popoverElements.popoverNextBtn);
-      const prevClicked = e.target.contains(popoverElements.popoverPrevBtn);
-      const closeClicked = e.target.contains(popoverElements.popoverCloseBtn);
-
-      if (closeClicked) {
-        this.reset();
-        return;
-      }
-
-      if (nextClicked) {
-        this.handleNext();
-      } else if (prevClicked) {
-        this.handlePrevious();
-      }
     }
   }
 
@@ -447,6 +424,16 @@ class Boarding {
         currentIndex: index,
         isFirst: index === 0,
         isLast: stepsCount === 0 || index === stepsCount - 1, // Only one item or last item
+        // click events
+        onNextClick: () => {
+          this.handleNext();
+        },
+        onPreviousClick: () => {
+          this.handlePrevious();
+        },
+        onCloseClick: () => {
+          this.reset();
+        },
       });
     }
 
