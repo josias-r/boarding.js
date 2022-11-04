@@ -283,25 +283,43 @@ export default class Popover {
     }
     document.body.appendChild(popoverWrapper);
 
+    const useCapture = true;
     const isolateEvent = (e: MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
+      e.stopImmediatePropagation();
     };
     // add btn eventlisteners
-    popoverNextBtn.addEventListener("click", (e) => {
-      isolateEvent(e);
-      this.options.onNextClick();
-    });
-    popoverPrevBtn.addEventListener("click", (e) => {
-      isolateEvent(e);
-      this.options.onPreviousClick();
-    });
-    popoverCloseBtn.addEventListener("click", (e) => {
-      isolateEvent(e);
-      this.options.onCloseClick();
-    });
+    popoverNextBtn.addEventListener(
+      "click",
+      (e) => {
+        this.options.onNextClick();
+        isolateEvent(e);
+      },
+      useCapture
+    );
+    popoverPrevBtn.addEventListener(
+      "click",
+      (e) => {
+        this.options.onPreviousClick();
+        isolateEvent(e);
+      },
+      useCapture
+    );
+    popoverCloseBtn.addEventListener(
+      "click",
+      (e) => {
+        this.options.onCloseClick();
+        isolateEvent(e);
+      },
+      useCapture
+    );
     // for popover otherwise, just isolate all events
-    popoverWrapper.addEventListener("click", (e) => isolateEvent(e));
+    popoverWrapper.addEventListener(
+      "click",
+      (e) => isolateEvent(e)
+      // DONT useCapture! otherwise, we need the event to propagate up to the buttons ;)
+    );
 
     // note - garbage collection will take of "removeEventListeners", since elements will get removed from the dom without reference at some point
 

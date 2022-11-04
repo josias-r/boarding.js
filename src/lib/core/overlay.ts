@@ -320,12 +320,18 @@ class Overlay {
     this.cutoutSVGElement = newSvgElement;
     document.body.appendChild(newSvgElement);
 
+    const useCapture = true;
     // attach eventListener
-    newSvgElement.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      this.options.onOverlayClick();
-    });
+    newSvgElement.addEventListener(
+      "click",
+      (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        this.options.onOverlayClick();
+      },
+      useCapture
+    );
 
     // note - garbage collection will take of "removeEventListener", since element will get removed from the dom without reference at some point
   }
