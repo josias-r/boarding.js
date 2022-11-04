@@ -8,6 +8,7 @@ import {
 } from "../common/constants";
 import {
   assertVarIsNotFalsy,
+  attachHighPrioClick,
   bringInView,
   checkOptionalValue,
 } from "../common/utils";
@@ -283,37 +284,20 @@ export default class Popover {
     }
     document.body.appendChild(popoverWrapper);
 
-    const useCapture = true; // we want to be the absolute first one to hear about the event
-    const isolateEvent = (e: MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-    };
-    // add btn eventlisteners (on document, because it is also earlier then it would be on the element directly)
-    document.addEventListener(
-      "click",
-      (e) => {
-        const target = e.target as HTMLElement;
+    // add btn eventlisteners (using util method, to ensure no external libraries will ever "hear" the click)
+    attachHighPrioClick(popoverWrapper, (e) => {
+      const target = e.target as HTMLElement;
 
-        // this will make sure no other eventListener will ever hear any popover clicks
-        if (popoverWrapper.contains(target)) {
-          isolateEvent(e);
-        }
-
-        if (popoverNextBtn.contains(target)) {
-          this.options.onNextClick();
-        }
-        if (popoverPrevBtn.contains(target)) {
-          this.options.onPreviousClick();
-        }
-        if (popoverCloseBtn.contains(target)) {
-          this.options.onCloseClick();
-        }
-      },
-      useCapture
-    );
-
-    // note - garbage collection will take of "removeEventListeners", since elements will get removed from the dom without reference at some point
+      if (popoverNextBtn.contains(target)) {
+        this.options.onNextClick();
+      }
+      if (popoverPrevBtn.contains(target)) {
+        this.options.onPreviousClick();
+      }
+      if (popoverCloseBtn.contains(target)) {
+        this.options.onCloseClick();
+      }
+    });
 
     this.popover = {
       popoverWrapper,

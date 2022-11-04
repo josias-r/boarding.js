@@ -11,6 +11,50 @@ export function easeInOutQuad(
 }
 
 /**
+ * Subscribe a click eventhandler at the earlist possible moment and at the same time prevent all other pointer-events,
+ * to make sure no external-library every knows the click happened
+ * @param element Element (or its children) that should be listened for click events
+ * @param handler the function that will get executed once a click happens on the requested element
+ *
+ * Note: For all current use-cases: garbage collection will take of "removeEventListener", since element will get removed from the dom without reference at some point
+ * For future use-cases where this is not possible anymore, we could return a "removeAllEventListeners" method
+ */
+export function attachHighPrioClick(
+  element: HTMLElement | SVGSVGElement,
+  handler: (e: MouseEvent | PointerEvent) => void
+) {
+  const listener = (
+    e: MouseEvent | PointerEvent,
+    finalHandler?: (e: MouseEvent | PointerEvent) => void
+  ) => {
+    const target = e.target as HTMLElement;
+    if (element.contains(target)) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      finalHandler?.(e);
+    }
+  };
+
+  const useCapture = true; // we want to be the absolute first one to hear about the event
+
+  // events to disable
+  document.addEventListener("pointerdown", listener, useCapture);
+  document.addEventListener("mousedown", listener, useCapture);
+  document.addEventListener("pointerup", listener, useCapture);
+  document.addEventListener("mouseup", listener, useCapture);
+  // actual click handler
+  document.addEventListener(
+    "click",
+    (e) => {
+      listener(e, handler);
+    },
+    useCapture
+  );
+}
+
+/**
  * Mark all items partial except a few in TS
  */
 export type PartialExcept<T, K extends keyof T> = Pick<T, K> & Partial<T>;

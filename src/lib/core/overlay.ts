@@ -2,6 +2,7 @@ import { BoardingSharedOptions } from "../boarding-types";
 import { OVERLAY_OPACITY } from "../common/constants";
 import {
   assertVarIsNotFalsy,
+  attachHighPrioClick,
   checkOptionalValue,
   easeInOutQuad,
 } from "../common/utils";
@@ -320,25 +321,10 @@ class Overlay {
     this.cutoutSVGElement = newSvgElement;
     document.body.appendChild(newSvgElement);
 
-    const useCapture = true; // we want to be the absolute first one to hear about the event
-    // attach eventListener (on document, because it is also earlier then it would be on the element directly)
-    document.addEventListener(
-      "click",
-      (e) => {
-        const target = e.target as HTMLElement;
-
-        if (newSvgElement.contains(target)) {
-          e.preventDefault();
-          e.stopPropagation();
-          e.stopImmediatePropagation();
-
-          this.options.onOverlayClick();
-        }
-      },
-      useCapture
-    );
-
-    // note - garbage collection will take of "removeEventListener", since element will get removed from the dom without reference at some point
+    // attach eventListener (using util method, to ensure no external libraries will ever "hear" the click)
+    attachHighPrioClick(newSvgElement, () => {
+      this.options.onOverlayClick();
+    });
   }
 
   private unmountCutoutElement() {
