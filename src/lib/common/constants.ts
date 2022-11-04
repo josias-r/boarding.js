@@ -22,6 +22,7 @@ const CLASS_NEXT_STEP_BTN = "boarding-next-btn";
 const CLASS_PREV_STEP_BTN = "boarding-prev-btn";
 const CLASS_NAVIGATION_BTNS = "boarding-navigation-btns";
 export const CLASS_CUTOUT = "boarding-coutout-svg";
+export const CLASS_ACTIVE_HIGHLIGHTED_ELEMENT = "boarding-highlighted-element";
 
 export const CLASS_BTN_DISABLED = "boarding-disabled";
 export const CLASS_CLOSE_ONLY_BTN = "boarding-close-only-btn";

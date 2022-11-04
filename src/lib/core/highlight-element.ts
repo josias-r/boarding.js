@@ -1,4 +1,5 @@
 import { BoardingSharedOptions } from "../boarding-types";
+import { CLASS_ACTIVE_HIGHLIGHTED_ELEMENT } from "../common/constants";
 import { bringInView } from "../common/utils";
 import Popover from "./popover";
 
@@ -88,7 +89,11 @@ class HighlightElement {
    * i.e. when moving the focus to next element of closing
    */
   public onDeselected() {
+    // hide popover
     this.popover?.hide();
+
+    // remove active class
+    this.getElement().classList.remove(CLASS_ACTIVE_HIGHLIGHTED_ELEMENT);
 
     this.options.onDeselected?.(this);
   }
@@ -110,6 +115,9 @@ class HighlightElement {
     // brought in the view, this would allow us to handle
     // the cases where the container has scroll overflow
     this.popover?.show(this);
+
+    // add active class
+    this.getElement().classList.add(CLASS_ACTIVE_HIGHLIGHTED_ELEMENT);
 
     this.options.onHighlighted?.(this);
   }
