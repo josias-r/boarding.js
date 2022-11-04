@@ -303,7 +303,7 @@ const boarding = new Boarding(boardingOptions);
 boarding.highlight(stepDefinition);
 ```
 
-And this is how it would look when creating a step by step guide:
+And this is how it would look when creating a step-by-step guide:
 
 ```javascript
 const boarding = new Boarding(boardingOptions);
@@ -317,7 +317,7 @@ boarding.defineSteps([
 
 ### API Methods
 
-Below are the set of methods that are available:
+Below is the set of available methods:
 
 ```javascript
 const boarding = new Boarding(boardingOptions);
