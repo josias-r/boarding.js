@@ -16,20 +16,17 @@ div#boarding-popover-item.boarding-popover-item-animated {
 body.boarding-strict-pointer-events,
 body.boarding-strict-pointer-events
   *:not(.boarding-highlighted-element *):not(#boarding-popover-item
-    *):not(.boarding-coutout-svg
-    p
     *):not(.boarding-highlighted-element):not(#boarding-popover-item):not(.boarding-coutout-svg
-    p),
+    path),
 body.boarding-no-pointer-events,
 body.boarding-no-pointer-events
-  *:not(#boarding-popover-item *):not(.boarding-coutout-svg
-    p
-    *):not(#boarding-popover-item):not(.boarding-coutout-svg p) {
+  *:not(#boarding-popover-item
+    *):not(#boarding-popover-item):not(.boarding-coutout-svg path) {
   pointer-events: none !important;
 }
 /* enable pointer-events where it makes sense */
 div#boarding-popover-item,
-.boarding-coutout-svg p,
+.boarding-coutout-svg path,
 body.boarding-strict-pointer-events .boarding-highlighted-element {
   pointer-events: auto !important;
 }
