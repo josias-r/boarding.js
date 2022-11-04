@@ -1,3 +1,11 @@
+## [2.1.1](https://github.com/josias-r/boarding.js/compare/v2.1.0...v2.1.1) (2022-11-04)
+
+
+### Bug Fixes
+
+* fix overlay css pointer-events logic for strictClickHandling not working properly ([41b6101](https://github.com/josias-r/boarding.js/commit/41b6101e0f5875bb54ccc13b57f1a07d956e35e4))
+* make click handlers even more isolated by using `stopImmediatePropagation` and `useCapture` ([28be80e](https://github.com/josias-r/boarding.js/commit/28be80e6891dc393197a888e4be86f7fc6cc2a1d))
+
 # [2.1.0](https://github.com/josias-r/boarding.js/compare/v2.0.0...v2.1.0) (2022-11-04)
 
 
