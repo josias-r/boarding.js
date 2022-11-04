@@ -1,3 +1,11 @@
+## [2.1.3](https://github.com/josias-r/boarding.js/compare/v2.1.2...v2.1.3) (2022-11-04)
+
+
+### Bug Fixes
+
+* make all click events even more isolated by using new `attachHighPrioClick` util method ([286fc40](https://github.com/josias-r/boarding.js/commit/286fc40980150b825a259bc83f30535d41e97dd0))
+* make tip fully hidden when there is no side and alignment that can be found for it ([e859e04](https://github.com/josias-r/boarding.js/commit/e859e04e9dab1905f0ce17f53f68876184bef879))
+
 ## [2.1.2](https://github.com/josias-r/boarding.js/compare/v2.1.1...v2.1.2) (2022-11-04)
 
 
