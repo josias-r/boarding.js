@@ -299,8 +299,8 @@ const stepDefinition = {
     preferredSide: "top", // Preffered side on which the popover should render of the HighlightElement
     alignment: "start", // Alignment of the popover on the side it gets renderd on
   },
-  onNext: () => {}, // Called when moving to next step from current step
-  onPrevious: () => {}, // Called when moving to previous step from current step
+  prepareElement: () => {}, // Called *before* moving to this step (for both cases when coming from "onNext" or "onPrevious")
+  onNext: (Element) => {}, // Overwrite the original onX eventhandlers for the current step. Same for on[Previous/Highlighted/BeforeHighlighted/Deselected]
 };
 ```
 

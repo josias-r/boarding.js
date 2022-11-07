@@ -555,6 +555,8 @@ boarding.highlight({
     nextBtnText: 'Next',        // Next button text for this step
     prevBtnText: 'Previous',    // Previous button text for this step
   }
+  prepareElement: () => {},     // Called *before* moving to this step (for both cases when coming from "onNext" or "onPrevious")
+  onNext: (Element) => {},      // Overwrite the original onX eventhandlers for the current step. Same for on[Previous/Highlighted/BeforeHighlighted/Deselected]
 };
 </code></pre>
         </div>
