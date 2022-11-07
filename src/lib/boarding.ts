@@ -570,8 +570,8 @@ class Boarding {
     const stepsCount =
       typeof currentStepOrIndex === "number" ? this.steps.length : 1;
 
+    // we reached the end or maybe the user called "previous" on the first element
     if (currentStep === undefined) {
-      console.warn(`No step with index ${index} exists`);
       return null;
     }
 
