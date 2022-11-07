@@ -1,3 +1,10 @@
+## [3.0.1](https://github.com/josias-r/boarding.js/compare/v3.0.0...v3.0.1) (2022-11-07)
+
+
+### Bug Fixes
+
+* force the execution of `continue` to be async ([bba3db6](https://github.com/josias-r/boarding.js/commit/bba3db6d0aa8dcbad23c711c12dd2fcd4644a0d1))
+
 # [3.0.0](https://github.com/josias-r/boarding.js/compare/v2.1.3...v3.0.0) (2022-11-07)
 
 
