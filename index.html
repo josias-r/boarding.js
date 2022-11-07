@@ -40,7 +40,7 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
     <meta name="theme-color" content="#ffffff" />
-    <script type="module" crossorigin src="/boarding.js/assets/index.385c6499.js"></script>
+    <script type="module" crossorigin src="/boarding.js/assets/index.3303bc99.js"></script>
     <link rel="stylesheet" href="/boarding.js/assets/index.0186b090.css">
   </head>
   <body>
@@ -557,6 +557,8 @@ boarding.highlight({
     nextBtnText: 'Next',        // Next button text for this step
     prevBtnText: 'Previous',    // Previous button text for this step
   }
+  prepareElement: () => {},     // Called *before* moving to this step (for both cases when coming from "onNext" or "onPrevious")
+  onNext: (Element) => {},      // Overwrite the original onX eventhandlers for the current step. Same for on[Previous/Highlighted/BeforeHighlighted/Deselected]
 };
 </code></pre>
         </div>
@@ -566,9 +568,9 @@ boarding.highlight({
           <pre><code class="javascript">const boarding = new Boarding(boardingOptions);
 
 const isActivated = boarding.isActivated; // Checks if the boarding is active or not
-boarding.moveNext();     // Moves to next step in the steps list
-boarding.movePrevious(); // Moves to previous step in the steps list
-boarding.start(stepNumber = 0);  // Starts driving through the defined steps
+boarding.next(); // Moves to next step in the steps list
+boarding.previous(); // Moves to previous step in the steps list
+boarding.start(stepNumber = 0); // Starts driving through the defined steps
 boarding.highlight(string|stepDefinition); // highlights the element using query selector or the step definition
 boarding.reset(); // Resets the overlay and clears the screen
 boarding.hasHighlightedElement(); // Checks if there is any highlighted element
@@ -578,6 +580,7 @@ boarding.hasPreviousStep(); // Checks if there is previous step to move to
 // Prevents the current move. Useful in `onNext` or `onPrevious` if you want to
 // perform some asynchronous task and manually move to next step
 boarding.preventMove();
+boarding.continue(); // Continue the move that was prevented using preventMove
 
 // Gets the currently highlighted element on screen
 const activeElement = boarding.getHighlightedElement();
