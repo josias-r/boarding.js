@@ -1,6 +1,8 @@
 > This is a port of [driver.js](https://github.com/kamranahmedse/driver.js).  
 > It uses a different highlight technique under the hood, which does not fiddle with z-index.  
 > This ensures the layout will always stay intact. With driver.js this is not the case
+>
+> After more and more work on this port, there are more changes and improvements available. At the moment the documentation is not 100% updated, please bear with me until I get around to it, I'm planning on making a comparisons table to driver.js as well.
 
 <h1 align="center"><img height="150" src="./public/images/boarding.svg" /><br> Boarding.js</h1>
 
@@ -16,9 +18,11 @@
   </a>
 </p>
 
+<p align="center" style="margin-bottom: 0;">
+  <b>Powerful, highly customizable vanilla JavaScript engine to on<i>board</i> the user's focus across the page</b>
+</p>
 <p align="center">
-  <b>Powerful, highly customizable vanilla JavaScript engine to on<i>board</i> the user's focus across the page</b></br>
-  <sub>No external dependencies, supports all major browsers and highly customizable <sub>
+  <sub>No external dependencies, supports all major browsers and highly customizable<sub>
 </p>
 
 <br />
