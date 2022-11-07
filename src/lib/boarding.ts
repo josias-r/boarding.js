@@ -193,6 +193,8 @@ class Boarding {
   /**
    * If preventMove was called, you can use this method to continue where the movement was stopped.
    * It's a smart method that chooses the correct method from: `next`, `previous`, `start` and `highlight`
+   *
+   * **IMPORTANT**: Never call `continue` in sync directly after `preventMove`, otherwise you will run into weird movement behaviour.
    */
   public continue() {
     if (this.currentMovePrevented === this.lastMovementRequested) {
@@ -310,6 +312,9 @@ class Boarding {
       CLASS_NO_CLICK_BODY,
       CLASS_STRICT_CLICK_BODY
     );
+    // reset step tracking
+    this.lastMovementRequested = undefined;
+    this.currentMovePrevented = false;
   }
 
   /**
