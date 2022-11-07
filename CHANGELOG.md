@@ -1,3 +1,10 @@
+## [3.0.2](https://github.com/josias-r/boarding.js/compare/v3.0.1...v3.0.2) (2022-11-07)
+
+
+### Bug Fixes
+
+* release next version to prod ([3cfd123](https://github.com/josias-r/boarding.js/commit/3cfd12358f0adb6587fedc96cc4fd0a78c504dc1))
+
 ## [3.0.1](https://github.com/josias-r/boarding.js/compare/v3.0.0...v3.0.1) (2022-11-07)
 
 
