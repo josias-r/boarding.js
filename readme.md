@@ -186,7 +186,7 @@ You can also hide the buttons and control the introductions programmatically by 
 
 ### Asynchronous Actions – [Demo](https://josias-r.github.io/boarding.js)
 
-For any asynchronous actions between the transition steps, you may delay the execution till the action completes. All you have to do is stop the transition using `boarding.preventMove()` in your `onNext` or `onPrevious` callbacks and initiate it manually using `boarding.moveNext()`. Here is a sample implementation where it will stop at the second step for four seconds and then move on to the next step.
+For any asynchronous actions between the transition steps, you may delay the execution till the action completes. All you have to do is stop the transition using `boarding.preventMove()` in your `onNext` or `onPrevious` callbacks and then use `boarding.continue()` to continue the transition where you left off. Here is a sample implementation where it will stop at the second step for four seconds and then move on to the next step.
 
 ```javascript
 const boarding = new Boarding();
@@ -215,7 +215,7 @@ boarding.defineSteps([
       // Perform some action or create the element to move to
       // And then move to that element
       setTimeout(() => {
-        boarding.moveNext();
+        boarding.continue();
       }, 4000);
     },
   },
@@ -331,14 +331,15 @@ if (boarding.isActivated) {
 // In case of the steps guide, you can call below methods
 boarding.defineSteps([stepDefinition1, stepDefinition2, stepDefinition3]);
 boarding.start((stepNumber = 0)); // Starts driving through the defined steps
-boarding.moveNext(); // Moves to next step in the steps list
-boarding.movePrevious(); // Moves to previous step in the steps list
+boarding.next(); // Moves to next step in the steps list
+boarding.previous(); // Moves to previous step in the steps list
 boarding.hasNextStep(); // Checks if there is next step to move to
 boarding.hasPreviousStep(); // Checks if there is previous step to move to
 
 // Prevents the current move. Useful in `onNext` or `onPrevious` if you want to
 // perform some asynchronous task and manually move to next step
 boarding.preventMove();
+boarding.continue(); // Continue the move that was prevented using preventMove
 
 // Highlights the element using query selector or the step definition
 boarding.highlight(string | stepDefinition);

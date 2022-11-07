@@ -564,9 +564,9 @@ boarding.highlight({
           <pre><code class="javascript">const boarding = new Boarding(boardingOptions);
 
 const isActivated = boarding.isActivated; // Checks if the boarding is active or not
-boarding.moveNext();     // Moves to next step in the steps list
-boarding.movePrevious(); // Moves to previous step in the steps list
-boarding.start(stepNumber = 0);  // Starts driving through the defined steps
+boarding.next(); // Moves to next step in the steps list
+boarding.previous(); // Moves to previous step in the steps list
+boarding.start(stepNumber = 0); // Starts driving through the defined steps
 boarding.highlight(string|stepDefinition); // highlights the element using query selector or the step definition
 boarding.reset(); // Resets the overlay and clears the screen
 boarding.hasHighlightedElement(); // Checks if there is any highlighted element
@@ -576,6 +576,7 @@ boarding.hasPreviousStep(); // Checks if there is previous step to move to
 // Prevents the current move. Useful in `onNext` or `onPrevious` if you want to
 // perform some asynchronous task and manually move to next step
 boarding.preventMove();
+boarding.continue(); // Continue the move that was prevented using preventMove
 
 // Gets the currently highlighted element on screen
 const activeElement = boarding.getHighlightedElement();
