@@ -193,40 +193,41 @@ class Boarding {
   /**
    * If preventMove was called, you can use this method to continue where the movement was stopped.
    * It's a smart method that chooses the correct method from: `next`, `previous`, `start` and `highlight`
-   *
-   * **IMPORTANT**: Never call `continue` in sync directly after `preventMove`, otherwise you will run into weird movement behaviour.
    */
-  public continue() {
-    if (this.currentMovePrevented === this.lastMovementRequested) {
-      // reset, we are continuing
-      this.currentMovePrevented = false;
+  public async continue() {
+    // setTimout foces the continue to always be executed async from the original (this is necessary, so a user can't make the mistake of calling preventMove and continue synchronously which would cause issues)
+    setTimeout(() => {
+      if (this.currentMovePrevented === this.lastMovementRequested) {
+        // reset, we are continuing
+        this.currentMovePrevented = false;
 
-      // move to where we left of
-      switch (this.lastMovementRequested.movement) {
-        case MovementType.Start:
-          this.handleStart(this.lastMovementRequested.index);
-          break;
-        case MovementType.Highlight:
-          this.handleHighlight(this.lastMovementRequested.selector);
-          break;
-        case MovementType.PrepareNext:
-          this.handleNext();
-          break;
-        case MovementType.Next:
-          this.moveNext();
-          break;
-        case MovementType.PreparePrevious:
-          this.handlePrevious();
-          break;
-        case MovementType.Previous:
-          this.movePrevious();
-          break;
+        // move to where we left of
+        switch (this.lastMovementRequested.movement) {
+          case MovementType.Start:
+            this.handleStart(this.lastMovementRequested.index);
+            break;
+          case MovementType.Highlight:
+            this.handleHighlight(this.lastMovementRequested.selector);
+            break;
+          case MovementType.PrepareNext:
+            this.handleNext();
+            break;
+          case MovementType.Next:
+            this.moveNext();
+            break;
+          case MovementType.PreparePrevious:
+            this.handlePrevious();
+            break;
+          case MovementType.Previous:
+            this.movePrevious();
+            break;
+        }
+      } else {
+        console.warn(
+          "Boarding.continue was probably called too late, since the last preventMove was called from a different step (or never called at all)."
+        );
       }
-    } else {
-      console.warn(
-        "Boarding.continue was probably called too late, since the last preventMove was called from a different step (or never called at all)."
-      );
-    }
+    }, 0);
   }
 
   /**
