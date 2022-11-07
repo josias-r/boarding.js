@@ -1,6 +1,8 @@
 > This is a port of [driver.js](https://github.com/kamranahmedse/driver.js).  
 > It uses a different highlight technique under the hood, which does not fiddle with z-index.  
 > This ensures the layout will always stay intact. With driver.js this is not the case
+>
+> After more and more work on this port, there are more changes and improvements available. At the moment the documentation is not 100% updated, please bear with me until I get around to it, I'm planning on making a comparisons table to driver.js as well.
 
 <h1 align="center"><img height="150" src="./public/images/boarding.svg" /><br> Boarding.js</h1>
 
@@ -16,9 +18,11 @@
   </a>
 </p>
 
+<p align="center" style="margin-bottom: 0;">
+  <b>Powerful, highly customizable vanilla JavaScript engine to on<i>board</i> the user's focus across the page</b>
+</p>
 <p align="center">
-  <b>Powerful, highly customizable vanilla JavaScript engine to on<i>board</i> the user's focus across the page</b></br>
-  <sub>No external dependencies, supports all major browsers and highly customizable <sub>
+  <sub>No external dependencies, supports all major browsers and highly customizable<sub>
 </p>
 
 <br />
@@ -51,11 +55,12 @@ yarn add boarding.js
 npm install boarding.js
 ```
 
-Or include it using CDN. If you want a specific version, put it as `boarding.js@1.3.0` in the name
+Or include it using CDN. If you want a specific version, put it as `boarding.js@3.0.1` in the name
 
 ```html
 <script src="https://unpkg.com/boarding.js/dist/main.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/boarding.js/styles/main.css" />
+<!-- optionally include the base theme -->
 <link
   rel="stylesheet"
   href="https://unpkg.com/boarding.js/styles/themes/basic.css"
@@ -71,6 +76,8 @@ If you are using some sort of module bundler, import the library and the CSS fil
 ```javascript
 import { Boarding } from "boarding.js";
 import "boarding.js/styles/main.css";
+// optionally include the base theme
+import "boarding.js/styles/themes/basic.css";
 ```
 
 otherwise use the `script` and `link` tags to import the JavaScript and CSS files.
@@ -186,7 +193,7 @@ You can also hide the buttons and control the introductions programmatically by 
 
 ### Asynchronous Actions – [Demo](https://josias-r.github.io/boarding.js)
 
-For any asynchronous actions between the transition steps, you may delay the execution till the action completes. All you have to do is stop the transition using `boarding.preventMove()` in your `onNext` or `onPrevious` callbacks and initiate it manually using `boarding.moveNext()`. Here is a sample implementation where it will stop at the second step for four seconds and then move on to the next step.
+For any asynchronous actions between the transition steps, you may delay the execution till the action completes. All you have to do is stop the transition using `boarding.preventMove()` in your `onNext` or `onPrevious` callbacks and then use `boarding.continue()` to continue the transition where you left off. Here is a sample implementation where it will stop at the second step for four seconds and then move on to the next step.
 
 ```javascript
 const boarding = new Boarding();
@@ -215,7 +222,7 @@ boarding.defineSteps([
       // Perform some action or create the element to move to
       // And then move to that element
       setTimeout(() => {
-        boarding.moveNext();
+        boarding.continue();
       }, 4000);
     },
   },
@@ -292,8 +299,8 @@ const stepDefinition = {
     preferredSide: "top", // Preffered side on which the popover should render of the HighlightElement
     alignment: "start", // Alignment of the popover on the side it gets renderd on
   },
-  onNext: () => {}, // Called when moving to next step from current step
-  onPrevious: () => {}, // Called when moving to previous step from current step
+  prepareElement: () => {}, // Called *before* moving to this step (for both cases when coming from "onNext" or "onPrevious")
+  onNext: (Element) => {}, // Overwrite the original onX eventhandlers for the current step. Same for on[Previous/Highlighted/BeforeHighlighted/Deselected]
 };
 ```
 
@@ -331,14 +338,15 @@ if (boarding.isActivated) {
 // In case of the steps guide, you can call below methods
 boarding.defineSteps([stepDefinition1, stepDefinition2, stepDefinition3]);
 boarding.start((stepNumber = 0)); // Starts driving through the defined steps
-boarding.moveNext(); // Moves to next step in the steps list
-boarding.movePrevious(); // Moves to previous step in the steps list
+boarding.next(); // Moves to next step in the steps list
+boarding.previous(); // Moves to previous step in the steps list
 boarding.hasNextStep(); // Checks if there is next step to move to
 boarding.hasPreviousStep(); // Checks if there is previous step to move to
 
 // Prevents the current move. Useful in `onNext` or `onPrevious` if you want to
 // perform some asynchronous task and manually move to next step
 boarding.preventMove();
+boarding.continue(); // Continue the move that was prevented using preventMove
 
 // Highlights the element using query selector or the step definition
 boarding.highlight(string | stepDefinition);

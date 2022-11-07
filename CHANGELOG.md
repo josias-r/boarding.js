@@ -1,3 +1,28 @@
+## [3.0.1](https://github.com/josias-r/boarding.js/compare/v3.0.0...v3.0.1) (2022-11-07)
+
+
+### Bug Fixes
+
+* force the execution of `continue` to be async ([bba3db6](https://github.com/josias-r/boarding.js/commit/bba3db6d0aa8dcbad23c711c12dd2fcd4644a0d1))
+
+# [3.0.0](https://github.com/josias-r/boarding.js/compare/v2.1.3...v3.0.0) (2022-11-07)
+
+
+### Bug Fixes
+
+* make `start` and `highlight` compatible with `prepareElement` ([46945d9](https://github.com/josias-r/boarding.js/commit/46945d98f803fd2859966b68eef8972048be52dc))
+
+
+### Features
+
+* add new `continue` API, which replaces `moveNext` and `movePrevious` ([e1f63a0](https://github.com/josias-r/boarding.js/commit/e1f63a01bb10221a13acb63ad7503a55aaeae34e))
+* add new `prepareElement` optional step-lvl method that runs before mounting an element ([d9bf985](https://github.com/josias-r/boarding.js/commit/d9bf9851a8326718b7edd766ec271ad39e7a0a7f))
+
+
+### BREAKING CHANGES
+
+* You need to migrate from `moveNext/Previous` to new `continue` API. This API is much smarter and automatically moves into the direction where it was last prevented. If you want to programatically go to the next step, use the `next` method instead.
+
 ## [2.1.3](https://github.com/josias-r/boarding.js/compare/v2.1.2...v2.1.3) (2022-11-04)
 
 

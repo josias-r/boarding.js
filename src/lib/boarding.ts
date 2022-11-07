@@ -18,6 +18,32 @@ import {
   BoardingSteps,
 } from "./boarding-types";
 
+type HighlightSelector = BoardingStepDefinition | string | HTMLElement;
+
+enum MovementType {
+  Start,
+  Highlight,
+  PrepareNext,
+  Next,
+  PreparePrevious,
+  Previous,
+}
+
+type Movement =
+  | {
+      movement:
+        | MovementType.Start
+        | MovementType.Next
+        | MovementType.PrepareNext
+        | MovementType.PreparePrevious
+        | MovementType.Previous;
+      index: number;
+    }
+  | {
+      movement: MovementType.Highlight;
+      selector: HighlightSelector;
+    };
+
 /**
  * Plugin class that drives the plugin
  */
@@ -27,7 +53,8 @@ class Boarding {
   private options; // type will get inferred with default values being required
   private steps: BoardingSteps;
   private currentStep: number;
-  private currentMovePrevented: boolean;
+  private lastMovementRequested?: Movement;
+  private currentMovePrevented: Movement | false;
 
   private overlay: Overlay;
 
@@ -70,7 +97,7 @@ class Boarding {
       onOverlayClick: () => {
         // Perform the 'Next' operation when clicked outside the highlighted element
         if (this.options.overlayClickNext) {
-          this.handleNext();
+          this.next();
           return;
         }
         // Remove the overlay If clicked outside the highlighted element
@@ -84,9 +111,6 @@ class Boarding {
     // bind this class to eventHandlers
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onClick = this.onClick.bind(this);
-    this.moveNext = this.moveNext.bind(this);
-    this.movePrevious = this.movePrevious.bind(this);
-    this.preventMove = this.preventMove.bind(this);
   }
 
   /**
@@ -94,75 +118,171 @@ class Boarding {
    * @param index at which highlight is to be started
    */
   public start(index = 0) {
+    this.lastMovementRequested = {
+      movement: MovementType.Start,
+      index: index,
+    };
+
     if (!this.steps || this.steps.length === 0) {
       throw new Error("There are no steps defined to iterate");
     }
-    const element = this.prepareElementFromStep(index);
-    if (!element) {
-      throw new Error(
-        `The step with starting index ${index} could not resolve to an element.`
-      );
+    this.steps[index].prepareElement?.("init");
+    if (this.currentMovePrevented) {
+      return;
     }
 
-    this.currentStep = index;
-    this.activateBoarding(element);
+    this.handleStart(index);
   }
 
   /**
    * Highlights the given element
    * @param selector Query selector, htmlelement or a step definition
    */
-  public highlight(selector: BoardingStepDefinition | string | HTMLElement) {
+  public highlight(selector: HighlightSelector) {
+    this.lastMovementRequested = {
+      movement: MovementType.Highlight,
+      selector: selector,
+    };
+
     // convert argument to step definition
     const stepDefinition: BoardingStepDefinition =
       typeof selector === "object" && "element" in selector
         ? selector
         : { element: selector };
 
-    const element = this.prepareElementFromStep(stepDefinition);
-    if (!element) {
+    stepDefinition.prepareElement?.("init");
+    if (this.currentMovePrevented) {
       return;
     }
 
-    this.activateBoarding(element);
+    this.handleHighlight(selector);
   }
 
   /**
-   * Moves to the previous step if possible
-   * otherwise resets the overlay
-   */
-  public movePrevious() {
-    const previousElem = this.prepareElementFromStep(this.currentStep - 1);
-    if (!previousElem) {
-      this.reset();
-      return;
-    }
-
-    this.overlay.highlight(previousElem);
-    this.currentStep -= 1;
-  }
-
-  /**
-   * Prevents the current move. Useful in `onNext` if you want to
+   * Prevents the current move. Useful in `prepareElement`, `onNext`, `onPrevious` if you want to
    * perform some asynchronous task and manually move to next step
    */
   public preventMove() {
-    this.currentMovePrevented = true;
+    // first check if there was even a move request before calling this method
+    if (this.lastMovementRequested !== undefined) {
+      // check whether preventMove was already called for the last move
+      if (this.currentMovePrevented !== this.lastMovementRequested) {
+        // check if move was already prevented from another step
+        if (!this.currentMovePrevented) {
+          // create a new OBJ reference in memory for === comparison, but keeping the lastMovementRequested.ref around for even more detailed comparison
+          const newMovePrevented = { ...this.lastMovementRequested };
+          this.currentMovePrevented = newMovePrevented;
+          this.lastMovementRequested = newMovePrevented;
+        } else {
+          console.warn(
+            "Tried to call Boarding.preventMove, but move has already been prevented, and not been continued or reset yet"
+          );
+        }
+      } else {
+        console.warn(
+          "Boarding.preventMove was called multiple times for the same move, which has no effect."
+        );
+      }
+    } else {
+      console.warn(
+        "Tried to call Boarding.preventMove before, but no move was requested so far."
+      );
+    }
+  }
+
+  /**
+   * If preventMove was called, you can use this method to continue where the movement was stopped.
+   * It's a smart method that chooses the correct method from: `next`, `previous`, `start` and `highlight`
+   */
+  public async continue() {
+    // setTimout foces the continue to always be executed async from the original (this is necessary, so a user can't make the mistake of calling preventMove and continue synchronously which would cause issues)
+    setTimeout(() => {
+      if (this.currentMovePrevented === this.lastMovementRequested) {
+        // reset, we are continuing
+        this.currentMovePrevented = false;
+
+        // move to where we left of
+        switch (this.lastMovementRequested.movement) {
+          case MovementType.Start:
+            this.handleStart(this.lastMovementRequested.index);
+            break;
+          case MovementType.Highlight:
+            this.handleHighlight(this.lastMovementRequested.selector);
+            break;
+          case MovementType.PrepareNext:
+            this.handleNext();
+            break;
+          case MovementType.Next:
+            this.moveNext();
+            break;
+          case MovementType.PreparePrevious:
+            this.handlePrevious();
+            break;
+          case MovementType.Previous:
+            this.movePrevious();
+            break;
+        }
+      } else {
+        console.warn(
+          "Boarding.continue was probably called too late, since the last preventMove was called from a different step (or never called at all)."
+        );
+      }
+    }, 0);
+  }
+
+  /**
+   * If Boarding.preventMove was called, use this method to reset currentMovePrevented
+   */
+  public clearMovePrevented() {
+    this.currentMovePrevented = false;
   }
 
   /**
    * Moves to the next step if possible
    * otherwise resets the overlay
    */
-  public moveNext() {
-    const nextElem = this.prepareElementFromStep(this.currentStep + 1);
-    if (!nextElem) {
-      this.reset();
+  public next() {
+    if (this.currentMovePrevented) {
       return;
     }
 
-    this.overlay.highlight(nextElem);
-    this.currentStep += 1;
+    this.lastMovementRequested = {
+      movement: MovementType.PrepareNext,
+      index: this.currentStep,
+    };
+
+    // call prepareElement for coming element if available
+    this.steps[this.currentStep + 1]?.prepareElement?.("next");
+    // check if prepareElement wants to stop
+    if (this.currentMovePrevented) {
+      return;
+    }
+
+    this.handleNext();
+  }
+
+  /**
+   * Moves to the previous step if possible
+   * otherwise resets the overlay
+   */
+  public previous() {
+    if (this.currentMovePrevented) {
+      return;
+    }
+
+    this.lastMovementRequested = {
+      movement: MovementType.PreparePrevious,
+      index: this.currentStep,
+    };
+
+    // call prepareElement for coming element if available
+    this.steps[this.currentStep - 1]?.prepareElement?.("prev");
+    // check if prepareElement wants to stop
+    if (this.currentMovePrevented) {
+      return;
+    }
+
+    this.handlePrevious();
   }
 
   /**
@@ -193,6 +313,9 @@ class Boarding {
       CLASS_NO_CLICK_BODY,
       CLASS_STRICT_CLICK_BODY
     );
+    // reset step tracking
+    this.lastMovementRequested = undefined;
+    this.currentMovePrevented = false;
   }
 
   /**
@@ -228,6 +351,109 @@ class Boarding {
    */
   public getSteps() {
     return this.steps;
+  }
+
+  /**
+   * Handle `start` logic
+   */
+  private handleStart(index: number) {
+    const element = this.prepareElementFromStep(index);
+    if (!element) {
+      throw new Error(
+        `The step with starting index ${index} could not resolve to an element.`
+      );
+    }
+
+    this.currentStep = index;
+    this.activateBoarding(element);
+  }
+
+  /**
+   * Handle `highlight` logic
+   */
+  private handleHighlight(selector: HighlightSelector) {
+    // convert argument to step definition
+    const stepDefinition: BoardingStepDefinition =
+      typeof selector === "object" && "element" in selector
+        ? selector
+        : { element: selector };
+
+    const element = this.prepareElementFromStep(stepDefinition);
+    if (!element) {
+      return;
+    }
+
+    this.activateBoarding(element);
+  }
+
+  /**
+   * Handle `next` step event
+   */
+  private handleNext() {
+    this.lastMovementRequested = {
+      movement: MovementType.Next,
+      index: this.currentStep,
+    };
+
+    // Call the bound `onNext` handler if available
+    const currentElem = this.prepareElementFromStep(this.currentStep);
+
+    currentElem?.onNext();
+
+    if (this.currentMovePrevented) {
+      return;
+    }
+
+    this.moveNext();
+  }
+
+  /**
+   * Handle `previous` step event
+   */
+  private handlePrevious() {
+    this.lastMovementRequested = {
+      movement: MovementType.Previous,
+      index: this.currentStep,
+    };
+
+    // Call the bound `onPrevious` handler if available
+    const currentStep = this.prepareElementFromStep(this.currentStep);
+
+    currentStep?.onPrevious();
+
+    if (this.currentMovePrevented) {
+      return;
+    }
+
+    this.movePrevious();
+  }
+
+  /**
+   * Move to next element (after all other internal logic has completed)
+   */
+  private moveNext() {
+    const nextElem = this.prepareElementFromStep(this.currentStep + 1);
+    if (!nextElem) {
+      this.reset();
+      return;
+    }
+
+    this.overlay.highlight(nextElem);
+    this.currentStep += 1;
+  }
+
+  /**
+   * Move to preivous element (after all other internal logic has completed)
+   */
+  private movePrevious() {
+    const previousElem = this.prepareElementFromStep(this.currentStep - 1);
+    if (!previousElem) {
+      this.reset();
+      return;
+    }
+
+    this.overlay.highlight(previousElem);
+    this.currentStep -= 1;
   }
 
   /**
@@ -327,45 +553,10 @@ class Boarding {
     }
 
     if (event.key === "ArrowRight") {
-      this.handleNext();
+      this.next();
     } else if (event.key === "ArrowLeft") {
-      this.handlePrevious();
+      this.previous();
     }
-  }
-
-  /**
-   * Handles the internal "move to next" event
-   */
-  private handleNext() {
-    this.currentMovePrevented = false;
-
-    // Call the bound `onNext` handler if available
-    const currentElem = this.prepareElementFromStep(this.currentStep);
-
-    currentElem?.onNext();
-
-    if (this.currentMovePrevented) {
-      return;
-    }
-
-    this.moveNext();
-  }
-
-  /**
-   * Handles the internal "move to previous" event
-   */
-  private handlePrevious() {
-    this.currentMovePrevented = false;
-
-    // Call the bound `onPrevious` handler if available
-    const currentStep = this.prepareElementFromStep(this.currentStep);
-    currentStep?.onPrevious();
-
-    if (this.currentMovePrevented) {
-      return;
-    }
-
-    this.movePrevious();
   }
 
   /**
@@ -385,8 +576,8 @@ class Boarding {
     const stepsCount =
       typeof currentStepOrIndex === "number" ? this.steps.length : 1;
 
+    // we reached the end or maybe the user called "previous" on the first element
     if (currentStep === undefined) {
-      console.warn(`No step with index ${index} exists`);
       return null;
     }
 
@@ -442,10 +633,10 @@ class Boarding {
         isLast: stepsCount === 0 || index === stepsCount - 1, // Only one item or last item
         // click events
         onNextClick: () => {
-          this.handleNext();
+          this.next();
         },
         onPreviousClick: () => {
-          this.handlePrevious();
+          this.previous();
         },
         onCloseClick: () => {
           this.reset();

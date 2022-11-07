@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   try {
     document.querySelectorAll<HTMLElement>("pre code").forEach((element) => {
-      hljs.highlightBlock(element);
+      hljs.highlightElement(element);
     });
   } catch (e) {
     // Silently ignore the highlight errors
