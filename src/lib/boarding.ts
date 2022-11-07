@@ -373,12 +373,9 @@ class Boarding {
     currentElem?.onNext();
 
     if (this.currentMovePrevented) {
-      console.log("NEXT EVENT PREVENTED");
-
       return;
     }
 
-    console.log("MOVING NEXT HANDLE NEXT");
     this.moveNext();
   }
 
