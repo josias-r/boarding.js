@@ -18,6 +18,8 @@ import {
   BoardingSteps,
 } from "./boarding-types";
 
+type HighlightSelector = BoardingStepDefinition | string | HTMLElement;
+
 enum MovementType {
   Start,
   Highlight,
@@ -39,7 +41,7 @@ type Movement =
     }
   | {
       movement: MovementType.Highlight;
-      selector: BoardingStepDefinition | string | HTMLElement;
+      selector: HighlightSelector;
     };
 
 /**
@@ -124,27 +126,19 @@ class Boarding {
     if (!this.steps || this.steps.length === 0) {
       throw new Error("There are no steps defined to iterate");
     }
-    this.prepareFirstElement(this.steps[index]);
+    this.steps[index].prepareElement?.("init");
     if (this.currentMovePrevented) {
       return;
     }
 
-    const element = this.prepareElementFromStep(index);
-    if (!element) {
-      throw new Error(
-        `The step with starting index ${index} could not resolve to an element.`
-      );
-    }
-
-    this.currentStep = index;
-    this.activateBoarding(element);
+    this.handleStart(index);
   }
 
   /**
    * Highlights the given element
    * @param selector Query selector, htmlelement or a step definition
    */
-  public highlight(selector: BoardingStepDefinition | string | HTMLElement) {
+  public highlight(selector: HighlightSelector) {
     this.lastMovementRequested = {
       movement: MovementType.Highlight,
       selector: selector,
@@ -156,17 +150,12 @@ class Boarding {
         ? selector
         : { element: selector };
 
-    this.prepareFirstElement(stepDefinition);
+    stepDefinition.prepareElement?.("init");
     if (this.currentMovePrevented) {
       return;
     }
 
-    const element = this.prepareElementFromStep(stepDefinition);
-    if (!element) {
-      return;
-    }
-
-    this.activateBoarding(element);
+    this.handleHighlight(selector);
   }
 
   /**
@@ -213,10 +202,10 @@ class Boarding {
       // move to where we left of
       switch (this.lastMovementRequested.movement) {
         case MovementType.Start:
-          this.start(this.lastMovementRequested.index);
+          this.handleStart(this.lastMovementRequested.index);
           break;
         case MovementType.Highlight:
-          this.highlight(this.lastMovementRequested.selector);
+          this.handleHighlight(this.lastMovementRequested.selector);
           break;
         case MovementType.PrepareNext:
           this.handleNext();
@@ -359,6 +348,39 @@ class Boarding {
   }
 
   /**
+   * Handle `start` logic
+   */
+  private handleStart(index: number) {
+    const element = this.prepareElementFromStep(index);
+    if (!element) {
+      throw new Error(
+        `The step with starting index ${index} could not resolve to an element.`
+      );
+    }
+
+    this.currentStep = index;
+    this.activateBoarding(element);
+  }
+
+  /**
+   * Handle `highlight` logic
+   */
+  private handleHighlight(selector: HighlightSelector) {
+    // convert argument to step definition
+    const stepDefinition: BoardingStepDefinition =
+      typeof selector === "object" && "element" in selector
+        ? selector
+        : { element: selector };
+
+    const element = this.prepareElementFromStep(stepDefinition);
+    if (!element) {
+      return;
+    }
+
+    this.activateBoarding(element);
+  }
+
+  /**
    * Handle `next` step event
    */
   private handleNext() {
@@ -426,13 +448,6 @@ class Boarding {
 
     this.overlay.highlight(previousElem);
     this.currentStep -= 1;
-  }
-
-  /**
-   * Runs `prepareElement` for the first element.
-   */
-  private prepareFirstElement(fistStep: BoardingStepDefinition) {
-    fistStep.prepareElement?.("init");
   }
 
   /**
