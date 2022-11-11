@@ -1,3 +1,11 @@
+## [3.0.3](https://github.com/josias-r/boarding.js/compare/v3.0.2...v3.0.3) (2022-11-11)
+
+
+### Bug Fixes
+
+* fix step-level popover `showButtons` option being ignored when set to `false` ([5a921e0](https://github.com/josias-r/boarding.js/commit/5a921e092d71115653385acd595d97dfebe3c2af))
+* improve "block-all" behaviour ([71ed0ba](https://github.com/josias-r/boarding.js/commit/71ed0ba2babac4967d8e0357c7d11c2ac3d86253))
+
 ## [3.0.2](https://github.com/josias-r/boarding.js/compare/v3.0.1...v3.0.2) (2022-11-07)
 
 
