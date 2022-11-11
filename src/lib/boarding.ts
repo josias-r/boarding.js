@@ -634,7 +634,9 @@ class Boarding {
           currentStep.popover.prefferedSide || this.options.prefferedSide,
         alignment: currentStep.popover.alignment || this.options.alignment,
         showButtons:
-          currentStep.popover.showButtons || this.options.showButtons,
+          currentStep.popover.showButtons === undefined
+            ? this.options.showButtons
+            : currentStep.popover.showButtons,
         doneBtnText:
           currentStep.popover.doneBtnText || this.options.doneBtnText,
         closeBtnText:
