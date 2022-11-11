@@ -438,6 +438,7 @@ class Boarding {
       return;
     }
 
+    this.setStrictClickHandlingRules(nextElem);
     this.overlay.highlight(nextElem);
     this.currentStep += 1;
   }
@@ -452,6 +453,7 @@ class Boarding {
       return;
     }
 
+    this.setStrictClickHandlingRules(previousElem);
     this.overlay.highlight(previousElem);
     this.currentStep -= 1;
   }
@@ -464,11 +466,29 @@ class Boarding {
     this.attachEventListeners();
 
     this.isActivated = true;
+    this.setStrictClickHandlingRules(element);
     this.overlay.highlight(element);
+  }
 
-    if (this.options.strictClickHandling === "block-all") {
+  /**
+   * Defines the current rules for which elements are allowed to be clicked
+   * @param element HighlightElement for the current step
+   */
+  private setStrictClickHandlingRules(element: HighlightElement) {
+    // set body classes
+    const customStrictHandling = element.getStrictClickHandling();
+    const strictClickHandling =
+      customStrictHandling === undefined
+        ? this.options.strictClickHandling
+        : customStrictHandling;
+
+    document.body.classList.remove(
+      CLASS_NO_CLICK_BODY,
+      CLASS_STRICT_CLICK_BODY
+    );
+    if (strictClickHandling === "block-all") {
       document.body.classList.add(CLASS_NO_CLICK_BODY);
-    } else if (this.options.strictClickHandling) {
+    } else if (strictClickHandling) {
       document.body.classList.add(CLASS_STRICT_CLICK_BODY);
     }
   }
@@ -654,6 +674,7 @@ class Boarding {
         onDeselected: currentStep.onDeselected || this.options.onDeselected,
         onNext: currentStep.onNext || this.options.onNext,
         onPrevious: currentStep.onPrevious || this.options.onPrevious,
+        strictClickHandling: currentStep.strictClickHandling,
         padding: currentStep.padding, // note this is ONLY the stepLvl padding, the "custom padding", so we can later check if it exists using getCustomPadding
       },
       popover,
