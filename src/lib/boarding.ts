@@ -48,11 +48,17 @@ type Movement =
  * Plugin class that drives the plugin
  */
 class Boarding {
+  /**
+   * Bool, whether the boarding session is currently active
+   */
   public isActivated: boolean;
+  /**
+   * Index of the currently active step
+   */
+  private currentStep: number;
 
   private options; // type will get inferred with default values being required
   private steps: BoardingSteps;
-  private currentStep: number;
   private lastMovementRequested?: Movement;
   private currentMovePrevented: Movement | false;
 
