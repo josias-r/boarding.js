@@ -57,7 +57,6 @@ export function createSvgCutout({
   svg.style.left = "0";
   svg.style.right = "0";
   svg.style.bottom = "0";
-  svg.style.pointerEvents = "none";
 
   const cutoutPath = document.createElementNS(
     "http://www.w3.org/2000/svg",
