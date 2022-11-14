@@ -1,3 +1,10 @@
+## [3.0.5](https://github.com/josias-r/boarding.js/compare/v3.0.4...v3.0.5) (2022-11-14)
+
+
+### Bug Fixes
+
+* make currentStep public ([86314e7](https://github.com/josias-r/boarding.js/commit/86314e7f31f30da1e1194b36462d658fe0d25695))
+
 ## [3.0.4](https://github.com/josias-r/boarding.js/compare/v3.0.3...v3.0.4) (2022-11-11)
 
 
