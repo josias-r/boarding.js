@@ -55,7 +55,7 @@ class Boarding {
   /**
    * Index of the currently active step
    */
-  private currentStep: number;
+  public currentStep: number;
 
   private options; // type will get inferred with default values being required
   private steps: BoardingSteps;
