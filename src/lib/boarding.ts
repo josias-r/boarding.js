@@ -9,6 +9,7 @@ import {
   SHOULD_STRICT_CLICK_HANDLE,
   CLASS_NO_CLICK_BODY,
   CLASS_STRICT_CLICK_BODY,
+  OVERLAY_RADIUS,
 } from "./common/constants";
 import { assertIsElement } from "./common/utils";
 import HighlightElement from "./core/highlight-element";
@@ -69,6 +70,7 @@ class Boarding {
       strictClickHandling = SHOULD_STRICT_CLICK_HANDLE, // Whether to only allow clicking the highlighted element
       animate = SHOULD_ANIMATE_OVERLAY, // Whether to animate or not
       padding = OVERLAY_PADDING, // Spacing around the element from the overlay
+      radius = OVERLAY_RADIUS, // Rounded corners for cutout
       scrollIntoViewOptions = {
         behavior: "auto",
         block: "center",
@@ -83,6 +85,7 @@ class Boarding {
       strictClickHandling,
       animate,
       padding,
+      radius,
       scrollIntoViewOptions,
       allowClose,
       keyboardControl,
@@ -98,6 +101,7 @@ class Boarding {
     this.overlay = new Overlay({
       animate: this.options.animate,
       padding: this.options.padding,
+      radius: this.options.radius,
       onReset: this.options.onReset,
       opacity: this.options.opacity,
       onOverlayClick: () => {
@@ -698,6 +702,7 @@ class Boarding {
         onPrevious: currentStep.onPrevious || this.options.onPrevious,
         strictClickHandling: currentStep.strictClickHandling,
         padding: currentStep.padding, // note this is ONLY the stepLvl padding, the "custom padding", so we can later check if it exists using getCustomPadding
+        radius: currentStep.radius, // note this is ONLY the stepLvl radius, the "custom radius", so we can later check if it exists using getCustomRadius
       },
       popover,
     });

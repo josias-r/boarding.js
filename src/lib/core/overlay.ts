@@ -16,7 +16,7 @@ import HighlightElement from "./highlight-element";
 /** The top-level options that are shared between multiple classes that overlay supports */
 type OverlaySupportedSharedOptions = Pick<
   BoardingSharedOptions,
-  "animate" | "padding"
+  "animate" | "padding" | "radius"
 >;
 
 /** The options of overlay that will come from the top-level */
@@ -43,7 +43,7 @@ interface OverlayOptions
 
 type AnimatableCutoutDefinition = Pick<
   CutoutDefinition,
-  "padding" | "hightlightBox"
+  "padding" | "hightlightBox" | "radius"
 >;
 
 /**
@@ -203,6 +203,7 @@ class Overlay {
       : {
           hightlightBox: fromElement.getElement().getBoundingClientRect(),
           padding: fromElement.getCustomPadding(),
+          radius: fromElement.getCustomRadius(),
         };
 
     const toRect = toElement.getElement().getBoundingClientRect();
@@ -210,9 +211,17 @@ class Overlay {
       this.options.padding,
       toElement.getCustomPadding()
     );
+    const toRadius = checkOptionalValue(
+      this.options.radius,
+      toElement.getCustomRadius()
+    );
     const fromPadding = checkOptionalValue(
       this.options.padding,
       fromDefinition.padding
+    );
+    const fromRadius = checkOptionalValue(
+      this.options.radius,
+      fromDefinition.radius
     );
 
     const x = easeInOutQuad(
@@ -245,10 +254,17 @@ class Overlay {
       toPadding - fromPadding,
       duration
     );
+    const radius = easeInOutQuad(
+      ellapsed,
+      fromRadius,
+      toRadius - fromRadius,
+      duration
+    );
 
     const newCutoutPosition: AnimatableCutoutDefinition = {
       hightlightBox: { x: x, y: y, width: width, height: height },
       padding: padding,
+      radius,
     };
     this.activeSvgCutoutDefinition = newCutoutPosition;
     this.updateCutoutPosition(newCutoutPosition);
@@ -281,6 +297,10 @@ class Overlay {
           padding: checkOptionalValue(
             this.options.padding,
             this.currentHighlightedElement.getCustomPadding()
+          ),
+          radius: checkOptionalValue(
+            this.options.radius,
+            this.currentHighlightedElement.getCustomRadius()
           ),
         };
         // update cutout
@@ -349,6 +369,7 @@ class Overlay {
       hightlightBox: definition.hightlightBox,
       padding: definition.padding,
       opacity: this.options.opacity,
+      radius: definition.radius,
       animated: this.options.animate,
     };
 

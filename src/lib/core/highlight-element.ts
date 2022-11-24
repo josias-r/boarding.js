@@ -12,7 +12,7 @@ type HighlightElementSupportedSharedOptions = Pick<
 /** The options of popover that will come from the top-level but can also be overwritten */
 export interface HighlightElementHybridOptions
   extends Partial<
-    Pick<BoardingSharedOptions, "padding" | "strictClickHandling">
+    Pick<BoardingSharedOptions, "padding" | "radius" | "strictClickHandling">
   > {
   /**
    * Callback to be called when element is about to be highlighted
@@ -136,6 +136,13 @@ class HighlightElement {
    */
   public getCustomPadding() {
     return this.options.padding;
+  }
+
+  /**
+   * Return the element's custom radius option if available
+   */
+  public getCustomRadius() {
+    return this.options.radius;
   }
 
   /**

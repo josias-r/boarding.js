@@ -8,6 +8,7 @@ export interface CutoutDefinition {
     height: number;
   };
   padding?: number;
+  radius?: number;
   fillColor?: string;
   opacity?: number;
   animated?: boolean;
@@ -16,15 +17,30 @@ export interface CutoutDefinition {
 export function generateSvgCutoutPathString({
   hightlightBox,
   padding = 0,
+  radius = 0,
 }: CutoutDefinition) {
   const windowX = window.innerWidth;
   const windowY = window.innerHeight;
 
-  const highlightBoxX1 = hightlightBox.x - padding;
-  const highlightBoxY1 = hightlightBox.y - padding;
-  const highlightBoxX2 = hightlightBox.x + hightlightBox.width + padding;
-  const highlightBoxY2 = hightlightBox.y + hightlightBox.height + padding;
-  return `M${windowX},0L0,0L0,${windowY}L${windowX},${windowY}L${windowX},0ZM${highlightBoxX2},${highlightBoxY1}L${highlightBoxX1},${highlightBoxY1}L${highlightBoxX1},${highlightBoxY2}L${highlightBoxX2},${highlightBoxY2}L${highlightBoxX2},${highlightBoxY1}Z`;
+  const highlightBoxWidthBase = hightlightBox.width + padding * 2;
+  const highlightBoxHeightBase = hightlightBox.height + padding * 2;
+
+  // prevent glitches when highlightBox is too small for radius
+  const limitedRadius = Math.min(
+    radius,
+    highlightBoxWidthBase / 2,
+    highlightBoxHeightBase / 2
+  );
+  // no value below 0 allowed + round down
+  const normalizedRadius = Math.floor(Math.max(limitedRadius, 0));
+
+  const highlightBoxX = hightlightBox.x - padding + normalizedRadius;
+  const highlightBoxY = hightlightBox.y - padding;
+  const highlightBoxWidth = highlightBoxWidthBase - normalizedRadius * 2;
+  const highlightBoxHeight = highlightBoxHeightBase - normalizedRadius * 2;
+
+  return `M${windowX},0L0,0L0,${windowY}L${windowX},${windowY}L${windowX},0Z
+    M${highlightBoxX},${highlightBoxY} h${highlightBoxWidth} a${normalizedRadius},${normalizedRadius} 0 0 1 ${normalizedRadius},${normalizedRadius} v${highlightBoxHeight} a${normalizedRadius},${normalizedRadius} 0 0 1 -${normalizedRadius},${normalizedRadius} h-${highlightBoxWidth} a${normalizedRadius},${normalizedRadius} 0 0 1 -${normalizedRadius},-${normalizedRadius} v-${highlightBoxHeight} a${normalizedRadius},${normalizedRadius} 0 0 1 ${normalizedRadius},-${normalizedRadius} z`;
 }
 
 export function createSvgCutout({

@@ -14,6 +14,11 @@ export interface BoardingSharedOptions {
    */
   animate: boolean;
   /**
+   * Rounded corner radius for cutout (px)
+   * @default 5
+   */
+  radius: number;
+  /**
    * Options to be passed to scrollIntoView if supported by browser
    * @default { behavior: 'instant', block: 'center' }
    */
