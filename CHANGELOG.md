@@ -1,3 +1,10 @@
+## [3.0.6](https://github.com/josias-r/boarding.js/compare/v3.0.5...v3.0.6) (2022-11-24)
+
+
+### Bug Fixes
+
+* add helper class to popover footer when it is hidden ([5050857](https://github.com/josias-r/boarding.js/commit/5050857ce53bea06d3a2b9dd074ee44d3ae8fbba))
+
 ## [3.0.5](https://github.com/josias-r/boarding.js/compare/v3.0.4...v3.0.5) (2022-11-14)
 
 
