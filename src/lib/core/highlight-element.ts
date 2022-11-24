@@ -11,7 +11,9 @@ type HighlightElementSupportedSharedOptions = Pick<
 
 /** The options of popover that will come from the top-level but can also be overwritten */
 export interface HighlightElementHybridOptions
-  extends Partial<Pick<BoardingSharedOptions, "padding">> {
+  extends Partial<
+    Pick<BoardingSharedOptions, "padding" | "strictClickHandling">
+  > {
   /**
    * Callback to be called when element is about to be highlighted
    */
@@ -82,6 +84,13 @@ class HighlightElement {
    */
   public getPopover() {
     return this.popover;
+  }
+
+  /**
+   * Gets the popover that is connected to the element
+   */
+  public getStrictClickHandling() {
+    return this.options.strictClickHandling;
   }
 
   /**

@@ -20,7 +20,7 @@ export function easeInOutQuad(
  * For future use-cases where this is not possible anymore, we could return a "removeAllEventListeners" method
  */
 export function attachHighPrioClick(
-  element: HTMLElement | SVGSVGElement,
+  element: HTMLElement | SVGElement,
   handler: (e: MouseEvent | PointerEvent) => void
 ) {
   const listener = (
@@ -90,10 +90,13 @@ export function checkOptionalValue<T1 extends any>(
   return argOptional;
 }
 
+type Falsy = false | 0 | "" | null | undefined;
 /**
  * TS runtime check to ensure var is not falsy
  */
-export function assertVarIsNotFalsy<T extends any>(e?: T): asserts e is T {
+export function assertVarIsNotFalsy<T extends any>(
+  e?: T
+): asserts e is T extends Falsy ? never : T {
   if (!e) {
     throw new Error(
       `Variable was expected to not be falsy, but isntead was: ${e}`

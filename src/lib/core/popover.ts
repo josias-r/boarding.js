@@ -2,6 +2,7 @@ import { BoardingSharedOptions } from "../boarding-types";
 import {
   CLASS_BTN_DISABLED,
   CLASS_CLOSE_ONLY_BTN,
+  CLASS_POPOVER_FOOTER_HIDDEN,
   ID_POPOVER,
   POPOVER_ELEMENT,
   POPOVER_OFFSET,
@@ -42,13 +43,21 @@ export interface PopoverStepLevelOptions {
   description: string;
 }
 
+/** Available buttons in the Popover */
+type PopoverBtns = "close" | "next" | "previous";
+
 /** The options of popover that will come from the top-level but can also be overwritten */
 export interface PopoverHybridOptions {
   /**
-   * Whether to show control buttons or not
+   * Whether to show control buttons or not. Can be either a boolean or a whitelist of the buttons you want to show
    * @default true
    */
-  showButtons?: boolean;
+  showButtons?: boolean | PopoverBtns[];
+  /**
+   * Whether to disable control buttons or not. An array of the butons you want to disable
+   * @default []
+   */
+  disableButtons?: PopoverBtns[];
   /**
    * Text on the button in the final step
    * @default 'Done'
@@ -144,6 +153,7 @@ export default class Popover {
 
   constructor({
     showButtons = true,
+    disableButtons = [],
     offset = POPOVER_OFFSET,
     alignment = "start",
     closeBtnText = "Close",
@@ -155,6 +165,7 @@ export default class Popover {
   }: PopoverOptions) {
     this.options = {
       showButtons,
+      disableButtons,
       offset,
       alignment,
       closeBtnText,
@@ -225,10 +236,18 @@ export default class Popover {
 
   /**
    * Expose options.showButtons to outside of class
-   * @returns boolean whether showButtons is on or off for the popover
+   * @returns array whitelist or boolean whether showButtons is on or off for the popover
    */
   public getShowButtons() {
     return this.options.showButtons;
+  }
+
+  /**
+   * Expose options.disableButtons to outside of class
+   * @returns array blacklist of the disabled buttons
+   */
+  public getDisabledButtons() {
+    return this.options.disableButtons;
   }
 
   /**
@@ -325,6 +344,7 @@ export default class Popover {
 
     // If there was only one item, hide the buttons
     if (!this.options.showButtons) {
+      this.popover.popoverFooter.classList.add(CLASS_POPOVER_FOOTER_HIDDEN);
       this.popover.popoverFooter.style.display = "none";
       return;
     }
@@ -342,12 +362,35 @@ export default class Popover {
       this.popover.popoverCloseBtn.classList.remove(CLASS_CLOSE_ONLY_BTN);
     }
 
+    if (Array.isArray(this.options.showButtons)) {
+      if (!this.options.showButtons.includes("next")) {
+        this.popover.popoverNextBtn.style.display = "none";
+      }
+      if (!this.options.showButtons.includes("previous")) {
+        this.popover.popoverPrevBtn.style.display = "none";
+      }
+      if (!this.options.showButtons.includes("close")) {
+        this.popover.popoverCloseBtn.style.display = "none";
+      }
+    }
+
     this.popover.popoverFooter.style.display = "block";
     if (this.options.isFirst) {
       this.popover.popoverPrevBtn.classList.add(CLASS_BTN_DISABLED);
       this.popover.popoverNextBtn.innerHTML = this.options.startBtnText;
     } else {
       this.popover.popoverPrevBtn.classList.remove(CLASS_BTN_DISABLED);
+    }
+
+    // disable buttons
+    if (this.options.disableButtons.includes("close")) {
+      this.popover.popoverCloseBtn.classList.add(CLASS_BTN_DISABLED);
+    }
+    if (this.options.disableButtons.includes("previous")) {
+      this.popover.popoverPrevBtn.classList.add(CLASS_BTN_DISABLED);
+    }
+    if (this.options.disableButtons.includes("next")) {
+      this.popover.popoverNextBtn.classList.add(CLASS_BTN_DISABLED);
     }
 
     if (this.options.isLast) {

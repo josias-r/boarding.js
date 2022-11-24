@@ -322,8 +322,11 @@ class Overlay {
     document.body.appendChild(newSvgElement);
 
     // attach eventListener (using util method, to ensure no external libraries will ever "hear" the click)
-    attachHighPrioClick(newSvgElement, () => {
-      this.options.onOverlayClick();
+    attachHighPrioClick(this.cutoutSVGElement, (e) => {
+      const target = e.target as SVGElement;
+      if (target.tagName === "path") {
+        this.options.onOverlayClick();
+      }
     });
   }
 

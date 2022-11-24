@@ -48,11 +48,17 @@ type Movement =
  * Plugin class that drives the plugin
  */
 class Boarding {
+  /**
+   * Bool, whether the boarding session is currently active
+   */
   public isActivated: boolean;
+  /**
+   * Index of the currently active step
+   */
+  public currentStep: number;
 
   private options; // type will get inferred with default values being required
   private steps: BoardingSteps;
-  private currentStep: number;
   private lastMovementRequested?: Movement;
   private currentMovePrevented: Movement | false;
 
@@ -438,6 +444,7 @@ class Boarding {
       return;
     }
 
+    this.setStrictClickHandlingRules(nextElem);
     this.overlay.highlight(nextElem);
     this.currentStep += 1;
   }
@@ -452,6 +459,7 @@ class Boarding {
       return;
     }
 
+    this.setStrictClickHandlingRules(previousElem);
     this.overlay.highlight(previousElem);
     this.currentStep -= 1;
   }
@@ -464,11 +472,29 @@ class Boarding {
     this.attachEventListeners();
 
     this.isActivated = true;
+    this.setStrictClickHandlingRules(element);
     this.overlay.highlight(element);
+  }
 
-    if (this.options.strictClickHandling === "block-all") {
+  /**
+   * Defines the current rules for which elements are allowed to be clicked
+   * @param element HighlightElement for the current step
+   */
+  private setStrictClickHandlingRules(element: HighlightElement) {
+    // set body classes
+    const customStrictHandling = element.getStrictClickHandling();
+    const strictClickHandling =
+      customStrictHandling === undefined
+        ? this.options.strictClickHandling
+        : customStrictHandling;
+
+    document.body.classList.remove(
+      CLASS_NO_CLICK_BODY,
+      CLASS_STRICT_CLICK_BODY
+    );
+    if (strictClickHandling === "block-all") {
       document.body.classList.add(CLASS_NO_CLICK_BODY);
-    } else if (this.options.strictClickHandling) {
+    } else if (strictClickHandling) {
       document.body.classList.add(CLASS_STRICT_CLICK_BODY);
     }
   }
@@ -542,20 +568,30 @@ class Boarding {
     }
 
     // Ignore if there is no highlighted element or there is a highlighted element
-    // without popover or if the popover does not allow buttons
+    // without popover or if the popover does not allow buttons or if the buttons are disabled
     const highlightedElement = this.getHighlightedElement();
-    if (
-      !highlightedElement ||
-      !highlightedElement.getPopover() ||
-      !highlightedElement.getPopover()?.getShowButtons()
-    ) {
+    const popover = highlightedElement?.getPopover();
+    const popoverShowBtns = popover?.getShowButtons();
+    const popoverDisabledBtns = popover?.getDisabledButtons();
+
+    if (!popoverShowBtns) {
       return;
     }
 
     if (event.key === "ArrowRight") {
-      this.next();
+      if (
+        !popoverDisabledBtns?.includes("next") &&
+        (popoverShowBtns === true || popoverShowBtns.includes("next"))
+      ) {
+        this.next();
+      }
     } else if (event.key === "ArrowLeft") {
-      this.previous();
+      if (
+        !popoverDisabledBtns?.includes("previous") &&
+        (popoverShowBtns === true || popoverShowBtns.includes("previous"))
+      ) {
+        this.previous();
+      }
     }
   }
 
@@ -614,7 +650,13 @@ class Boarding {
           currentStep.popover.prefferedSide || this.options.prefferedSide,
         alignment: currentStep.popover.alignment || this.options.alignment,
         showButtons:
-          currentStep.popover.showButtons || this.options.showButtons,
+          currentStep.popover.showButtons === undefined
+            ? this.options.showButtons
+            : currentStep.popover.showButtons,
+        disableButtons:
+          currentStep.popover.disableButtons === undefined
+            ? this.options.disableButtons
+            : currentStep.popover.disableButtons,
         doneBtnText:
           currentStep.popover.doneBtnText || this.options.doneBtnText,
         closeBtnText:
@@ -654,6 +696,7 @@ class Boarding {
         onDeselected: currentStep.onDeselected || this.options.onDeselected,
         onNext: currentStep.onNext || this.options.onNext,
         onPrevious: currentStep.onPrevious || this.options.onPrevious,
+        strictClickHandling: currentStep.strictClickHandling,
         padding: currentStep.padding, // note this is ONLY the stepLvl padding, the "custom padding", so we can later check if it exists using getCustomPadding
       },
       popover,

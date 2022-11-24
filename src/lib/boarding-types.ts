@@ -23,6 +23,13 @@ export interface BoardingSharedOptions {
    * @default 10
    */
   padding: number;
+  /**
+   * If `true`: Prevent clicking ANY element except currently active element (or its children)
+   *
+   * If `"block-all"`: Prevent clicking ANYTHING except the popover+overlay
+   * @default true
+   */
+  strictClickHandling: boolean | "block-all";
 }
 
 export interface BoardingOptions
@@ -36,13 +43,6 @@ export interface BoardingOptions
    * @default true
    */
   keyboardControl?: boolean;
-  /**
-   * If `true`: Prevent clicking ANY element except currently active element (or its children)
-   *
-   * If `"block-all"`: Prevent clicking ANYTHING except the popover+overlay
-   * @default true
-   */
-  strictClickHandling?: boolean | "block-all";
   /**
    * Clicking outside the highlighted element should reset boarding or not
    * @default true

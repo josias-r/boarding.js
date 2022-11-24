@@ -13,6 +13,11 @@ div#boarding-popover-item.boarding-popover-item-animated {
 }
 
 /* strict or disabled pointer events */
+.boarding-coutout-svg {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 body.boarding-strict-pointer-events,
 body.boarding-strict-pointer-events
   *:not(.boarding-highlighted-element *):not(#boarding-popover-item
@@ -20,14 +25,16 @@ body.boarding-strict-pointer-events
     path),
 body.boarding-no-pointer-events,
 body.boarding-no-pointer-events
-  *:not(#boarding-popover-item
-    *):not(#boarding-popover-item):not(.boarding-coutout-svg path) {
+  *:not(.boarding-highlighted-element *):not(#boarding-popover-item
+    *):not(.boarding-highlighted-element):not(#boarding-popover-item):not(.boarding-coutout-svg):not(.boarding-coutout-svg
+    path) {
   pointer-events: none !important;
 }
 /* enable pointer-events where it makes sense */
 div#boarding-popover-item,
 .boarding-coutout-svg path,
-body.boarding-strict-pointer-events .boarding-highlighted-element {
+body.boarding-strict-pointer-events .boarding-highlighted-element,
+body.boarding-no-pointer-events .boarding-coutout-svg {
   pointer-events: auto !important;
 }
 
