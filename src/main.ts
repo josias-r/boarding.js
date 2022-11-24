@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
       padding: 5,
       popover: {
         title: "Focus Anything",
-        disableButtons: ["previous"],
         description:
           "You can use it to highlight literally anything, images, text, div, span, li etc.",
       },
