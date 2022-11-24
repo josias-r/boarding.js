@@ -568,20 +568,32 @@ class Boarding {
     }
 
     // Ignore if there is no highlighted element or there is a highlighted element
-    // without popover or if the popover does not allow buttons
+    // without popover or if the popover does not allow buttons or if the buttons are disabled
     const highlightedElement = this.getHighlightedElement();
-    if (
-      !highlightedElement ||
-      !highlightedElement.getPopover() ||
-      !highlightedElement.getPopover()?.getShowButtons()
-    ) {
+    const popover = highlightedElement?.getPopover();
+    const popoverShowBtns = popover?.getShowButtons();
+    const popoverDisabledBtns = popover?.getDisabledButtons();
+
+    if (!popoverShowBtns) {
       return;
     }
 
     if (event.key === "ArrowRight") {
-      this.next();
+      if (
+        popoverShowBtns === true ||
+        (popoverShowBtns.includes("next") &&
+          !popoverDisabledBtns?.includes("next"))
+      ) {
+        this.next();
+      }
     } else if (event.key === "ArrowLeft") {
-      this.previous();
+      if (
+        popoverShowBtns === true ||
+        (popoverShowBtns.includes("previous") &&
+          !popoverDisabledBtns?.includes("previous"))
+      ) {
+        this.previous();
+      }
     }
   }
 
@@ -643,6 +655,10 @@ class Boarding {
           currentStep.popover.showButtons === undefined
             ? this.options.showButtons
             : currentStep.popover.showButtons,
+        disableButtons:
+          currentStep.popover.disableButtons === undefined
+            ? this.options.disableButtons
+            : currentStep.popover.disableButtons,
         doneBtnText:
           currentStep.popover.doneBtnText || this.options.doneBtnText,
         closeBtnText:
