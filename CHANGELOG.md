@@ -1,3 +1,10 @@
+# [3.2.0](https://github.com/josias-r/boarding.js/compare/v3.1.1...v3.2.0) (2022-11-24)
+
+
+### Features
+
+* introduce rounded corners for cutout (configurable) ([82bdfaa](https://github.com/josias-r/boarding.js/commit/82bdfaa64bae3b40172cfcc5b3a8d2afd95e970a))
+
 ## [3.1.1](https://github.com/josias-r/boarding.js/compare/v3.1.0...v3.1.1) (2022-11-24)
 
 
