@@ -1,3 +1,11 @@
+# [3.1.0](https://github.com/josias-r/boarding.js/compare/v3.0.6...v3.1.0) (2022-11-24)
+
+
+### Features
+
+* allow disabling specific buttons ([81b7350](https://github.com/josias-r/boarding.js/commit/81b7350d46614e27066f1b3c5d0c84476506c60a))
+* allow showing only a selection of buttons ([df11f15](https://github.com/josias-r/boarding.js/commit/df11f15dd99be665ef6e68a30019723ec26da7f9))
+
 ## [3.0.6](https://github.com/josias-r/boarding.js/compare/v3.0.5...v3.0.6) (2022-11-24)
 
 
