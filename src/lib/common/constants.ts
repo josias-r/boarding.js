@@ -16,6 +16,7 @@ export const CLASS_POPOVER_TIP = "boarding-popover-tip";
 const CLASS_POPOVER_TITLE = "boarding-popover-title";
 const CLASS_POPOVER_DESCRIPTION = "boarding-popover-description";
 const CLASS_POPOVER_FOOTER = "boarding-popover-footer";
+export const CLASS_POPOVER_FOOTER_HIDDEN = "boarding-popover-footer-hidden";
 const CLASS_CLOSE_BTN = "boarding-close-btn";
 const CLASS_NEXT_STEP_BTN = "boarding-next-btn";
 const CLASS_PREV_STEP_BTN = "boarding-prev-btn";

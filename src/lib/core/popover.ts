@@ -2,6 +2,7 @@ import { BoardingSharedOptions } from "../boarding-types";
 import {
   CLASS_BTN_DISABLED,
   CLASS_CLOSE_ONLY_BTN,
+  CLASS_POPOVER_FOOTER_HIDDEN,
   ID_POPOVER,
   POPOVER_ELEMENT,
   POPOVER_OFFSET,
@@ -325,6 +326,7 @@ export default class Popover {
 
     // If there was only one item, hide the buttons
     if (!this.options.showButtons) {
+      this.popover.popoverFooter.classList.add(CLASS_POPOVER_FOOTER_HIDDEN);
       this.popover.popoverFooter.style.display = "none";
       return;
     }
