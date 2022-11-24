@@ -580,17 +580,15 @@ class Boarding {
 
     if (event.key === "ArrowRight") {
       if (
-        popoverShowBtns === true ||
-        (popoverShowBtns.includes("next") &&
-          !popoverDisabledBtns?.includes("next"))
+        !popoverDisabledBtns?.includes("next") &&
+        (popoverShowBtns === true || popoverShowBtns.includes("next"))
       ) {
         this.next();
       }
     } else if (event.key === "ArrowLeft") {
       if (
-        popoverShowBtns === true ||
-        (popoverShowBtns.includes("previous") &&
-          !popoverDisabledBtns?.includes("previous"))
+        !popoverDisabledBtns?.includes("previous") &&
+        (popoverShowBtns === true || popoverShowBtns.includes("previous"))
       ) {
         this.previous();
       }

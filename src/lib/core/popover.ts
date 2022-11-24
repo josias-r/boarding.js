@@ -362,6 +362,18 @@ export default class Popover {
       this.popover.popoverCloseBtn.classList.remove(CLASS_CLOSE_ONLY_BTN);
     }
 
+    if (Array.isArray(this.options.showButtons)) {
+      if (!this.options.showButtons.includes("next")) {
+        this.popover.popoverNextBtn.style.display = "none";
+      }
+      if (!this.options.showButtons.includes("previous")) {
+        this.popover.popoverPrevBtn.style.display = "none";
+      }
+      if (!this.options.showButtons.includes("close")) {
+        this.popover.popoverCloseBtn.style.display = "none";
+      }
+    }
+
     this.popover.popoverFooter.style.display = "block";
     if (this.options.isFirst) {
       this.popover.popoverPrevBtn.classList.add(CLASS_BTN_DISABLED);
