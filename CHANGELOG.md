@@ -1,3 +1,10 @@
+## [3.2.1](https://github.com/josias-r/boarding.js/compare/v3.2.0...v3.2.1) (2023-01-04)
+
+
+### Bug Fixes
+
+* allow disabling scrollIntoView via "no-scroll" option (step-lvl and/or top-lvl) ([e78e2dc](https://github.com/josias-r/boarding.js/commit/e78e2dcb7eddd3a3e4e98815aa2c9cb9733ce38a))
+
 # [3.2.0](https://github.com/josias-r/boarding.js/compare/v3.1.1...v3.2.0) (2022-11-24)
 
 
