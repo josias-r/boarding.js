@@ -3,16 +3,13 @@ import { CLASS_ACTIVE_HIGHLIGHTED_ELEMENT } from "../common/constants";
 import { bringInView } from "../common/utils";
 import Popover from "./popover";
 
-/** The top-level options that are shared between multiple classes that popover supports */
-type HighlightElementSupportedSharedOptions = Pick<
-  BoardingSharedOptions,
-  "scrollIntoViewOptions"
->;
-
 /** The options of popover that will come from the top-level but can also be overwritten */
 export interface HighlightElementHybridOptions
   extends Partial<
-    Pick<BoardingSharedOptions, "padding" | "radius" | "strictClickHandling">
+    Pick<
+      BoardingSharedOptions,
+      "padding" | "radius" | "strictClickHandling" | "scrollIntoViewOptions"
+    >
   > {
   /**
    * Callback to be called when element is about to be highlighted
@@ -35,9 +32,7 @@ export interface HighlightElementHybridOptions
    */
   onPrevious?: (element: HighlightElement) => void;
 }
-interface HighlightElementOptions
-  extends HighlightElementHybridOptions,
-    HighlightElementSupportedSharedOptions {}
+interface HighlightElementOptions extends HighlightElementHybridOptions {}
 
 /**
  * Wrapper around DOMElements to enrich them
@@ -118,7 +113,9 @@ class HighlightElement {
    * Is called when the element has been successfully highlighted
    */
   public onHighlighted() {
-    bringInView(this.highlightDomElement, this.options.scrollIntoViewOptions);
+    if (this.options.scrollIntoViewOptions !== "no-scroll") {
+      bringInView(this.highlightDomElement, this.options.scrollIntoViewOptions);
+    }
 
     // Show the popover once the item has been
     // brought in the view, this would allow us to handle

@@ -645,7 +645,10 @@ class Boarding {
         padding: this.options.padding,
         offset: this.options.offset,
         animate: this.options.animate,
-        scrollIntoViewOptions: this.options.scrollIntoViewOptions,
+        scrollIntoViewOptions:
+          currentStep.scrollIntoViewOptions === undefined
+            ? this.options.scrollIntoViewOptions
+            : currentStep.scrollIntoViewOptions,
         // popover options
         title: currentStep.popover.title,
         description: currentStep.popover.description,
@@ -693,7 +696,10 @@ class Boarding {
     return new HighlightElement({
       highlightDomElement: domElement,
       options: {
-        scrollIntoViewOptions: this.options.scrollIntoViewOptions,
+        scrollIntoViewOptions:
+          currentStep.scrollIntoViewOptions === undefined
+            ? this.options.scrollIntoViewOptions
+            : currentStep.scrollIntoViewOptions,
         onBeforeHighlighted:
           currentStep.onBeforeHighlighted || this.options.onBeforeHighlighted,
         onHighlighted: currentStep.onHighlighted || this.options.onHighlighted,

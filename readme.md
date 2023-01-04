@@ -266,7 +266,9 @@ const boarding = new Boarding({
   prevBtnText: "Previous", // Previous button text for this step
   showButtons: false, // Do not show control buttons in footer
   keyboardControl: true, // Allow controlling through keyboard (escape to close, arrow keys to move)
-  scrollIntoViewOptions: {}, // We use `scrollIntoView()` when possible, pass here the options for it if you want any
+  scrollIntoViewOptions: {
+    behaviour: "smooth",
+  }, // We use `scrollIntoView()` when possible, pass here the options for it if you want any. Alternatively, you can also disable this functionallity by setting scrollIntoViewOptions to "no-scroll"
   onBeforeHighlighted: (HighlightElement) => {}, // Called when element is about to be highlighted
   onHighlighted: (HighlightElement) => {}, // Called when element is fully highlighted
   onDeselected: (HighlightElement) => {}, // Called when element has been deselected

@@ -61,7 +61,7 @@ export function createSvgCutout({
   svg.setAttribute("viewBox", `0 0 ${windowX} ${windowY}`);
   svg.setAttribute("xmlSpace", "preserve");
   svg.setAttribute("xmlnsXlink", "http://www.w3.org/1999/xlink");
-  svg.setAttribute("version", "version");
+  svg.setAttribute("version", "1.1");
   svg.style.fillRule = "evenodd";
   svg.style.clipRule = "evenodd";
   svg.style.strokeLinejoin = "round";

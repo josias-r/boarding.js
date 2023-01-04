@@ -22,7 +22,7 @@ export interface BoardingSharedOptions {
    * Options to be passed to scrollIntoView if supported by browser
    * @default { behavior: 'instant', block: 'center' }
    */
-  scrollIntoViewOptions: ScrollIntoViewOptions;
+  scrollIntoViewOptions: ScrollIntoViewOptions | "no-scroll";
   /**
    * Distance of elements corner from the edges of the overlay
    * @default 10

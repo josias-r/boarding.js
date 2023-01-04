@@ -210,10 +210,13 @@ export default class Popover {
     this.renderFooter();
 
     this.setPosition();
-    bringInView(
-      this.popover.popoverWrapper,
-      this.options.scrollIntoViewOptions
-    );
+
+    if (this.options.scrollIntoViewOptions !== "no-scroll") {
+      bringInView(
+        this.popover.popoverWrapper,
+        this.options.scrollIntoViewOptions
+      );
+    }
   }
 
   /**

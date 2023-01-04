@@ -113,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
         description:
           "Have a look at the usage examples and see how you can use it.",
       },
+      scrollIntoViewOptions: "no-scroll",
     },
     {
       element: "#boarding-demo-head",
@@ -121,6 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
         description:
           "This was just a sneak peak, have a look at the API section and examples to learn more!",
       },
+      scrollIntoViewOptions: "no-scroll",
     },
   ];
 
