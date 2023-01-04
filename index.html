@@ -11,7 +11,7 @@
     <meta
       name="description"
       itemprop="description"
-      content="A light-weight, no-dependency, vanilla JavaScript library to drive the user's focus across the page"
+      content="A light-weight, no-dependency, vanilla JavaScript library to onboard your users to your page or application"
     />
     <link
       rel="apple-touch-icon"
@@ -44,8 +44,12 @@
       name="google-site-verification"
       content="KO9YN_XsNztSqiMkQsHfSfsAoLgeAsaVoXL26w6EPbg"
     />
-    <script type="module" crossorigin src="/boarding.js/assets/index.7a741d1f.js"></script>
-    <link rel="stylesheet" href="/boarding.js/assets/index.772d720f.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script type="module" crossorigin src="/boarding.js/assets/index.2ba83913.js"></script>
+    <link rel="stylesheet" href="/boarding.js/assets/index.6912e45e.css">
   </head>
   <body>
     <div class="page-wrap">
@@ -168,6 +172,91 @@
           cuts the part that is over the element to be highlighted and provides
           you several hooks when highlighting, highlighted or un-highlighting
           elements making it highly customizable.
+        </p>
+        <h3 id="comparison-table">How does it compare to driver.js?</h3>
+        <table>
+          <tr>
+            <th style="width: 50%">Features</th>
+            <th>Boarding.js</th>
+            <th>Driver.js</th>
+          </tr>
+          <tr>
+            <td>
+              Works with complex layouts <br /><small
+                >(no z-index conflicts)</small
+              >
+            </td>
+            <td><i class="fa fa-check"></i></td>
+            <td><i class="fa fa-remove"></i></td>
+          </tr>
+          <tr>
+            <td>
+              Define steps for elements which are not mounted yet <br /><small
+                >(for highly interactive websites, such as react applications,
+                where elements might only appear once an action has been
+                taken)</small
+              >
+            </td>
+            <td><i class="fa fa-check"></i></td>
+            <td><i class="fa fa-remove"></i></td>
+          </tr>
+          <tr>
+            <td>
+              Has the concept of a stage<br /><small
+                >(a customizable background for the highlighted element)</small
+              >
+              <br />
+              <br />
+              <small
+                >* Boarding.js will add the
+                <code>boarding-highlighted-element</code> class to the
+                higlighted element for optional custom styling.</small
+              >
+            </td>
+            <td><i class="fa fa-remove"></i>*</td>
+            <td><i class="fa fa-check"></i></td>
+          </tr>
+          <tr>
+            <td>Auto popover positioning</td>
+            <td><i class="fa fa-check"></i></td>
+            <td><i class="fa fa-remove"></i></td>
+          </tr>
+          <tr>
+            <td>
+              Control popover
+              <a href="#single-element-with-popover-position">alignment</a>
+            </td>
+            <td><i class="fa fa-check"></i></td>
+            <td><i class="fa fa-remove"></i></td>
+          </tr>
+          <tr>
+            <td>
+              Control allowed user (click) actions <br /><small
+                >(<a href="#api_section">strictClickHandling</a>)</small
+              >
+            </td>
+            <td><i class="fa fa-check"></i></td>
+            <td><i class="fa fa-remove"></i></td>
+          </tr>
+          <tr>
+            <td>
+              Allow preparing/validating a move before it happens <br /><small
+                >(<a href="#api_section">prepareElement</a>)</small
+              >
+            </td>
+            <td><i class="fa fa-check"></i></td>
+            <td><i class="fa fa-remove"></i></td>
+          </tr>
+          <tr>
+            <td>Written in TypeScript</td>
+            <td><i class="fa fa-check"></i></td>
+            <td><i class="fa fa-remove"></i></td>
+          </tr>
+        </table>
+        <p>
+          Besides the above, Boarding.js also has a few more options available
+          for each individual step, a more stable event system and more hooks
+          for it, such as <code>onBeforeHighlighted</code>.
         </p>
       </section>
       <hr class="hr__fancy" />
