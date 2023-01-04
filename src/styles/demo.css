@@ -136,6 +136,39 @@ blockquote {
   text-align: center;
 }
 /*===== End of Section comment block ======*/
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #f5f3f1;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 16px;
+}
+
+th:first-child,
+td:first-child {
+  text-align: left;
+}
+
+tr:nth-child(even) {
+  background-color: #f5f3f1;
+}
+
+.fa-check {
+  color: green;
+}
+
+.fa-remove {
+  color: #f54336;
+}
+
 img.emoji {
   height: 1em;
   width: 1em;
