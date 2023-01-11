@@ -347,7 +347,7 @@ boarding.previous(); // Moves to previous step in the steps list
 boarding.hasNextStep(); // Checks if there is next step to move to
 boarding.hasPreviousStep(); // Checks if there is previous step to move to
 
-// Prevents the current move. Useful in `onNext` or `onPrevious` if you want to
+// Prevents the current move. Useful in `prepareElement`, `onNext`, `onPrevious` if you want to
 // perform some asynchronous task and manually move to next step
 boarding.preventMove();
 boarding.continue(); // Continue the move that was prevented using preventMove
