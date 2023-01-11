@@ -1,4 +1,4 @@
-import Overlay from "./core/overlay";
+import Overlay, { BoardingExitReason } from "./core/overlay";
 import Popover from "./core/popover";
 import {
   OVERLAY_PADDING,
@@ -112,7 +112,7 @@ class Boarding {
         }
         // Remove the overlay If clicked outside the highlighted element
         if (this.options.allowClose) {
-          this.reset();
+          this.reset(false, "cancel");
           return;
         }
       },
@@ -312,11 +312,12 @@ class Boarding {
   /**
    * Resets the steps if any and clears the overlay
    * @param immediate immediately unmount overlay or animate out
+   * @param exitReason report the reason reset is called to `onReset`. This string has no other functionallity and is purely of informational purpose inside `onReset`
    */
-  public reset(immediate = false) {
+  public reset(immediate = false, exitReason: BoardingExitReason = "cancel") {
     this.currentStep = 0;
     this.isActivated = false;
-    this.overlay.clear(immediate);
+    this.overlay.clear(immediate, exitReason);
     this.removeEventListeners();
     // remove strict click handling classes, in case they got added
     document.body.classList.remove(
@@ -444,7 +445,8 @@ class Boarding {
   private moveNext() {
     const nextElem = this.prepareElementFromStep(this.currentStep + 1);
     if (!nextElem) {
-      this.reset();
+      const isLast = !this.hasNextStep();
+      this.reset(false, isLast ? "finish" : "cancel");
       return;
     }
 
@@ -459,7 +461,7 @@ class Boarding {
   private movePrevious() {
     const previousElem = this.prepareElementFromStep(this.currentStep - 1);
     if (!previousElem) {
-      this.reset();
+      this.reset(false, "cancel");
       return;
     }
 
@@ -567,7 +569,7 @@ class Boarding {
 
     // If escape was pressed and it is allowed to click outside to close -> reset
     if (event.key === "Escape" && this.options.allowClose) {
-      this.reset();
+      this.reset(false, "cancel");
       return;
     }
 
@@ -688,7 +690,7 @@ class Boarding {
           this.previous();
         },
         onCloseClick: () => {
-          this.reset();
+          this.reset(false, "cancel");
         },
       });
     }

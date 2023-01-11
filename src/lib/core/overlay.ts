@@ -19,12 +19,19 @@ type OverlaySupportedSharedOptions = Pick<
   "animate" | "padding" | "radius"
 >;
 
+/** Identifier for different exist reasons that causing onReset, such as cancel or finish */
+export type BoardingExitReason = "cancel" | "finish";
+
 /** The options of overlay that will come from the top-level */
 export interface OverlayTopLevelOptions {
   /**
    * Is called when the overlay is about to reset
    */
-  onReset?: (element: HighlightElement) => void;
+  onReset?: (
+    element: HighlightElement,
+    /** What caused the reset? Did the user cancel, finish .. */
+    exitReason: BoardingExitReason
+  ) => void;
   /**
    * Opacity for the overlay
    * @default 0.75
@@ -117,10 +124,10 @@ class Overlay {
    * Removes the overlay and cancel any listeners
    * @param immediate immediately unmount overlay or animate out
    */
-  public clear(immediate = false) {
+  public clear(immediate = false, exitReason: BoardingExitReason) {
     // Callback for when overlay is about to be reset
     if (this.currentHighlightedElement) {
-      this.options.onReset?.(this.currentHighlightedElement);
+      this.options.onReset?.(this.currentHighlightedElement, exitReason);
     }
 
     // Deselect the highlighted element if any
