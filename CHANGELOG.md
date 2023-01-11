@@ -1,3 +1,11 @@
+# [3.3.0](https://github.com/josias-r/boarding.js/compare/v3.2.1...v3.3.0) (2023-01-11)
+
+
+### Features
+
+* add onStart option that is called when `boarding.start` is called ([9f18187](https://github.com/josias-r/boarding.js/commit/9f18187cf5f528116240ba82d39ab7185c828797))
+* pass a BoardingExitReason to onReset to allow for identifying what triggered the onReset ([05821bf](https://github.com/josias-r/boarding.js/commit/05821bf58d0d7536b7c804b91650b48dd45740d2))
+
 ## [3.2.1](https://github.com/josias-r/boarding.js/compare/v3.2.0...v3.2.1) (2023-01-04)
 
 
