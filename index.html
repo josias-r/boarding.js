@@ -48,7 +48,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <script type="module" crossorigin src="/boarding.js/assets/index.2ba83913.js"></script>
+    <script type="module" crossorigin src="/boarding.js/assets/index.3c3f1df3.js"></script>
     <link rel="stylesheet" href="/boarding.js/assets/index.6912e45e.css">
   </head>
   <body>
@@ -625,6 +625,7 @@ boarding.highlight({
   onHighlighted: (Element) {}, // Called when element is fully highlighted
   onDeselected: (Element) {}, // Called when element has been deselected
   onReset: (Element) {}, // Called when overlay is about to be cleared
+  onStart: (Element) {}, // Called when `boarding.start()` was called
   onNext: (Element) =&gt; {}, // Called when moving to next step on any step
   onPrevious: (Element) =&gt; {}, // Called when moving to next step on any step
   strictClickHandling: "block-all", // Can also be `true` or if not wanted at all, `false`. Either block ALL pointer events, or isolate pointer-events to only allow on the highlighted element (`true`). Popover and overlay pointer-events are of course always allowed to be clicked
@@ -675,7 +676,7 @@ boarding.hasHighlightedElement(); // Checks if there is any highlighted element
 boarding.hasNextStep(); // Checks if there is next step to move to
 boarding.hasPreviousStep(); // Checks if there is previous step to move to
 
-// Prevents the current move. Useful in `onNext` or `onPrevious` if you want to
+// Prevents the current move. Useful in `prepareElement`, `onNext`, `onPrevious` if you want to
 // perform some asynchronous task and manually move to next step
 boarding.preventMove();
 boarding.continue(); // Continue the move that was prevented using preventMove
