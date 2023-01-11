@@ -623,6 +623,7 @@ boarding.highlight({
   onHighlighted: (Element) {}, // Called when element is fully highlighted
   onDeselected: (Element) {}, // Called when element has been deselected
   onReset: (Element) {}, // Called when overlay is about to be cleared
+  onStart: (Element) {}, // Called when `boarding.start()` was called
   onNext: (Element) =&gt; {}, // Called when moving to next step on any step
   onPrevious: (Element) =&gt; {}, // Called when moving to next step on any step
   strictClickHandling: "block-all", // Can also be `true` or if not wanted at all, `false`. Either block ALL pointer events, or isolate pointer-events to only allow on the highlighted element (`true`). Popover and overlay pointer-events are of course always allowed to be clicked

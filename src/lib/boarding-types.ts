@@ -1,4 +1,6 @@
-import { HighlightElementHybridOptions } from "./core/highlight-element";
+import HighlightElement, {
+  HighlightElementHybridOptions,
+} from "./core/highlight-element";
 import { OverlayTopLevelOptions } from "./core/overlay";
 import {
   PopoverHybridOptions,
@@ -62,6 +64,10 @@ export interface BoardingOptions
    * className for the boarding popovers
    */
   className?: string;
+  /**
+   * Simple event that triggers for boarding.start()
+   */
+  onStart?: (element: HighlightElement) => void;
 }
 
 export interface BoardingStepDefinition extends HighlightElementHybridOptions {

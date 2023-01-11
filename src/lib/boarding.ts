@@ -376,6 +376,8 @@ class Boarding {
     }
 
     this.currentStep = index;
+
+    this.options.onStart?.(element);
     this.activateBoarding(element);
   }
 
