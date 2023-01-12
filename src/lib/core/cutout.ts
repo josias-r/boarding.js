@@ -62,6 +62,8 @@ export function createSvgCutout({
   svg.setAttribute("xmlSpace", "preserve");
   svg.setAttribute("xmlnsXlink", "http://www.w3.org/1999/xlink");
   svg.setAttribute("version", "1.1");
+  // https://github.com/josias-r/boarding.js/issues/10
+  svg.setAttribute("preserveAspectRatio", "xMinYMin slice");
   svg.style.fillRule = "evenodd";
   svg.style.clipRule = "evenodd";
   svg.style.strokeLinejoin = "round";
@@ -71,8 +73,10 @@ export function createSvgCutout({
   svg.style.position = "fixed";
   svg.style.top = "0";
   svg.style.left = "0";
-  svg.style.right = "0";
-  svg.style.bottom = "0";
+
+  // https://github.com/josias-r/boarding.js/issues/10
+  svg.style.width = "100%";
+  svg.style.height = "100%";
 
   const cutoutPath = document.createElementNS(
     "http://www.w3.org/2000/svg",
