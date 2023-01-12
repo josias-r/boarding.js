@@ -1,3 +1,10 @@
+## [3.3.1](https://github.com/josias-r/boarding.js/compare/v3.3.0...v3.3.1) (2023-01-12)
+
+
+### Bug Fixes
+
+* workaround for [#10](https://github.com/josias-r/boarding.js/issues/10) to fix weird cutout offset ([11072fe](https://github.com/josias-r/boarding.js/commit/11072fec93b3e0c458d00a8c964839d59c25d29e))
+
 # [3.3.0](https://github.com/josias-r/boarding.js/compare/v3.2.1...v3.3.0) (2023-01-11)
 
 
