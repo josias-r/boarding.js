@@ -1,3 +1,10 @@
+## [3.3.2](https://github.com/josias-r/boarding.js/compare/v3.3.1...v3.3.2) (2023-01-17)
+
+
+### Bug Fixes
+
+* allow click actions inside the popover description ([eee608a](https://github.com/josias-r/boarding.js/commit/eee608ac453e21dd96729d8bd1ed42381cd8c1c9))
+
 ## [3.3.1](https://github.com/josias-r/boarding.js/compare/v3.3.0...v3.3.1) (2023-01-12)
 
 
