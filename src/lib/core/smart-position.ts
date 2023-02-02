@@ -63,16 +63,18 @@ class SmartPosition {
    * @returns Popover width + height
    */
   private getPopoverDimensions() {
-    const popoverRect = this.popover
-      .getPopoverElements()
-      ?.popoverWrapper.getBoundingClientRect();
+    const popoverElements = this.popover.getPopoverElements();
+    const popoverRect = popoverElements?.popoverWrapper.getBoundingClientRect();
+    const popoverTipRect = popoverElements?.popoverTip.getBoundingClientRect();
 
     assertVarIsNotFalsy(popoverRect);
+    assertVarIsNotFalsy(popoverTipRect);
 
     // note that we only add margins ONCE because it only matters as a margin to the highlightElement, not the viewport
     return {
       width: popoverRect.width + this.finalOffset,
       height: popoverRect.height + this.finalOffset,
+      tipSize: popoverTipRect.width,
     };
   }
 
@@ -145,6 +147,7 @@ class SmartPosition {
    * @param pos the position on the axis (x = left, y = top)
    * @param end the max value on the axis (x = maxWidth, y = maxHeight)
    * @param elementLength the length of the element on the axis in question (x = width, y = height)
+   * @param padding extra space that should be considered when touching boundries such as "end" or "0"
    * @returns
    */
   private normalizeAlignment(
@@ -152,28 +155,29 @@ class SmartPosition {
     popoverLength: number, // popover height or width
     pos: number, // element top or left
     end: number, // window height or width
-    elementLength: number // popover height or width
+    elementLength: number, // popover height or width
+    extraPadding: number
   ) {
     switch (alignment) {
       case "start":
-        return Math.min(pos - this.padding, end - popoverLength);
+        return Math.max(
+          Math.min(pos - this.padding, end - popoverLength),
+          extraPadding
+        );
       case "end":
-        return Math.min(
-          pos - popoverLength + elementLength + this.padding,
-          end - popoverLength
+        return Math.max(
+          Math.min(
+            pos - popoverLength + elementLength + this.padding,
+            end - popoverLength - extraPadding
+          ),
+          extraPadding
         );
       case "center":
         const posCentered = pos - popoverLength / 2 + elementLength / 2;
-
-        const from = Math.min(posCentered, end - popoverLength);
-        const to = Math.min(posCentered, end);
-        if (to !== posCentered) {
-          return to;
-        }
-        if (from !== posCentered) {
-          return from;
-        }
-        return Math.max(0, posCentered);
+        return Math.min(
+          Math.max(extraPadding, posCentered),
+          end - extraPadding - popoverLength
+        );
     }
   }
 
@@ -225,45 +229,63 @@ class SmartPosition {
         right?: number;
       } = {};
 
+      const popoverRealWidth = popoverDimensions.width - this.finalOffset; // get the real dimension without the margin
+      const popoverRealHeight = popoverDimensions.height - this.finalOffset; // get the real dimension without the margin
       switch (foundSideResult.side) {
         case "top":
-          position.top = foundSideResult.value;
+          position.top = Math.min(
+            foundSideResult.value,
+            window.innerHeight - popoverRealHeight - popoverDimensions.tipSize
+          );
           position.left = this.normalizeAlignment(
             alignment,
-            popoverDimensions.width - this.finalOffset, // get the real dimension without the margin
+            popoverRealWidth,
             elemRect.left,
             window.innerWidth,
-            elemRect.width
+            elemRect.width,
+            popoverDimensions.tipSize
           );
           break;
         case "bottom":
-          position.bottom = foundSideResult.value;
+          position.bottom = Math.min(
+            foundSideResult.value,
+            window.innerHeight - popoverRealHeight - popoverDimensions.tipSize
+          );
           position.left = this.normalizeAlignment(
             alignment,
-            popoverDimensions.width - this.finalOffset, // get the real dimension without the margin
+            popoverRealWidth,
             elemRect.left,
             window.innerWidth,
-            elemRect.width
+            elemRect.width,
+            popoverDimensions.tipSize
           );
           break;
         case "left":
-          position.left = foundSideResult.value;
+          position.left = Math.min(
+            foundSideResult.value,
+            window.innerWidth - popoverRealWidth - popoverDimensions.tipSize
+          );
           position.top = this.normalizeAlignment(
             alignment,
-            popoverDimensions.height - this.finalOffset, // get the real dimension without the margin
+            popoverRealHeight,
             elemRect.top,
             window.innerHeight,
-            elemRect.height
+            elemRect.height,
+            popoverDimensions.tipSize
           );
           break;
         case "right":
-          position.right = foundSideResult.value;
+          position.right = Math.min(
+            foundSideResult.value,
+            window.innerWidth - popoverRealWidth - popoverDimensions.tipSize
+          );
           position.top = this.normalizeAlignment(
             alignment,
-            popoverDimensions.height - this.finalOffset, // get the real dimension without the margin
+            popoverRealHeight,
             elemRect.top,
             window.innerHeight,
-            elemRect.height
+            elemRect.height,
+            popoverDimensions.tipSize
           );
           break;
       }
