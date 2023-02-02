@@ -1,3 +1,10 @@
+# [3.4.0](https://github.com/josias-r/boarding.js/compare/v3.3.4...v3.4.0) (2023-02-02)
+
+
+### Features
+
+* release [@next](https://github.com/next) to production ([c93eb7d](https://github.com/josias-r/boarding.js/commit/c93eb7d1c33b07962cb1fbd9da9ad26ca96bace9)), closes [#11](https://github.com/josias-r/boarding.js/issues/11)
+
 ## [3.3.4](https://github.com/josias-r/boarding.js/compare/v3.3.3...v3.3.4) (2023-02-02)
 
 
