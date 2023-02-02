@@ -307,19 +307,29 @@ export default class Popover {
     document.body.appendChild(popoverWrapper);
 
     // add btn eventlisteners (using util method, to ensure no external libraries will ever "hear" the click)
-    attachHighPrioClick(popoverWrapper, (e) => {
-      const target = e.target as HTMLElement;
+    attachHighPrioClick(
+      popoverWrapper,
+      (e) => {
+        const target = e.target as HTMLElement;
 
-      if (popoverNextBtn.contains(target)) {
-        this.options.onNextClick();
+        if (popoverNextBtn.contains(target)) {
+          this.options.onNextClick();
+        }
+        if (popoverPrevBtn.contains(target)) {
+          this.options.onPreviousClick();
+        }
+        if (popoverCloseBtn.contains(target)) {
+          this.options.onCloseClick();
+        }
+      },
+      (target) => {
+        // we allow the defaultAction for the description element, in case it contains links, etc.
+        if (popoverDescription.contains(target)) {
+          return false;
+        }
+        return true;
       }
-      if (popoverPrevBtn.contains(target)) {
-        this.options.onPreviousClick();
-      }
-      if (popoverCloseBtn.contains(target)) {
-        this.options.onCloseClick();
-      }
-    });
+    );
 
     this.popover = {
       popoverWrapper,

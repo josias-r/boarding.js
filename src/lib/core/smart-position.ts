@@ -63,16 +63,18 @@ class SmartPosition {
    * @returns Popover width + height
    */
   private getPopoverDimensions() {
-    const popoverRect = this.popover
-      .getPopoverElements()
-      ?.popoverWrapper.getBoundingClientRect();
+    const popoverElements = this.popover.getPopoverElements();
+    const popoverRect = popoverElements?.popoverWrapper.getBoundingClientRect();
+    const popoverTipRect = popoverElements?.popoverTip.getBoundingClientRect();
 
     assertVarIsNotFalsy(popoverRect);
+    assertVarIsNotFalsy(popoverTipRect);
 
     // note that we only add margins ONCE because it only matters as a margin to the highlightElement, not the viewport
     return {
       width: popoverRect.width + this.finalOffset,
       height: popoverRect.height + this.finalOffset,
+      tipSize: popoverTipRect.width,
     };
   }
 
@@ -145,6 +147,7 @@ class SmartPosition {
    * @param pos the position on the axis (x = left, y = top)
    * @param end the max value on the axis (x = maxWidth, y = maxHeight)
    * @param elementLength the length of the element on the axis in question (x = width, y = height)
+   * @param padding extra space that should be considered when touching boundries such as "end" or "0"
    * @returns
    */
   private normalizeAlignment(
@@ -152,28 +155,29 @@ class SmartPosition {
     popoverLength: number, // popover height or width
     pos: number, // element top or left
     end: number, // window height or width
-    elementLength: number // popover height or width
+    elementLength: number, // popover height or width
+    extraPadding: number
   ) {
     switch (alignment) {
       case "start":
-        return Math.min(pos - this.padding, end - popoverLength);
+        return Math.max(
+          Math.min(pos - this.padding, end - popoverLength - extraPadding),
+          extraPadding
+        );
       case "end":
-        return Math.min(
-          pos - popoverLength + elementLength + this.padding,
-          end - popoverLength
+        return Math.max(
+          Math.min(
+            pos - popoverLength + elementLength + this.padding,
+            end - popoverLength - extraPadding
+          ),
+          extraPadding
         );
       case "center":
         const posCentered = pos - popoverLength / 2 + elementLength / 2;
-
-        const from = Math.min(posCentered, end - popoverLength);
-        const to = Math.min(posCentered, end);
-        if (to !== posCentered) {
-          return to;
-        }
-        if (from !== posCentered) {
-          return from;
-        }
-        return Math.max(0, posCentered);
+        return Math.min(
+          Math.max(extraPadding, posCentered),
+          end - extraPadding - popoverLength
+        );
     }
   }
 
@@ -206,84 +210,246 @@ class SmartPosition {
       // TODO: responsive handling if popover has no space
       // for now just center in the screen
       const popoverDimensions = this.getPopoverDimensions();
+
+      // reset previous classes
+      this.clearPopoverTipPosition();
+
       return {
         left:
           window.innerWidth / 2 -
           (popoverDimensions.width - this.finalOffset) / 2,
-        top:
-          window.innerHeight / 2 -
-          (popoverDimensions.height - this.finalOffset) / 2,
+        bottom: 10,
       };
     } else {
       const popoverDimensions = this.getPopoverDimensions();
       const elemRect = this.getHighlightElemRect();
 
-      const position: {
-        top?: number;
-        bottom?: number;
-        left?: number;
-        right?: number;
-      } = {};
+      const position: ReturnType<typeof this.findOptimalPosition> = {};
 
+      const popoverRealWidth = popoverDimensions.width - this.finalOffset; // get the real dimension without the margin
+      const popoverRealHeight = popoverDimensions.height - this.finalOffset; // get the real dimension without the margin
       switch (foundSideResult.side) {
         case "top":
-          position.top = foundSideResult.value;
+          position.top = Math.min(
+            foundSideResult.value,
+            window.innerHeight - popoverRealHeight - popoverDimensions.tipSize
+          );
           position.left = this.normalizeAlignment(
             alignment,
-            popoverDimensions.width - this.finalOffset, // get the real dimension without the margin
+            popoverRealWidth,
             elemRect.left,
             window.innerWidth,
+            elemRect.width,
+            popoverDimensions.tipSize
+          );
+          this.setPopoverTipPosition(
+            alignment,
+            foundSideResult.side,
+            elemRect.left,
             elemRect.width
           );
           break;
         case "bottom":
-          position.bottom = foundSideResult.value;
+          position.bottom = Math.min(
+            foundSideResult.value,
+            window.innerHeight - popoverRealHeight - popoverDimensions.tipSize
+          );
           position.left = this.normalizeAlignment(
             alignment,
-            popoverDimensions.width - this.finalOffset, // get the real dimension without the margin
+            popoverRealWidth,
             elemRect.left,
             window.innerWidth,
+            elemRect.width,
+            popoverDimensions.tipSize
+          );
+          this.setPopoverTipPosition(
+            alignment,
+            foundSideResult.side,
+            elemRect.left,
             elemRect.width
           );
           break;
         case "left":
-          position.left = foundSideResult.value;
+          position.left = Math.min(
+            foundSideResult.value,
+            window.innerWidth - popoverRealWidth - popoverDimensions.tipSize
+          );
           position.top = this.normalizeAlignment(
             alignment,
-            popoverDimensions.height - this.finalOffset, // get the real dimension without the margin
+            popoverRealHeight,
             elemRect.top,
             window.innerHeight,
+            elemRect.height,
+            popoverDimensions.tipSize
+          );
+          this.setPopoverTipPosition(
+            alignment,
+            foundSideResult.side,
+            elemRect.top,
             elemRect.height
           );
           break;
         case "right":
-          position.right = foundSideResult.value;
+          position.right = Math.min(
+            foundSideResult.value,
+            window.innerWidth - popoverRealWidth - popoverDimensions.tipSize
+          );
           position.top = this.normalizeAlignment(
             alignment,
-            popoverDimensions.height - this.finalOffset, // get the real dimension without the margin
+            popoverRealHeight,
             elemRect.top,
             window.innerHeight,
+            elemRect.height,
+            popoverDimensions.tipSize
+          );
+          this.setPopoverTipPosition(
+            alignment,
+            foundSideResult.side,
+            elemRect.top,
             elemRect.height
           );
           break;
       }
-      this.setPopoverTipPosition(foundSideResult.side, alignment);
       return position;
     }
   }
 
-  private setPopoverTipPosition(
-    popoverSide: Sides,
-    popoverAlignment: Alignments
-  ) {
+  /**
+   * Reset the popover position classes.
+   */
+  private clearPopoverTipPosition() {
     const popoverTipElem = this.popover.getPopoverElements()?.popoverTip;
     assertVarIsNotFalsy(popoverTipElem);
+
     // reset previous classes
     popoverTipElem.className = CLASS_POPOVER_TIP;
+  }
+
+  /** interprete the arrow direction for the popover arrow tip */
+  private setPopoverTipPosition(
+    alignment: Alignments,
+    popoverside: Sides,
+    /** When right/left = element.top, when top/bottom = element.left */
+    elementPosSecondaryAxis: number,
+    /** When right/left = element.height, when top/bottom = element.width */
+    elementLength: number
+  ) {
+    const popoverElem = this.popover.getPopoverElements()?.popoverWrapper;
+    const popoverTipElem = this.popover.getPopoverElements()?.popoverTip;
+    assertVarIsNotFalsy(popoverElem);
+    assertVarIsNotFalsy(popoverTipElem);
+
+    // not tipside is the OPPOSITe of what you might think
+    let tipSide = popoverside;
+    let tipAlignment = alignment;
+
+    const popOverDimensions = popoverElem.getBoundingClientRect();
+
+    switch (popoverside) {
+      case "top":
+        if (elementPosSecondaryAxis + elementLength <= 0) {
+          tipSide = "right";
+          tipAlignment = "end";
+        }
+        //
+        else if (
+          elementPosSecondaryAxis + elementLength - popOverDimensions.width <=
+          0
+        ) {
+          tipAlignment = "start";
+        }
+        if (elementPosSecondaryAxis >= window.innerWidth) {
+          tipSide = "left";
+          tipAlignment = "end";
+        }
+        //
+        else if (
+          elementPosSecondaryAxis + popOverDimensions.width >=
+          window.innerWidth
+        ) {
+          tipAlignment = "end";
+        }
+        break;
+      case "bottom":
+        if (elementPosSecondaryAxis + elementLength <= 0) {
+          tipSide = "right";
+          tipAlignment = "start";
+        }
+        //
+        else if (
+          elementPosSecondaryAxis + elementLength - popOverDimensions.width <=
+          0
+        ) {
+          tipAlignment = "start";
+        }
+        if (elementPosSecondaryAxis >= window.innerWidth) {
+          tipSide = "left";
+          tipAlignment = "start";
+        }
+        //
+        else if (
+          elementPosSecondaryAxis + popOverDimensions.width >=
+          window.innerWidth
+        ) {
+          tipAlignment = "end";
+        }
+        break;
+      case "left":
+        if (elementPosSecondaryAxis + elementLength <= 0) {
+          tipSide = "bottom";
+          tipAlignment = "end";
+        }
+        //
+        else if (
+          elementPosSecondaryAxis + elementLength - popOverDimensions.height <=
+          0
+        ) {
+          tipAlignment = "start";
+        }
+
+        if (elementPosSecondaryAxis >= window.innerHeight) {
+          tipSide = "top";
+          tipAlignment = "end";
+        }
+        //
+        else if (
+          elementPosSecondaryAxis + popOverDimensions.height >=
+          window.innerHeight
+        ) {
+          tipAlignment = "end";
+        }
+        break;
+      case "right":
+        if (elementPosSecondaryAxis + elementLength <= 0) {
+          tipSide = "bottom";
+          tipAlignment = "start";
+        }
+        //
+        else if (
+          elementPosSecondaryAxis + elementLength - popOverDimensions.height <=
+          0
+        ) {
+          tipAlignment = "start";
+        }
+        if (elementPosSecondaryAxis >= window.innerHeight) {
+          tipSide = "top";
+          tipAlignment = "start";
+        }
+        //
+        else if (
+          elementPosSecondaryAxis + popOverDimensions.height >=
+          window.innerHeight
+        ) {
+          tipAlignment = "end";
+        }
+        break;
+    }
+    // reset previous classes
+    this.clearPopoverTipPosition();
 
     popoverTipElem.classList.add(
-      `boarding-tipside-${popoverSide}`,
-      `boarding-tipalign-${popoverAlignment}`
+      `boarding-tipside-${tipSide}`,
+      `boarding-tipalign-${tipAlignment}`
     );
   }
 }

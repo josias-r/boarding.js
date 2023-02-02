@@ -1,3 +1,25 @@
+## [3.3.4](https://github.com/josias-r/boarding.js/compare/v3.3.3...v3.3.4) (2023-02-02)
+
+
+### Bug Fixes
+
+* when popover has no space, let it display on the bottom of the screen, to be less intrusive ([8955482](https://github.com/josias-r/boarding.js/commit/8955482e8e26c87471daf27065a6fc66b71609f4))
+
+## [3.3.3](https://github.com/josias-r/boarding.js/compare/v3.3.2...v3.3.3) (2023-02-02)
+
+
+### Bug Fixes
+
+* improve popover smart-positioning logic ([d0d37db](https://github.com/josias-r/boarding.js/commit/d0d37db3a768ab0e48cb1d8dc713ad6c6e500535))
+* make tip position smart too ([39f0c37](https://github.com/josias-r/boarding.js/commit/39f0c371e908c7dac3e60d1bba7fed33d2490f6e))
+
+## [3.3.2](https://github.com/josias-r/boarding.js/compare/v3.3.1...v3.3.2) (2023-01-17)
+
+
+### Bug Fixes
+
+* allow click actions inside the popover description ([eee608a](https://github.com/josias-r/boarding.js/commit/eee608ac453e21dd96729d8bd1ed42381cd8c1c9))
+
 ## [3.3.1](https://github.com/josias-r/boarding.js/compare/v3.3.0...v3.3.1) (2023-01-12)
 
 

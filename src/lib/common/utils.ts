@@ -15,13 +15,15 @@ export function easeInOutQuad(
  * to make sure no external-library every knows the click happened
  * @param element Element (or its children) that should be listened for click events
  * @param handler the function that will get executed once a click happens on the requested element
+ * @param preventDefaultConditon Allow to conditionally let a click event through (stopPropagation will still get called, but the default action will not be prevented)
  *
  * Note: For all current use-cases: garbage collection will take of "removeEventListener", since element will get removed from the dom without reference at some point
  * For future use-cases where this is not possible anymore, we could return a "removeAllEventListeners" method
  */
 export function attachHighPrioClick(
   element: HTMLElement | SVGElement,
-  handler: (e: MouseEvent | PointerEvent) => void
+  handler: (e: MouseEvent | PointerEvent) => void,
+  preventDefaultConditon?: (target: HTMLElement) => boolean | undefined | void
 ) {
   const listener = (
     e: MouseEvent | PointerEvent,
@@ -29,7 +31,9 @@ export function attachHighPrioClick(
   ) => {
     const target = e.target as HTMLElement;
     if (element.contains(target)) {
-      e.preventDefault();
+      if (!preventDefaultConditon || preventDefaultConditon(target)) {
+        e.preventDefault();
+      }
       e.stopPropagation();
       e.stopImmediatePropagation();
 
