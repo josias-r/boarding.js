@@ -210,13 +210,15 @@ class SmartPosition {
       // TODO: responsive handling if popover has no space
       // for now just center in the screen
       const popoverDimensions = this.getPopoverDimensions();
+
+      // reset previous classes
+      this.clearPopoverTipPosition();
+
       return {
         left:
           window.innerWidth / 2 -
           (popoverDimensions.width - this.finalOffset) / 2,
-        top:
-          window.innerHeight / 2 -
-          (popoverDimensions.height - this.finalOffset) / 2,
+        bottom: 10,
       };
     } else {
       const popoverDimensions = this.getPopoverDimensions();
@@ -310,6 +312,17 @@ class SmartPosition {
       }
       return position;
     }
+  }
+
+  /**
+   * Reset the popover position classes.
+   */
+  private clearPopoverTipPosition() {
+    const popoverTipElem = this.popover.getPopoverElements()?.popoverTip;
+    assertVarIsNotFalsy(popoverTipElem);
+
+    // reset previous classes
+    popoverTipElem.className = CLASS_POPOVER_TIP;
   }
 
   /** interprete the arrow direction for the popover arrow tip */
@@ -432,7 +445,7 @@ class SmartPosition {
         break;
     }
     // reset previous classes
-    popoverTipElem.className = CLASS_POPOVER_TIP;
+    this.clearPopoverTipPosition();
 
     popoverTipElem.classList.add(
       `boarding-tipside-${tipSide}`,
