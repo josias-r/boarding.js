@@ -1,3 +1,10 @@
+## [3.3.4](https://github.com/josias-r/boarding.js/compare/v3.3.3...v3.3.4) (2023-02-02)
+
+
+### Bug Fixes
+
+* when popover has no space, let it display on the bottom of the screen, to be less intrusive ([8955482](https://github.com/josias-r/boarding.js/commit/8955482e8e26c87471daf27065a6fc66b71609f4))
+
 ## [3.3.3](https://github.com/josias-r/boarding.js/compare/v3.3.2...v3.3.3) (2023-02-02)
 
 
