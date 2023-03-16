@@ -12,6 +12,19 @@
     "./styles/main.css": "./styles/main.css",
     "./styles/themes/basic.css": "./styles/themes/basic.css"
   },
+  "keywords": [
+    "tour",
+    "intro",
+    "onboarding",
+    "walkthrough",
+    "spotlight",
+    "popover",
+    "overlay",
+    "overlays",
+    "user-onboarding",
+    "feature-introductions",
+    "focus-shifters"
+  ],
   "files": [
     "dist/**",
     "!**/.DS_Store",
