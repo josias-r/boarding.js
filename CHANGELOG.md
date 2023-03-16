@@ -1,3 +1,10 @@
+## [3.4.1](https://github.com/josias-r/boarding.js/compare/v3.4.0...v3.4.1) (2023-03-16)
+
+
+### Bug Fixes
+
+* add keywords to npm package ([649bdb7](https://github.com/josias-r/boarding.js/commit/649bdb712adff4d1e4d7eed0fab711918a80cfd3))
+
 # [3.4.0](https://github.com/josias-r/boarding.js/compare/v3.3.4...v3.4.0) (2023-02-02)
 
 
