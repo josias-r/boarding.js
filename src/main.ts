@@ -305,6 +305,46 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
 
+  /////////////////////////////////////////////////////
+  // Without Current Step Counter Example
+  /////////////////////////////////////////////////////
+  const withStepCounter = new Boarding({
+    onPopoverRender: (popoverElements) => {
+      // setTimeout, so we the count runs immediatly after all internal boarding logic has run. Otherwise we would get an outdated boarding.currentStep number
+      setTimeout(() => {
+        popoverElements.popoverTitle.innerText = `${
+          popoverElements.popoverTitle.innerText
+        } (${withStepCounter.currentStep + 1}/${
+          withStepCounter.getSteps().length
+        })`;
+      }, 0);
+    },
+  });
+  withStepCounter.defineSteps([
+    {
+      element: "#run-element-with-step-counter",
+      popover: {
+        title: "Title for the Popover",
+        description: "Description for it",
+      },
+    },
+    {
+      element: "#run-element-with-step-counter-header",
+      popover: {
+        title: "Title for the Popover",
+        description: "Description for it",
+      },
+    },
+  ]);
+
+  document
+    .querySelector("#run-element-with-step-counter")
+    ?.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      withStepCounter.start();
+    });
+
   /////////////////////////////////////////////
   // Single no close demo
   /////////////////////////////////////////////

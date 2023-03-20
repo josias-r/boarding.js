@@ -593,6 +593,42 @@ boarding.highlight({
 
         <hr class="hr__fancy" />
 
+        <div id="element-without-popover" class="section__example">
+          <h4 id="run-element-with-step-counter-header">
+            With a current step counter
+          </h4>
+          <p>
+            If you want to customize the rendered popover, for example by adding
+            a a counter for the "current step", you can do so by modifying the
+            popover html elements using onPopoverRender.
+          </p>
+          <a href="#" class="btn__run-demo" id="run-element-with-step-counter"
+            >Show Demo</a
+          >
+          <pre><code class="javascript">const boarding = new Boarding({
+  // modify the rendered popoverElements.popoverTitle
+  onPopoverRender: (popoverElements) => {
+    // setTimeout, so we the count runs immediatly after all internal boarding logic has run. Otherwise we would get an outdated boarding.currentStep number
+    setTimeout(() => {
+      popoverElements.popoverTitle.innerText = `${
+        popoverElements.popoverTitle.innerText
+      } (${boarding.currentStep + 1}/${
+        boarding.getSteps().length
+      })`;
+    }, 0);
+  },
+});
+
+boarding.defineSteps([/* ...steps */]);
+boarding.start();
+</code></pre>
+          <p class="top-20">
+            ..and you can do the same for the feature introductions
+          </p>
+        </div>
+
+        <hr class="hr__fancy" />
+
         <div class="section__example">
           <div id="api_section">
             <h3>..and much much more</h3>
@@ -627,6 +663,10 @@ boarding.highlight({
   onNext: (Element) =&gt; {}, // Called when moving to next step on any step
   onPrevious: (Element) =&gt; {}, // Called when moving to next step on any step
   strictClickHandling: "block-all", // Can also be `true` or if not wanted at all, `false`. Either block ALL pointer events, or isolate pointer-events to only allow on the highlighted element (`true`). Popover and overlay pointer-events are of course always allowed to be clicked
+  // Make changes to the actual popoverElements once they get rendered.
+  onPopoverRender: (el) => {
+    // ...
+  },
 
 });
 </code></pre>
@@ -653,6 +693,9 @@ boarding.highlight({
     closeBtnText: 'Close',      // Text on the close button for this step
     nextBtnText: 'Next',        // Next button text for this step
     prevBtnText: 'Previous',    // Previous button text for this step
+    onPopoverRender: (el) => {  // Make changes to the actual popoverElements once they get rendered.
+      // ...
+    }, 
   }
   prepareElement: () => {},     // Called *before* moving to this step (for both cases when coming from "onNext" or "onPrevious")
   onNext: (Element) => {},      // Overwrite the original onX eventhandlers for the current step. Same for on[Previous/Highlighted/BeforeHighlighted/Deselected]
