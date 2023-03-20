@@ -4,6 +4,7 @@ import {
   CLASS_CLOSE_ONLY_BTN,
   CLASS_POPOVER_FOOTER_HIDDEN,
   ID_POPOVER,
+  PopoverElements,
   POPOVER_ELEMENT,
   POPOVER_OFFSET,
 } from "../common/constants";
@@ -96,6 +97,11 @@ export interface PopoverHybridOptions {
    * @default "start"
    */
   alignment?: Alignments;
+  /**
+   * Get access to the rendered popover html elements. You can manipulate them here.
+   * Be careful, as you can completely break depending on your modifications.
+   */
+  onPopoverRender?: (popoverElements: PopoverElements) => void;
 }
 
 interface PopoverOptions
@@ -291,6 +297,7 @@ export default class Popover {
       );
     }
 
+    const popoverElement = POPOVER_ELEMENT(this.options.className);
     const {
       popoverWrapper,
       popoverTip,
@@ -300,10 +307,11 @@ export default class Popover {
       popoverPrevBtn,
       popoverNextBtn,
       popoverCloseBtn,
-    } = POPOVER_ELEMENT(this.options.className);
+    } = popoverElement;
     if (this.options.animate) {
       popoverWrapper.classList.add(`${ID_POPOVER}-animated`);
     }
+    this.options.onPopoverRender?.(popoverElement);
     document.body.appendChild(popoverWrapper);
 
     // add btn eventlisteners (using util method, to ensure no external libraries will ever "hear" the click)

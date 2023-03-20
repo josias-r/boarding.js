@@ -94,3 +94,5 @@ export const POPOVER_ELEMENT = (className = "") => {
     popoverFooterBtnGroup,
   };
 };
+
+export type PopoverElements = ReturnType<typeof POPOVER_ELEMENT>;

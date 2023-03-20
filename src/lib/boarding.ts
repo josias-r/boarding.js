@@ -668,6 +668,10 @@ class Boarding {
           currentStep.popover.disableButtons === undefined
             ? this.options.disableButtons
             : currentStep.popover.disableButtons,
+        onPopoverRender:
+          currentStep.popover.onPopoverRender === undefined
+            ? this.options.onPopoverRender
+            : currentStep.popover.onPopoverRender,
         doneBtnText:
           currentStep.popover.doneBtnText || this.options.doneBtnText,
         closeBtnText:
