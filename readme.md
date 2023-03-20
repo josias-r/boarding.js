@@ -352,6 +352,7 @@ boarding.hasPreviousStep(); // Checks if there is previous step to move to
 // perform some asynchronous task and manually move to next step
 boarding.preventMove();
 boarding.continue(); // Continue the move that was prevented using preventMove
+boarding.clearMovePrevented(); // preventMove will just "pause" the tour. If you want to clear that paused state, you can call clearMovePrevented, to clean up that paused state. You should do this, when your logic has a condition where it never calls continue
 
 // Highlights the element using query selector or the step definition
 boarding.highlight(string | stepDefinition);
