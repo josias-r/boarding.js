@@ -1,3 +1,10 @@
+# [3.5.0](https://github.com/josias-r/boarding.js/compare/v3.4.2...v3.5.0) (2023-03-20)
+
+
+### Features
+
+* add new method `onPopoverRender` that gives access to the popover html elements (77eeef8) ([8441190](https://github.com/josias-r/boarding.js/commit/844119012991401f24c226514f80b1b64eeac7cc))
+
 ## [3.4.2](https://github.com/josias-r/boarding.js/compare/v3.4.1...v3.4.2) (2023-03-20)
 
 
