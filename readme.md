@@ -279,6 +279,10 @@ const boarding = new Boarding({
   onNext: (HighlightElement) => {}, // Called when moving to next step on any step
   onPrevious: (HighlightElement) => {}, // Called when moving to previous step on any step
   strictClickHandling: true, // Can also be `"block-all"` or if not wanted at all, `false`. Either block ALL pointer events, or isolate pointer-events to only allow on the highlighted element (`true`). Popover and overlay pointer-events are of course always allowed to be clicked
+  // Make changes to the actual popoverElements once they get rendered.
+  onPopoverRender: (el) => {
+    // ...
+  },
 });
 ```
 
@@ -303,6 +307,10 @@ const stepDefinition = {
     prevBtnText: "Previous", // Previous button text
     preferredSide: "top", // Preffered side on which the popover should render of the HighlightElement
     alignment: "start", // Alignment of the popover on the side it gets renderd on
+    // Make changes to the actual popoverElements once they get rendered.
+    onPopoverRender: (el) => {
+      // ...
+    },
   },
   prepareElement: () => {}, // Called *before* moving to this step (for both cases when coming from "onNext" or "onPrevious")
   onNext: (Element) => {}, // Overwrite the original onX eventhandlers for the current step. Same for on[Previous/Highlighted/BeforeHighlighted/Deselected]
@@ -352,6 +360,7 @@ boarding.hasPreviousStep(); // Checks if there is previous step to move to
 // perform some asynchronous task and manually move to next step
 boarding.preventMove();
 boarding.continue(); // Continue the move that was prevented using preventMove
+boarding.clearMovePrevented(); // preventMove will just "pause" the tour. If you want to clear that paused state, you can call clearMovePrevented, to clean up that paused state. You should do this, when your logic has a condition where it never calls continue
 
 // Highlights the element using query selector or the step definition
 boarding.highlight(string | stepDefinition);

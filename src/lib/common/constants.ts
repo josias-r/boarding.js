@@ -35,6 +35,11 @@ export const CLASS_CLOSE_ONLY_BTN = "boarding-close-only-btn";
 // NOTE: It must match the one set in the animations in CSS file
 export const ANIMATION_DURATION_MS = 300;
 
+/**
+ * Method that generates all the popover html elements
+ * @param className className will be added to the wrapper
+ * @returns object containing all the popover elements
+ */
 export const POPOVER_ELEMENT = (className = "") => {
   // create elements required
   const popoverWrapper = document.createElement("div");
@@ -94,3 +99,5 @@ export const POPOVER_ELEMENT = (className = "") => {
     popoverFooterBtnGroup,
   };
 };
+
+export type PopoverElements = ReturnType<typeof POPOVER_ELEMENT>;
