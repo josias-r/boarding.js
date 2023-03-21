@@ -20,14 +20,16 @@ div#boarding-popover-item.boarding-popover-item-animated {
 
 body.boarding-strict-pointer-events,
 body.boarding-strict-pointer-events
-  *:not(.boarding-highlighted-element *):not(#boarding-popover-item
-    *):not(.boarding-highlighted-element):not(#boarding-popover-item):not(.boarding-coutout-svg
-    path),
+  *:not(.boarding-highlighted-element *):not(#boarding-popover-item *):not(
+    .boarding-highlighted-element
+  ):not(#boarding-popover-item):not(.boarding-coutout-svg path),
 body.boarding-no-pointer-events,
 body.boarding-no-pointer-events
-  *:not(.boarding-highlighted-element *):not(#boarding-popover-item
-    *):not(.boarding-highlighted-element):not(#boarding-popover-item):not(.boarding-coutout-svg):not(.boarding-coutout-svg
-    path) {
+  *:not(.boarding-highlighted-element *):not(#boarding-popover-item *):not(
+    .boarding-highlighted-element
+  ):not(#boarding-popover-item):not(.boarding-coutout-svg):not(
+    .boarding-coutout-svg path
+  ) {
   pointer-events: none !important;
 }
 /* enable pointer-events where it makes sense */
@@ -48,6 +50,9 @@ div#boarding-popover-item {
   background: #fff;
   color: #000;
 }
+div#boarding-popover-item.boarding-popover-element-missing {
+  opacity: 0.5;
+}
 
 /* tip */
 div#boarding-popover-item .boarding-popover-tip {
@@ -57,7 +62,9 @@ div#boarding-popover-item .boarding-popover-tip {
   border-color: #fff;
 }
 div#boarding-popover-item
-  .boarding-popover-tip:not([class^="boarding-tipside-"]):not([class^="boarding-tipalign-"]):not([class*=" boarding-tipalign-"]):not([class*=" boarding-tipalign-"]) {
+  .boarding-popover-tip:not([class^="boarding-tipside-"]):not(
+    [class^="boarding-tipalign-"]
+  ):not([class*=" boarding-tipalign-"]):not([class*=" boarding-tipalign-"]) {
   display: none;
 }
 

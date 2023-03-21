@@ -1,6 +1,9 @@
 import { BoardingSharedOptions } from "../boarding-types";
-import { CLASS_ACTIVE_HIGHLIGHTED_ELEMENT } from "../common/constants";
-import { bringInView } from "../common/utils";
+import {
+  CLASS_ACTIVE_HIGHLIGHTED_ELEMENT,
+  CLASS_POPOVER_NO_ELEMENT,
+} from "../common/constants";
+import { assertVarIsNotFalsy, bringInView } from "../common/utils";
 import Popover from "./popover";
 
 /** The options of popover that will come from the top-level but can also be overwritten */
@@ -42,6 +45,8 @@ class HighlightElement {
   private options; // type will get inferred with default values being required;
   private highlightDomElement: HTMLElement;
   private popover: Popover | null;
+  /** A cached for the last known DOMRect, which is used as a fallback position for the popover when the element gets removed */
+  private lastKnownDomRect?: DOMRect;
 
   constructor({
     options,
@@ -153,6 +158,30 @@ class HighlightElement {
    */
   public onPrevious() {
     this.options.onPrevious?.(this);
+  }
+
+  /**
+   * Retrieve the last known DOMRect of the highlighted element from cache
+   */
+  public getDOMRect() {
+    // We get the popover, to possibly mark it w/ CLASS_POPOVER_NO_ELEMENT
+    const popoverWrapper = this.popover?.getPopoverElements()?.popoverWrapper;
+    assertVarIsNotFalsy(popoverWrapper);
+
+    const element = this.getElement();
+    const domRect = element.getBoundingClientRect();
+
+    // if element is not connected to the DOM, fallback to cached version if available
+    if (!element.isConnected) {
+      // mark popover as "no element found"
+      popoverWrapper.classList.add(CLASS_POPOVER_NO_ELEMENT);
+      return this.lastKnownDomRect || domRect;
+    }
+
+    // make sure CLASS_POPOVER_NO_ELEMENT is not there
+    popoverWrapper.classList.remove(CLASS_POPOVER_NO_ELEMENT);
+    this.lastKnownDomRect = domRect;
+    return domRect;
   }
 }
 
