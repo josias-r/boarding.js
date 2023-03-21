@@ -1,3 +1,10 @@
+## [3.5.1](https://github.com/josias-r/boarding.js/compare/v3.5.0...v3.5.1) (2023-03-21)
+
+
+### Bug Fixes
+
+* make highlightElement more tracking -> keep last position cached in case html element gets lost ([e6da013](https://github.com/josias-r/boarding.js/commit/e6da01384dd3e0da38b5d227e853ddb0560c0d32))
+
 # [3.5.0](https://github.com/josias-r/boarding.js/compare/v3.4.2...v3.5.0) (2023-03-20)
 
 
