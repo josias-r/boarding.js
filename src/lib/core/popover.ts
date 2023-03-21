@@ -280,7 +280,7 @@ export default class Popover {
     const customPadding = this.highlightElement.getCustomPadding();
 
     new SmartPosition(
-      this.highlightElement.getElement(),
+      this.highlightElement,
       this,
       checkOptionalValue(this.options.padding, customPadding),
       this.options.offset

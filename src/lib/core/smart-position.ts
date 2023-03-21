@@ -1,5 +1,6 @@
 import { CLASS_POPOVER_TIP } from "../common/constants";
 import { assertVarIsNotFalsy } from "../common/utils";
+import HighlightElement from "./highlight-element";
 import Popover from "./popover";
 
 const sideHierarchy = ["top", "bottom", "left", "right"] as const;
@@ -17,14 +18,14 @@ interface SideCheckResult {
  * Responsible for finding the best position for the popup
  */
 class SmartPosition {
-  private highlightElement: HTMLElement;
+  private highlightElement: HighlightElement;
   private popover: Popover;
   private padding: number;
   /** padding + offset */
   private finalOffset: number;
 
   constructor(
-    highlightElement: HTMLElement,
+    highlightElement: HighlightElement,
     popover: Popover,
     padding: number,
     offset: number
@@ -56,7 +57,9 @@ class SmartPosition {
    * @returns DOMRect of element that should be highlighted
    */
   private getHighlightElemRect() {
-    return this.highlightElement.getBoundingClientRect();
+    const highlightDomRect = this.highlightElement.getDOMRect();
+
+    return highlightDomRect;
   }
   /**
    * Calculates the popoer dimensions, but also takes the margin into account

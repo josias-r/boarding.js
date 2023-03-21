@@ -208,12 +208,12 @@ class Overlay {
           hightlightBox: { ...this.activeSvgCutoutDefinition.hightlightBox }, // deep copy in case it was mutated
         }
       : {
-          hightlightBox: fromElement.getElement().getBoundingClientRect(),
+          hightlightBox: fromElement.getDOMRect(),
           padding: fromElement.getCustomPadding(),
           radius: fromElement.getCustomRadius(),
         };
 
-    const toRect = toElement.getElement().getBoundingClientRect();
+    const toRect = toElement.getDOMRect();
     const toPadding = checkOptionalValue(
       this.options.padding,
       toElement.getCustomPadding()
@@ -291,8 +291,7 @@ class Overlay {
    */
   private trackElementOnScreen() {
     if (this.currentHighlightedElement) {
-      const currEl = this.currentHighlightedElement.getElement();
-      const rect = currEl.getBoundingClientRect();
+      const rect = this.currentHighlightedElement.getDOMRect();
       if (JSON.stringify(rect) !== JSON.stringify(this.highlightElemRect)) {
         const newCutoutPosition: AnimatableCutoutDefinition = {
           hightlightBox: {
