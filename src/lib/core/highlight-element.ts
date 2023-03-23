@@ -3,7 +3,7 @@ import {
   CLASS_ACTIVE_HIGHLIGHTED_ELEMENT,
   CLASS_POPOVER_NO_ELEMENT,
 } from "../common/constants";
-import { assertVarIsNotFalsy, bringInView } from "../common/utils";
+import { bringInView } from "../common/utils";
 import Popover from "./popover";
 
 /** The options of popover that will come from the top-level but can also be overwritten */
@@ -165,8 +165,8 @@ class HighlightElement {
    */
   public getDOMRect() {
     // We get the popover, to possibly mark it w/ CLASS_POPOVER_NO_ELEMENT
+    // Note: Popover might not exist, for boarding.highlight w/out popover, therefore no asserIsNotFalsy
     const popoverWrapper = this.popover?.getPopoverElements()?.popoverWrapper;
-    assertVarIsNotFalsy(popoverWrapper);
 
     const element = this.getElement();
     const domRect = element.getBoundingClientRect();
@@ -174,12 +174,12 @@ class HighlightElement {
     // if element is not connected to the DOM, fallback to cached version if available
     if (!element.isConnected) {
       // mark popover as "no element found"
-      popoverWrapper.classList.add(CLASS_POPOVER_NO_ELEMENT);
+      popoverWrapper?.classList.add(CLASS_POPOVER_NO_ELEMENT);
       return this.lastKnownDomRect || domRect;
     }
 
     // make sure CLASS_POPOVER_NO_ELEMENT is not there
-    popoverWrapper.classList.remove(CLASS_POPOVER_NO_ELEMENT);
+    popoverWrapper?.classList.remove(CLASS_POPOVER_NO_ELEMENT);
     this.lastKnownDomRect = domRect;
     return domRect;
   }
