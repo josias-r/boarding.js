@@ -1,3 +1,10 @@
+## [3.5.2](https://github.com/josias-r/boarding.js/compare/v3.5.1...v3.5.2) (2023-03-23)
+
+
+### Bug Fixes
+
+* fix bug breaking single-element highlight w/out popover ([92d7bfb](https://github.com/josias-r/boarding.js/commit/92d7bfba2ee28f8ff63a5b5769dd692bec593f7a))
+
 ## [3.5.1](https://github.com/josias-r/boarding.js/compare/v3.5.0...v3.5.1) (2023-03-21)
 
 
