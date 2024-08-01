@@ -37,6 +37,11 @@ export interface OverlayTopLevelOptions {
    * @default 0.75
    */
   opacity?: number;
+  /**
+   * Background color for the overlay element
+   * @default rgb(0,0,0)
+   */
+  overlayColor?: string;
 }
 
 interface OverlayOptions
@@ -377,6 +382,7 @@ class Overlay {
       opacity: this.options.opacity,
       radius: definition.radius,
       animated: this.options.animate,
+      fillColor: this.options.overlayColor,
     };
 
     // mount svg if its not mounted already
