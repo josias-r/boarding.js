@@ -264,6 +264,7 @@ const boarding = new Boarding({
   padding: 10, // Distance of element from around the edges
   allowClose: true, // Whether the click on overlay should close or not
   overlayClickNext: false, // Whether the click on overlay should move next
+  overlayColor: "rgb(0,0,0)", // Background color for the overlay element
   doneBtnText: "Done", // Text on the final button
   closeBtnText: "Close", // Text on the close button for this step
   nextBtnText: "Next", // Next button text for this step
