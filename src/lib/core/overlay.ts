@@ -1,5 +1,5 @@
 import { BoardingSharedOptions } from "../boarding-types";
-import { OVERLAY_OPACITY } from "../common/constants";
+import { OVERLAY_FILL_COLOR, OVERLAY_OPACITY } from "../common/constants";
 import {
   assertVarIsNotFalsy,
   attachHighPrioClick,
@@ -76,6 +76,7 @@ class Overlay {
     this.options = {
       // padding: Padding default will come from outside, as it affects more then just the overlay
       opacity: OVERLAY_OPACITY,
+      overlayColor: OVERLAY_FILL_COLOR,
       ...options,
     };
   }
