@@ -1,4 +1,5 @@
 export const OVERLAY_OPACITY = 0.75;
+export const OVERLAY_FILL_COLOR = "rgb(0,0,0)";
 export const OVERLAY_RADIUS = 5;
 export const OVERLAY_PADDING = 10;
 export const POPOVER_OFFSET = 10;

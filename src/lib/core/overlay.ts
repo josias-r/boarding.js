@@ -1,5 +1,5 @@
 import { BoardingSharedOptions } from "../boarding-types";
-import { OVERLAY_OPACITY } from "../common/constants";
+import { OVERLAY_FILL_COLOR, OVERLAY_OPACITY } from "../common/constants";
 import {
   assertVarIsNotFalsy,
   attachHighPrioClick,
@@ -37,6 +37,11 @@ export interface OverlayTopLevelOptions {
    * @default 0.75
    */
   opacity?: number;
+  /**
+   * Fill color for the overlay
+   * @default rgb(0,0,0)
+   */
+  overlayColor?: string;
 }
 
 interface OverlayOptions
@@ -69,9 +74,14 @@ class Overlay {
 
   constructor(options: OverlayOptions) {
     this.options = {
-      // padding: Padding default will come from outside, as it affects more then just the overlay
-      opacity: OVERLAY_OPACITY,
       ...options,
+      opacity:
+        options.opacity === undefined ? OVERLAY_OPACITY : options.opacity,
+      overlayColor:
+        options.overlayColor === undefined
+          ? OVERLAY_FILL_COLOR
+          : options.overlayColor,
+      // padding: Padding default will come from outside, as it affects more then just the overlay
     };
   }
 
@@ -377,6 +387,7 @@ class Overlay {
       opacity: this.options.opacity,
       radius: definition.radius,
       animated: this.options.animate,
+      fillColor: this.options.overlayColor,
     };
 
     // mount svg if its not mounted already
