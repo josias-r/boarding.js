@@ -48,7 +48,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <script type="module" crossorigin src="/boarding.js/assets/index.af29caa2.js"></script>
+    <script type="module" crossorigin src="/boarding.js/assets/index.b53f69b3.js"></script>
     <link rel="stylesheet" href="/boarding.js/assets/index.e95a56bf.css">
   </head>
   <body>
@@ -644,10 +644,11 @@ boarding.start();
           <pre><code class="javascript">const boarding = new Boarding({
   className: 'scoped-class', // className to wrap boarding.js popover
   animate: true, // Animate while changing highlighted element
-  opacity: 0.75, // Background opacity (0 means only popovers and without overlay)
+  opacity: 0.75, // Overlay opacity (0 means only popovers and without overlay)
   padding: 10, // Distance of element from around the edges
   allowClose: true, // Whether clicking on overlay should close or not
   overlayClickNext: false, // Should it move to next step on overlay click
+  overlayColor: 'rgb(0,0,0)', // Fill color for the overlay
   doneBtnText: 'Done', // Text on the final button
   closeBtnText: 'Close', // Text on the close button for this step
   nextBtnText: 'Next', // Next button text for this step
