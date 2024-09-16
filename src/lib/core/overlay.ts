@@ -74,10 +74,14 @@ class Overlay {
 
   constructor(options: OverlayOptions) {
     this.options = {
-      // padding: Padding default will come from outside, as it affects more then just the overlay
-      opacity: OVERLAY_OPACITY,
-      overlayColor: OVERLAY_FILL_COLOR,
       ...options,
+      opacity:
+        options.opacity === undefined ? OVERLAY_OPACITY : options.opacity,
+      overlayColor:
+        options.overlayColor === undefined
+          ? OVERLAY_FILL_COLOR
+          : options.overlayColor,
+      // padding: Padding default will come from outside, as it affects more then just the overlay
     };
   }
 
