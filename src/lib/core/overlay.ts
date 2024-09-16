@@ -38,7 +38,7 @@ export interface OverlayTopLevelOptions {
    */
   opacity?: number;
   /**
-   * Background color for the overlay element
+   * Fill color for the overlay
    * @default rgb(0,0,0)
    */
   overlayColor?: string;

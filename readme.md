@@ -260,11 +260,11 @@ Here are the options that Boarding understands:
 const boarding = new Boarding({
   className: "scoped-class", // className to wrap boarding.js popover
   animate: true, // Whether to animate or not
-  opacity: 0.75, // Background opacity (0 means only popovers and without overlay)
+  opacity: 0.75, // Overlay opacity (0 means only popovers and without overlay)
   padding: 10, // Distance of element from around the edges
   allowClose: true, // Whether the click on overlay should close or not
   overlayClickNext: false, // Whether the click on overlay should move next
-  overlayColor: "rgb(0,0,0)", // Background color for the overlay element
+  overlayColor: "rgb(0,0,0)", // Fill color for the overlay
   doneBtnText: "Done", // Text on the final button
   closeBtnText: "Close", // Text on the close button for this step
   nextBtnText: "Next", // Next button text for this step
