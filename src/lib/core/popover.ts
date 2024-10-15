@@ -1,12 +1,12 @@
-import { BoardingSharedOptions } from "../boarding-types.ts";
+import type { BoardingSharedOptions } from "../boarding-types.ts";
 import {
   CLASS_BTN_DISABLED,
   CLASS_CLOSE_ONLY_BTN,
   CLASS_POPOVER_FOOTER_HIDDEN,
   ID_POPOVER,
-  PopoverElements,
   POPOVER_ELEMENT,
   POPOVER_OFFSET,
+  type PopoverElements,
 } from "../common/constants.ts";
 import {
   assertVarIsNotFalsy,
@@ -14,8 +14,11 @@ import {
   bringInView,
   checkOptionalValue,
 } from "../common/utils.ts";
-import HighlightElement from "./highlight-element.ts";
-import SmartPosition, { Alignments, Sides } from "./smart-position.ts";
+import type HighlightElement from "./highlight-element.ts";
+import SmartPosition, {
+  type Alignments,
+  type Sides,
+} from "./smart-position.ts";
 
 /** The top-level options that are shared between multiple classes that popover supports */
 type PopoverSupportedSharedOptions = Pick<
@@ -105,7 +108,8 @@ export interface PopoverHybridOptions {
 }
 
 interface PopoverOptions
-  extends PopoverHybridOptions,
+  extends
+    PopoverHybridOptions,
     PopoverStepLevelOptions,
     PopoverTopLevelOptions,
     PopoverSupportedSharedOptions {
@@ -140,21 +144,24 @@ interface PopoverOptions
   onCloseClick: () => void;
 }
 
+type PopoverElementsLight = Pick<
+  PopoverElements,
+  | "popoverWrapper"
+  | "popoverTip"
+  | "popoverTitle"
+  | "popoverDescription"
+  | "popoverFooter"
+  | "popoverPrevBtn"
+  | "popoverNextBtn"
+  | "popoverCloseBtn"
+>;
+
 /**
  * Popover that is displayed for the highlighted element
  */
 export default class Popover {
   private options; // type will get inferred with default values being required
-  private popover?: {
-    popoverWrapper: HTMLDivElement;
-    popoverTip: HTMLDivElement;
-    popoverTitle: HTMLDivElement;
-    popoverDescription: HTMLDivElement;
-    popoverFooter: HTMLDivElement;
-    popoverPrevBtn: HTMLButtonElement;
-    popoverNextBtn: HTMLButtonElement;
-    popoverCloseBtn: HTMLButtonElement;
-  };
+  private popover?: PopoverElementsLight;
   private highlightElement?: HighlightElement;
 
   constructor({
@@ -194,7 +201,7 @@ export default class Popover {
 
     // unmount node
     this.popover.popoverWrapper.parentElement?.removeChild(
-      this.popover.popoverWrapper
+      this.popover.popoverWrapper,
     );
   }
 
@@ -220,7 +227,7 @@ export default class Popover {
     if (this.options.scrollIntoViewOptions !== "no-scroll") {
       bringInView(
         this.popover.popoverWrapper,
-        this.options.scrollIntoViewOptions
+        this.options.scrollIntoViewOptions,
       );
     }
   }
@@ -239,7 +246,7 @@ export default class Popover {
   /**
    * Get the popover HTML Elements
    */
-  public getPopoverElements() {
+  public getPopoverElements(): PopoverElementsLight | undefined {
     return this.popover;
   }
 
@@ -247,7 +254,7 @@ export default class Popover {
    * Expose options.showButtons to outside of class
    * @returns array whitelist or boolean whether showButtons is on or off for the popover
    */
-  public getShowButtons() {
+  public getShowButtons(): boolean | PopoverBtns[] {
     return this.options.showButtons;
   }
 
@@ -255,7 +262,7 @@ export default class Popover {
    * Expose options.disableButtons to outside of class
    * @returns array blacklist of the disabled buttons
    */
-  public getDisabledButtons() {
+  public getDisabledButtons(): PopoverBtns[] {
     return this.options.disableButtons;
   }
 
@@ -283,7 +290,7 @@ export default class Popover {
       this.highlightElement,
       this,
       checkOptionalValue(this.options.padding, customPadding),
-      this.options.offset
+      this.options.offset,
     ).setBestPosition(this.options.alignment, this.options.prefferedSide);
   }
 
@@ -293,7 +300,7 @@ export default class Popover {
   private attachNode() {
     if (this.popover) {
       this.popover.popoverWrapper.parentElement?.removeChild(
-        this.popover.popoverWrapper
+        this.popover.popoverWrapper,
       );
     }
 
@@ -336,7 +343,7 @@ export default class Popover {
           return false;
         }
         return true;
-      }
+      },
     );
 
     this.popover = {

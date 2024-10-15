@@ -1,19 +1,19 @@
-import Overlay, { BoardingExitReason } from "./core/overlay.ts";
+import Overlay, { type BoardingExitReason } from "./core/overlay.ts";
 import Popover from "./core/popover.ts";
 import {
+  ALLOW_KEYBOARD_CONTROL,
+  CLASS_NO_CLICK_BODY,
+  CLASS_STRICT_CLICK_BODY,
   OVERLAY_PADDING,
+  OVERLAY_RADIUS,
   SHOULD_ANIMATE_OVERLAY,
   SHOULD_OUTSIDE_CLICK_CLOSE,
   SHOULD_OUTSIDE_CLICK_NEXT,
-  ALLOW_KEYBOARD_CONTROL,
   SHOULD_STRICT_CLICK_HANDLE,
-  CLASS_NO_CLICK_BODY,
-  CLASS_STRICT_CLICK_BODY,
-  OVERLAY_RADIUS,
 } from "./common/constants.ts";
 import { assertIsElement } from "./common/utils.ts";
 import HighlightElement from "./core/highlight-element.ts";
-import {
+import type {
   BoardingOptions,
   BoardingStepDefinition,
   BoardingSteps,
@@ -32,18 +32,18 @@ enum MovementType {
 
 type Movement =
   | {
-      movement:
-        | MovementType.Start
-        | MovementType.Next
-        | MovementType.PrepareNext
-        | MovementType.PreparePrevious
-        | MovementType.Previous;
-      index: number;
-    }
+    movement:
+      | MovementType.Start
+      | MovementType.Next
+      | MovementType.PrepareNext
+      | MovementType.PreparePrevious
+      | MovementType.Previous;
+    index: number;
+  }
   | {
-      movement: MovementType.Highlight;
-      selector: HighlightSelector;
-    };
+    movement: MovementType.Highlight;
+    selector: HighlightSelector;
+  };
 
 /**
  * Plugin class that drives the plugin
@@ -186,17 +186,17 @@ class Boarding {
           this.lastMovementRequested = newMovePrevented;
         } else {
           console.warn(
-            "Tried to call Boarding.preventMove, but move has already been prevented, and not been continued or reset yet"
+            "Tried to call Boarding.preventMove, but move has already been prevented, and not been continued or reset yet",
           );
         }
       } else {
         console.warn(
-          "Boarding.preventMove was called multiple times for the same move, which has no effect."
+          "Boarding.preventMove was called multiple times for the same move, which has no effect.",
         );
       }
     } else {
       console.warn(
-        "Tried to call Boarding.preventMove before, but no move was requested so far."
+        "Tried to call Boarding.preventMove before, but no move was requested so far.",
       );
     }
   }
@@ -205,7 +205,7 @@ class Boarding {
    * If preventMove was called, you can use this method to continue where the movement was stopped.
    * It's a smart method that chooses the correct method from: `next`, `previous`, `start` and `highlight`
    */
-  public async continue() {
+  public continue() {
     // setTimout foces the continue to always be executed async from the original (this is necessary, so a user can't make the mistake of calling preventMove and continue synchronously which would cause issues)
     setTimeout(() => {
       if (this.currentMovePrevented === this.lastMovementRequested) {
@@ -235,7 +235,7 @@ class Boarding {
         }
       } else {
         console.warn(
-          "Boarding.continue was probably called too late, since the last preventMove was called from a different step (or never called at all)."
+          "Boarding.continue was probably called too late, since the last preventMove was called from a different step (or never called at all).",
         );
       }
     }, 0);
@@ -299,14 +299,14 @@ class Boarding {
   /**
    * Check if there is a next step
    */
-  public hasNextStep() {
+  public hasNextStep(): boolean {
     return !!this.steps[this.currentStep + 1];
   }
 
   /**
    * Check if there is a previous step
    */
-  public hasPreviousStep() {
+  public hasPreviousStep(): boolean {
     return !!this.steps[this.currentStep - 1];
   }
 
@@ -323,7 +323,7 @@ class Boarding {
     // remove strict click handling classes, in case they got added
     document.body.classList.remove(
       CLASS_NO_CLICK_BODY,
-      CLASS_STRICT_CLICK_BODY
+      CLASS_STRICT_CLICK_BODY,
     );
     // reset step tracking
     this.lastMovementRequested = undefined;
@@ -333,21 +333,21 @@ class Boarding {
   /**
    * Checks if there is any highlighted element or not
    */
-  public hasHighlightedElement() {
+  public hasHighlightedElement(): boolean {
     return !!this.overlay.currentHighlightedElement;
   }
 
   /**
    * Gets the currently highlighted element in overlay
    */
-  public getHighlightedElement() {
+  public getHighlightedElement(): HighlightElement | undefined {
     return this.overlay.currentHighlightedElement;
   }
 
   /**
    * Gets the element that was highlighted before currently highlighted element
    */
-  public getLastHighlightedElement() {
+  public getLastHighlightedElement(): HighlightElement | undefined {
     return this.overlay.previouslyHighlightedElement;
   }
 
@@ -361,7 +361,7 @@ class Boarding {
   /**
    * Getter for steps property
    */
-  public getSteps() {
+  public getSteps(): BoardingSteps {
     return this.steps;
   }
 
@@ -372,7 +372,7 @@ class Boarding {
     const element = this.prepareElementFromStep(index);
     if (!element) {
       throw new Error(
-        `The step with starting index ${index} could not resolve to an element.`
+        `The step with starting index ${index} could not resolve to an element.`,
       );
     }
 
@@ -492,14 +492,13 @@ class Boarding {
   private setStrictClickHandlingRules(element: HighlightElement) {
     // set body classes
     const customStrictHandling = element.getStrictClickHandling();
-    const strictClickHandling =
-      customStrictHandling === undefined
-        ? this.options.strictClickHandling
-        : customStrictHandling;
+    const strictClickHandling = customStrictHandling === undefined
+      ? this.options.strictClickHandling
+      : customStrictHandling;
 
     document.body.classList.remove(
       CLASS_NO_CLICK_BODY,
-      CLASS_STRICT_CLICK_BODY
+      CLASS_STRICT_CLICK_BODY,
     );
     if (strictClickHandling === "block-all") {
       document.body.classList.add(CLASS_NO_CLICK_BODY);
@@ -513,15 +512,15 @@ class Boarding {
    * @todo: add throttling in all the listeners
    */
   private attachEventListeners() {
-    window.addEventListener("keyup", this.onKeyUp, false);
+    globalThis.addEventListener("keyup", this.onKeyUp, false);
 
     // Binding both touch and click results in popup getting shown and then immediately get hidden.
     // Adding the check to not bind the click event if the touch is supported i.e. on mobile devices
     // Issue: https://github.com/kamranahmedse/driver.js/issues/150
     if (!("ontouchstart" in document.documentElement)) {
-      window.addEventListener("click", this.onClick, false);
+      globalThis.addEventListener("click", this.onClick, false);
     } else {
-      window.addEventListener("touchstart", this.onClick, false);
+      globalThis.addEventListener("touchstart", this.onClick, false);
     }
   }
 
@@ -529,10 +528,10 @@ class Boarding {
    * Removes all DOM events listeners
    */
   private removeEventListeners() {
-    window.removeEventListener("keyup", this.onKeyUp, false);
+    globalThis.removeEventListener("keyup", this.onKeyUp, false);
 
-    window.removeEventListener("click", this.onClick, false);
-    window.removeEventListener("touchstart", this.onClick, false);
+    globalThis.removeEventListener("click", this.onClick, false);
+    globalThis.removeEventListener("touchstart", this.onClick, false);
   }
 
   /**
@@ -610,16 +609,17 @@ class Boarding {
    * @param currentStepOrIndex An index is expected in case the its a step from the steps array. Otherwise a full step definition can be passed as a one-off case
    */
   private prepareElementFromStep(
-    currentStepOrIndex: number | BoardingStepDefinition
+    currentStepOrIndex: number | BoardingStepDefinition,
   ) {
-    const currentStep =
-      typeof currentStepOrIndex === "number"
-        ? (this.steps[currentStepOrIndex] as BoardingStepDefinition | undefined)
-        : currentStepOrIndex;
-    const index =
-      typeof currentStepOrIndex === "number" ? currentStepOrIndex : 0;
-    const stepsCount =
-      typeof currentStepOrIndex === "number" ? this.steps.length : 1;
+    const currentStep = typeof currentStepOrIndex === "number"
+      ? (this.steps[currentStepOrIndex] as BoardingStepDefinition | undefined)
+      : currentStepOrIndex;
+    const index = typeof currentStepOrIndex === "number"
+      ? currentStepOrIndex
+      : 0;
+    const stepsCount = typeof currentStepOrIndex === "number"
+      ? this.steps.length
+      : 1;
 
     // we reached the end or maybe the user called "previous" on the first element
     if (currentStep === undefined) {
@@ -627,10 +627,9 @@ class Boarding {
     }
 
     // If the given element is a query selector or a DOM element?
-    const domElement =
-      typeof currentStep.element === "string"
-        ? document.querySelector<HTMLElement>(currentStep.element)
-        : currentStep.element;
+    const domElement = typeof currentStep.element === "string"
+      ? document.querySelector<HTMLElement>(currentStep.element)
+      : currentStep.element;
     if (!domElement) {
       console.warn(`Element to highlight ${currentStep.element} not found`);
       return null;
@@ -650,39 +649,35 @@ class Boarding {
         padding: this.options.padding,
         offset: this.options.offset,
         animate: this.options.animate,
-        scrollIntoViewOptions:
-          currentStep.scrollIntoViewOptions === undefined
-            ? this.options.scrollIntoViewOptions
-            : currentStep.scrollIntoViewOptions,
+        scrollIntoViewOptions: currentStep.scrollIntoViewOptions === undefined
+          ? this.options.scrollIntoViewOptions
+          : currentStep.scrollIntoViewOptions,
         // popover options
         title: currentStep.popover.title,
         description: currentStep.popover.description,
         // hybrid options
-        prefferedSide:
-          currentStep.popover.prefferedSide || this.options.prefferedSide,
+        prefferedSide: currentStep.popover.prefferedSide ||
+          this.options.prefferedSide,
         alignment: currentStep.popover.alignment || this.options.alignment,
-        showButtons:
-          currentStep.popover.showButtons === undefined
-            ? this.options.showButtons
-            : currentStep.popover.showButtons,
-        disableButtons:
-          currentStep.popover.disableButtons === undefined
-            ? this.options.disableButtons
-            : currentStep.popover.disableButtons,
-        onPopoverRender:
-          currentStep.popover.onPopoverRender === undefined
-            ? this.options.onPopoverRender
-            : currentStep.popover.onPopoverRender,
-        doneBtnText:
-          currentStep.popover.doneBtnText || this.options.doneBtnText,
-        closeBtnText:
-          currentStep.popover.closeBtnText || this.options.closeBtnText,
-        nextBtnText:
-          currentStep.popover.nextBtnText || this.options.nextBtnText,
-        startBtnText:
-          currentStep.popover.startBtnText || this.options.startBtnText,
-        prevBtnText:
-          currentStep.popover.prevBtnText || this.options.prevBtnText,
+        showButtons: currentStep.popover.showButtons === undefined
+          ? this.options.showButtons
+          : currentStep.popover.showButtons,
+        disableButtons: currentStep.popover.disableButtons === undefined
+          ? this.options.disableButtons
+          : currentStep.popover.disableButtons,
+        onPopoverRender: currentStep.popover.onPopoverRender === undefined
+          ? this.options.onPopoverRender
+          : currentStep.popover.onPopoverRender,
+        doneBtnText: currentStep.popover.doneBtnText ||
+          this.options.doneBtnText,
+        closeBtnText: currentStep.popover.closeBtnText ||
+          this.options.closeBtnText,
+        nextBtnText: currentStep.popover.nextBtnText ||
+          this.options.nextBtnText,
+        startBtnText: currentStep.popover.startBtnText ||
+          this.options.startBtnText,
+        prevBtnText: currentStep.popover.prevBtnText ||
+          this.options.prevBtnText,
         className: mergedClassNames,
         // inferred options
         totalCount: stepsCount,
@@ -705,12 +700,11 @@ class Boarding {
     return new HighlightElement({
       highlightDomElement: domElement,
       options: {
-        scrollIntoViewOptions:
-          currentStep.scrollIntoViewOptions === undefined
-            ? this.options.scrollIntoViewOptions
-            : currentStep.scrollIntoViewOptions,
-        onBeforeHighlighted:
-          currentStep.onBeforeHighlighted || this.options.onBeforeHighlighted,
+        scrollIntoViewOptions: currentStep.scrollIntoViewOptions === undefined
+          ? this.options.scrollIntoViewOptions
+          : currentStep.scrollIntoViewOptions,
+        onBeforeHighlighted: currentStep.onBeforeHighlighted ||
+          this.options.onBeforeHighlighted,
         onHighlighted: currentStep.onHighlighted || this.options.onHighlighted,
         onDeselected: currentStep.onDeselected || this.options.onDeselected,
         onNext: currentStep.onNext || this.options.onNext,

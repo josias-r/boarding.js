@@ -1,14 +1,14 @@
-import { BoardingSharedOptions } from "../boarding-types.ts";
+import type { BoardingSharedOptions } from "../boarding-types.ts";
 import {
   CLASS_ACTIVE_HIGHLIGHTED_ELEMENT,
   CLASS_POPOVER_NO_ELEMENT,
 } from "../common/constants.ts";
 import { bringInView } from "../common/utils.ts";
-import Popover from "./popover.ts";
+import type Popover from "./popover.ts";
 
 /** The options of popover that will come from the top-level but can also be overwritten */
-export interface HighlightElementHybridOptions
-  extends Partial<
+export interface HighlightElementHybridOptions extends
+  Partial<
     Pick<
       BoardingSharedOptions,
       "padding" | "radius" | "strictClickHandling" | "scrollIntoViewOptions"
@@ -65,7 +65,7 @@ class HighlightElement {
   /**
    * Checks if the given element has the same underlying DOM element as the current one
    */
-  public isSame(element?: HighlightElement | null) {
+  public isSame(element?: HighlightElement | null): boolean {
     if (!element || !element.highlightDomElement) {
       return false;
     }
@@ -76,20 +76,20 @@ class HighlightElement {
   /**
    * Gets the DOM Element behind that this class resolves around
    */
-  public getElement() {
+  public getElement(): HTMLElement {
     return this.highlightDomElement;
   }
   /**
    * Gets the popover that is connected to the element
    */
-  public getPopover() {
+  public getPopover(): Popover | null {
     return this.popover;
   }
 
   /**
    * Gets the popover that is connected to the element
    */
-  public getStrictClickHandling() {
+  public getStrictClickHandling(): boolean | "block-all" | undefined {
     return this.options.strictClickHandling;
   }
 
@@ -136,14 +136,14 @@ class HighlightElement {
   /**
    * Return the element's custom padding option if available
    */
-  public getCustomPadding() {
+  public getCustomPadding(): number | undefined {
     return this.options.padding;
   }
 
   /**
    * Return the element's custom radius option if available
    */
-  public getCustomRadius() {
+  public getCustomRadius(): number | undefined {
     return this.options.radius;
   }
 
@@ -163,7 +163,7 @@ class HighlightElement {
   /**
    * Retrieve the last known DOMRect of the highlighted element from cache
    */
-  public getDOMRect() {
+  public getDOMRect(): DOMRect {
     // We get the popover, to possibly mark it w/ CLASS_POPOVER_NO_ELEMENT
     // Note: Popover might not exist, for boarding.highlight w/out popover, therefore no asserIsNotFalsy
     const popoverWrapper = this.popover?.getPopoverElements()?.popoverWrapper;

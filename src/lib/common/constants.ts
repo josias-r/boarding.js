@@ -42,7 +42,7 @@ export const ANIMATION_DURATION_MS = 300;
  * @param className className will be added to the wrapper
  * @returns object containing all the popover elements
  */
-export const POPOVER_ELEMENT = (className = "") => {
+export const POPOVER_ELEMENT = (className = ""): PopoverElements => {
   // create elements required
   const popoverWrapper = document.createElement("div");
   popoverWrapper.id = ID_POPOVER;
@@ -102,4 +102,14 @@ export const POPOVER_ELEMENT = (className = "") => {
   };
 };
 
-export type PopoverElements = ReturnType<typeof POPOVER_ELEMENT>;
+export type PopoverElements = {
+  popoverWrapper: HTMLDivElement;
+  popoverTip: HTMLDivElement;
+  popoverTitle: HTMLDivElement;
+  popoverDescription: HTMLDivElement;
+  popoverFooter: HTMLDivElement;
+  popoverPrevBtn: HTMLButtonElement;
+  popoverNextBtn: HTMLButtonElement;
+  popoverCloseBtn: HTMLButtonElement;
+  popoverFooterBtnGroup: HTMLSpanElement;
+};

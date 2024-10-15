@@ -19,8 +19,8 @@ export function generateSvgCutoutPathString({
   padding = 0,
   radius = 0,
 }: CutoutDefinition) {
-  const windowX = window.innerWidth;
-  const windowY = window.innerHeight;
+  const windowX = globalThis.innerWidth;
+  const windowY = globalThis.innerHeight;
 
   const highlightBoxWidthBase = hightlightBox.width + padding * 2;
   const highlightBoxHeightBase = hightlightBox.height + padding * 2;
@@ -50,8 +50,8 @@ export function createSvgCutout({
   opacity = 1,
   animated = true,
 }: CutoutDefinition) {
-  const windowX = window.innerWidth;
-  const windowY = window.innerHeight;
+  const windowX = globalThis.innerWidth;
+  const windowY = globalThis.innerHeight;
 
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svg.classList.add(CLASS_CUTOUT);

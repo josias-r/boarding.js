@@ -1,8 +1,9 @@
-import HighlightElement, {
+import type HighlightElement from "./core/highlight-element.ts";
+import type {
   HighlightElementHybridOptions,
 } from "./core/highlight-element.ts";
-import { OverlayTopLevelOptions } from "./core/overlay.ts";
-import {
+import type { OverlayTopLevelOptions } from "./core/overlay.ts";
+import type {
   PopoverHybridOptions,
   PopoverStepLevelOptions,
   PopoverTopLevelOptions,
@@ -39,12 +40,12 @@ export interface BoardingSharedOptions {
   strictClickHandling: boolean | "block-all";
 }
 
-export interface BoardingOptions
-  extends Partial<BoardingSharedOptions>, // partial because they will get default values
-    OverlayTopLevelOptions,
-    PopoverHybridOptions,
-    PopoverTopLevelOptions,
-    HighlightElementHybridOptions {
+export interface BoardingOptions extends
+  Partial<BoardingSharedOptions>, // partial because they will get default values
+  OverlayTopLevelOptions,
+  PopoverHybridOptions,
+  PopoverTopLevelOptions,
+  HighlightElementHybridOptions {
   /**
    * Whether to allow controlling steps through keyboard
    * @default true

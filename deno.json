@@ -1,5 +1,9 @@
 {
   "name": "@jor/boarding",
   "version": "3.6.0",
-  "exports": "./src/lib/boarding.ts"
+  "exports": "./src/lib/boarding.ts",
+  "compilerOptions": {
+    "lib": ["dom", "deno.ns"]
+  },
+  "exclude": ["dist", "node_modules", "src/main.ts"]
 }

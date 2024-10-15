@@ -1,6 +1,6 @@
 import "../styles/main.css";
 import "../styles/themes/basic.css";
-import { BoardingStepDefinition } from "./lib/boarding-types";
+import type { BoardingStepDefinition } from "./lib/boarding-types";
 import { Boarding } from "./lib/main";
 import hljs from "highlight.js";
 import "highlight.js/styles/dark.css";
@@ -312,11 +312,10 @@ document.addEventListener("DOMContentLoaded", function () {
     onPopoverRender: (popoverElements) => {
       // setTimeout, so we the count runs immediatly after all internal boarding logic has run. Otherwise we would get an outdated boarding.currentStep number
       setTimeout(() => {
-        popoverElements.popoverTitle.innerText = `${
-          popoverElements.popoverTitle.innerText
-        } (${withStepCounter.currentStep + 1}/${
-          withStepCounter.getSteps().length
-        })`;
+        popoverElements.popoverTitle.innerText =
+          `${popoverElements.popoverTitle.innerText} (${
+            withStepCounter.currentStep + 1
+          }/${withStepCounter.getSteps().length})`;
       }, 0);
     },
   });
@@ -436,7 +435,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const newURL = location.href.split("?")[0];
   if (newURL !== location.href) {
-    (window.location as any) = newURL;
-    window.location.href = newURL;
+    (globalThis.location) = newURL as unknown as Location;
+    globalThis.location.href = newURL;
   }
 });

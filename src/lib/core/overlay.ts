@@ -1,4 +1,4 @@
-import { BoardingSharedOptions } from "../boarding-types.ts";
+import type { BoardingSharedOptions } from "../boarding-types.ts";
 import { OVERLAY_FILL_COLOR, OVERLAY_OPACITY } from "../common/constants.ts";
 import {
   assertVarIsNotFalsy,
@@ -8,10 +8,10 @@ import {
 } from "../common/utils.ts";
 import {
   createSvgCutout,
-  CutoutDefinition,
+  type CutoutDefinition,
   generateSvgCutoutPathString,
 } from "./cutout.ts";
-import HighlightElement from "./highlight-element.ts";
+import type HighlightElement from "./highlight-element.ts";
 
 /** The top-level options that are shared between multiple classes that overlay supports */
 type OverlaySupportedSharedOptions = Pick<
@@ -194,12 +194,12 @@ class Overlay {
         }
 
         this.refreshSvgAndPopover();
-        window.requestAnimationFrame(animateOverlay);
+        globalThis.requestAnimationFrame(animateOverlay);
       }
     };
     this.currentTransitionInProgress = animateOverlay;
 
-    window.requestAnimationFrame(animateOverlay);
+    globalThis.requestAnimationFrame(animateOverlay);
   }
 
   /**
@@ -335,8 +335,8 @@ class Overlay {
     assertVarIsNotFalsy(this.cutoutSVGElement);
     assertVarIsNotFalsy(this.currentHighlightedElement);
     // update svg viewBox
-    const windowX = window.innerWidth;
-    const windowY = window.innerHeight;
+    const windowX = globalThis.innerWidth;
+    const windowY = globalThis.innerHeight;
     this.cutoutSVGElement.setAttribute("viewBox", `0 0 ${windowX} ${windowY}`);
 
     this.currentHighlightedElement.getPopover()?.refresh();
