@@ -2,8 +2,8 @@ import "../styles/main.css";
 import "../styles/themes/basic.css";
 import type { BoardingStepDefinition } from "./lib/boarding-types";
 import { Boarding } from "./lib/main";
-import hljs from "highlight.js";
-import "highlight.js/styles/dark.css";
+import hljs from "npm:highlight.js";
+import "npm:highlight.js/styles/dark.css";
 
 import "./styles/demo.css";
 

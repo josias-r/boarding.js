@@ -2,8 +2,14 @@
   "name": "@jor/boarding",
   "version": "3.6.0",
   "exports": "./src/lib/boarding.ts",
+  "tasks": {
+    "start": "vite"
+  },
   "compilerOptions": {
     "lib": ["dom", "deno.ns"]
   },
-  "exclude": ["dist", "node_modules", "src/main.ts"]
+  "exclude": ["dist", "node_modules", "src/main.ts"],
+  "imports": {
+    "vite": "npm:vite@^5.4.9"
+  }
 }
