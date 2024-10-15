@@ -3,7 +3,7 @@
   "version": "3.6.0",
   "exports": "./src/lib/boarding.ts",
   "tasks": {
-    "start": "vite"
+    "start": "dev"
   },
   "compilerOptions": {
     "lib": ["dom", "deno.ns"]
