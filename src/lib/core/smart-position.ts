@@ -1,11 +1,11 @@
-import { CLASS_POPOVER_TIP } from "../common/constants";
-import { assertVarIsNotFalsy } from "../common/utils";
-import HighlightElement from "./highlight-element";
-import Popover from "./popover";
+import { CLASS_POPOVER_TIP } from "../common/constants.ts";
+import { assertVarIsNotFalsy } from "../common/utils.ts";
+import HighlightElement from "./highlight-element.ts";
+import Popover from "./popover.ts";
 
 const sideHierarchy = ["top", "bottom", "left", "right"] as const;
 
-export type Sides = typeof sideHierarchy[number];
+export type Sides = (typeof sideHierarchy)[number];
 export type Alignments = "start" | "end" | "center";
 
 interface SideCheckResult {

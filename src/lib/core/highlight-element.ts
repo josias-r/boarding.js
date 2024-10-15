@@ -1,10 +1,10 @@
-import { BoardingSharedOptions } from "../boarding-types";
+import { BoardingSharedOptions } from "../boarding-types.ts";
 import {
   CLASS_ACTIVE_HIGHLIGHTED_ELEMENT,
   CLASS_POPOVER_NO_ELEMENT,
-} from "../common/constants";
-import { bringInView } from "../common/utils";
-import Popover from "./popover";
+} from "../common/constants.ts";
+import { bringInView } from "../common/utils.ts";
+import Popover from "./popover.ts";
 
 /** The options of popover that will come from the top-level but can also be overwritten */
 export interface HighlightElementHybridOptions

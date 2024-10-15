@@ -1,4 +1,4 @@
-import { BoardingSharedOptions } from "../boarding-types";
+import { BoardingSharedOptions } from "../boarding-types.ts";
 import {
   CLASS_BTN_DISABLED,
   CLASS_CLOSE_ONLY_BTN,
@@ -7,15 +7,15 @@ import {
   PopoverElements,
   POPOVER_ELEMENT,
   POPOVER_OFFSET,
-} from "../common/constants";
+} from "../common/constants.ts";
 import {
   assertVarIsNotFalsy,
   attachHighPrioClick,
   bringInView,
   checkOptionalValue,
-} from "../common/utils";
-import HighlightElement from "./highlight-element";
-import SmartPosition, { Alignments, Sides } from "./smart-position";
+} from "../common/utils.ts";
+import HighlightElement from "./highlight-element.ts";
+import SmartPosition, { Alignments, Sides } from "./smart-position.ts";
 
 /** The top-level options that are shared between multiple classes that popover supports */
 type PopoverSupportedSharedOptions = Pick<

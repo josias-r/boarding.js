@@ -1,4 +1,4 @@
-import { CLASS_CUTOUT } from "../common/constants";
+import { CLASS_CUTOUT } from "../common/constants.ts";
 
 export interface CutoutDefinition {
   hightlightBox: {

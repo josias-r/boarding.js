@@ -1,17 +1,17 @@
-import { BoardingSharedOptions } from "../boarding-types";
-import { OVERLAY_FILL_COLOR, OVERLAY_OPACITY } from "../common/constants";
+import { BoardingSharedOptions } from "../boarding-types.ts";
+import { OVERLAY_FILL_COLOR, OVERLAY_OPACITY } from "../common/constants.ts";
 import {
   assertVarIsNotFalsy,
   attachHighPrioClick,
   checkOptionalValue,
   easeInOutQuad,
-} from "../common/utils";
+} from "../common/utils.ts";
 import {
   createSvgCutout,
   CutoutDefinition,
   generateSvgCutoutPathString,
-} from "./cutout";
-import HighlightElement from "./highlight-element";
+} from "./cutout.ts";
+import HighlightElement from "./highlight-element.ts";
 
 /** The top-level options that are shared between multiple classes that overlay supports */
 type OverlaySupportedSharedOptions = Pick<

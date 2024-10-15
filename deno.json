@@ -1,0 +1,5 @@
+{
+  "name": "@jor/boarding",
+  "version": "3.6.0",
+  "exports": "./src/lib/boarding.ts"
+}

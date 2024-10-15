@@ -1,12 +1,12 @@
 import HighlightElement, {
   HighlightElementHybridOptions,
-} from "./core/highlight-element";
-import { OverlayTopLevelOptions } from "./core/overlay";
+} from "./core/highlight-element.ts";
+import { OverlayTopLevelOptions } from "./core/overlay.ts";
 import {
   PopoverHybridOptions,
   PopoverStepLevelOptions,
   PopoverTopLevelOptions,
-} from "./core/popover";
+} from "./core/popover.ts";
 
 export interface BoardingSharedOptions {
   /**

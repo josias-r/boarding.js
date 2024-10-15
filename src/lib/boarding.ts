@@ -1,5 +1,5 @@
-import Overlay, { BoardingExitReason } from "./core/overlay";
-import Popover from "./core/popover";
+import Overlay, { BoardingExitReason } from "./core/overlay.ts";
+import Popover from "./core/popover.ts";
 import {
   OVERLAY_PADDING,
   SHOULD_ANIMATE_OVERLAY,
@@ -10,14 +10,14 @@ import {
   CLASS_NO_CLICK_BODY,
   CLASS_STRICT_CLICK_BODY,
   OVERLAY_RADIUS,
-} from "./common/constants";
-import { assertIsElement } from "./common/utils";
-import HighlightElement from "./core/highlight-element";
+} from "./common/constants.ts";
+import { assertIsElement } from "./common/utils.ts";
+import HighlightElement from "./core/highlight-element.ts";
 import {
   BoardingOptions,
   BoardingStepDefinition,
   BoardingSteps,
-} from "./boarding-types";
+} from "./boarding-types.ts";
 
 type HighlightSelector = BoardingStepDefinition | string | HTMLElement;
 
