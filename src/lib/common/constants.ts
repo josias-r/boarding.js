@@ -3,6 +3,8 @@ export const OVERLAY_FILL_COLOR = "rgb(0,0,0)";
 export const OVERLAY_RADIUS = 5;
 export const OVERLAY_PADDING = 10;
 export const POPOVER_OFFSET = 10;
+export const PROGRESS_BAR_COLOR = '#0096ff';
+export const PROGRESS_BAR_HEIGHT = '3px';
 
 export const SHOULD_ANIMATE_OVERLAY = true;
 export const SHOULD_OUTSIDE_CLICK_CLOSE = true;

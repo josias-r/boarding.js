@@ -434,6 +434,47 @@ document.addEventListener("DOMContentLoaded", function () {
       featureIntroductionBoarding.start();
     });
 
+  /////////////////////////////////////////////////////
+  // Progress Bar Example
+  /////////////////////////////////////////////////////
+  const progressBarBoarding = new Boarding({
+    topProgressBar: {
+      color: "#0096ff",
+      height: "3px"
+    }
+  });
+
+  progressBarBoarding.defineSteps([
+    {
+      element: "#element-with-progress-bar h4",
+      popover: {
+        title: "First Step",
+        description: "Notice the progress bar at the top of the screen",
+      },
+    },
+    {
+      element: "#element-with-progress-bar pre",
+      popover: {
+        title: "Second Step",
+        description: "The progress bar shows we are halfway",
+      },
+    },
+    {
+      element: "#element-with-progress-bar .top-20",
+      popover: {
+        title: "Final Step",
+        description: "Progress bar is now complete",
+      },
+    },
+  ]);
+
+  document
+    .querySelector("#run-element-with-progress-bar")
+    ?.addEventListener("click", (e) => {
+      e.preventDefault();
+      progressBarBoarding.start();
+    });
+
   const newURL = location.href.split("?")[0];
   if (newURL !== location.href) {
     (window.location as any) = newURL;

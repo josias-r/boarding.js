@@ -1,5 +1,5 @@
 import { BoardingSharedOptions } from "../boarding-types";
-import { OVERLAY_FILL_COLOR, OVERLAY_OPACITY } from "../common/constants";
+import { OVERLAY_FILL_COLOR, OVERLAY_OPACITY, PROGRESS_BAR_COLOR, PROGRESS_BAR_HEIGHT } from "../common/constants";
 import {
   assertVarIsNotFalsy,
   attachHighPrioClick,
@@ -51,6 +51,16 @@ interface OverlayOptions
    * Click handler attached to overlay element
    */
   onOverlayClick: () => void;
+  /**
+   * Configuration for the top progress bar
+   * @default null
+   */
+  topProgressBar?: {
+    /** Color of the progress bar @default "#0096ff" */
+    color?: string;
+    /** Height of the progress bar @default "3px" */
+    height?: string;
+  } | null;
 }
 
 type AnimatableCutoutDefinition = Pick<
@@ -68,6 +78,7 @@ class Overlay {
   private currentTransitionInProgress?: () => void;
   private activeSvgCutoutDefinition?: AnimatableCutoutDefinition;
   private highlightElemRect?: DOMRect;
+  private progressBarElement?: HTMLDivElement;
 
   public currentHighlightedElement?: HighlightElement;
   public previouslyHighlightedElement?: HighlightElement;
@@ -81,8 +92,57 @@ class Overlay {
         options.overlayColor === undefined
           ? OVERLAY_FILL_COLOR
           : options.overlayColor,
+      topProgressBar: options.topProgressBar === null ? null : {
+        color: options.topProgressBar?.color || PROGRESS_BAR_COLOR,
+        height: options.topProgressBar?.height || PROGRESS_BAR_HEIGHT
+      },
       // padding: Padding default will come from outside, as it affects more then just the overlay
     };
+    
+    if (this.options.topProgressBar) {
+      this.createProgressBar();
+    }
+  }
+
+  private createProgressBar() {
+    this.progressBarElement = document.createElement('div');
+    const style = this.progressBarElement.style;
+    style.position = 'fixed';
+    style.top = '0';
+    style.left = '0';
+    style.width = '0%';
+    style.height = this.options.topProgressBar!.height;
+    style.backgroundColor = this.options.topProgressBar!.color;
+    style.transition = this.options.animate ? 'width 0.3s ease' : 'none';
+    style.zIndex = '99999';
+  }
+
+  /**
+   * Updates the progress bar width based on current progress
+   * @param progress number between 0 and 100
+   */
+  public updateProgress(progress: number) {
+    if (this.progressBarElement && this.options.topProgressBar) {
+      this.progressBarElement.style.width = `${progress}%`;
+    }
+  }
+
+  /**
+   * Shows the progress bar if it exists
+   */
+  public showProgressBar() {
+    if (this.progressBarElement && !document.body.contains(this.progressBarElement)) {
+      document.body.appendChild(this.progressBarElement);
+    }
+  }
+
+  /**
+   * Hides the progress bar if it exists
+   */
+  public hideProgressBar() {
+    if (this.progressBarElement && document.body.contains(this.progressBarElement)) {
+      document.body.removeChild(this.progressBarElement);
+    }
   }
 
   /**
@@ -115,6 +175,11 @@ class Overlay {
       !this.currentHighlightedElement.isSame(this.previouslyHighlightedElement)
     ) {
       this.currentHighlightedElement.onDeselected();
+    }
+
+    // Show progress bar if configured
+    if (this.options.topProgressBar) {
+      this.showProgressBar();
     }
 
     // transition to new element + start tracking element on screen
@@ -152,6 +217,9 @@ class Overlay {
 
     // stop tracking element
     this.cancelElementTracking();
+
+    // Remove progress bar if it exists
+    this.hideProgressBar();
 
     if (this.options.animate && !immediate) {
       // this.node.style.opacity = "0";

@@ -629,6 +629,56 @@ boarding.start();
 
         <hr class="hr__fancy" />
 
+<div id="element-with-progress-bar" class="section__example">
+  <h4>With Progress Bar</h4>
+  <p>
+    You can add a progress bar at the top of the screen to show the
+    current progress through the tour steps.
+  </p>
+  <a href="#" class="btn__run-demo" id="run-element-with-progress-bar">Show Demo</a>
+  <pre>
+<code class="javascript">
+const boarding = new Boarding({
+  topProgressBar: {
+    color: "#0096ff", // optional, defaults to "#0096ff"
+    height: "3px"     // optional, defaults to "3px"
+  }
+});
+
+boarding.defineSteps([
+  {
+    element: "#element-with-progress-bar h4",
+    popover: {
+      title: "First Step",
+      description: "Notice the progress bar at the top of the screen",
+    },
+  },
+  {
+    element: "#element-with-progress-bar pre",
+    popover: {
+      title: "Second Step",
+      description: "The progress bar shows we are halfway",
+    },
+  },
+  {
+    element: "#element-with-progress-bar .top-20",
+    popover: {
+      title: "Final Step",
+      description: "Progress bar is now complete",
+    },
+  }
+]);
+
+boarding.start();
+</code>
+</pre>
+  <p class="top-20">
+    The progress bar will automatically update as users move through the
+    steps.
+  </p>
+</div>
+<hr class="hr__fancy" />
+
         <div class="section__example">
           <div id="api_section">
             <h3>..and much much more</h3>

@@ -37,6 +37,16 @@ export interface BoardingSharedOptions {
    * @default true
    */
   strictClickHandling: boolean | "block-all";
+
+  /**
+   * Configuration for the progress bar shown at the top of the screen.
+   * Set to null to disable the progress bar.
+   * @default null
+   */
+  topProgressBar: {
+    color?: string;
+    height?: string;
+  } | null;
 }
 
 export interface BoardingOptions

@@ -78,6 +78,7 @@ class Boarding {
       allowClose = SHOULD_OUTSIDE_CLICK_CLOSE, // Whether to close overlay on click outside the element
       keyboardControl = ALLOW_KEYBOARD_CONTROL, // Whether to allow controlling through keyboard or not
       overlayClickNext = SHOULD_OUTSIDE_CLICK_NEXT, // Whether to move next on click outside the element
+      topProgressBar = null, // Whether to show a progress bar
       ...defaultOptions
     } = { ...options };
 
@@ -90,6 +91,7 @@ class Boarding {
       allowClose,
       keyboardControl,
       overlayClickNext,
+      topProgressBar,
       ...defaultOptions,
     };
 
@@ -105,6 +107,7 @@ class Boarding {
       onReset: this.options.onReset,
       opacity: this.options.opacity,
       overlayColor: this.options.overlayColor,
+      topProgressBar: this.options.topProgressBar,
       onOverlayClick: () => {
         // Perform the 'Next' operation when clicked outside the highlighted element
         if (this.options.overlayClickNext) {
@@ -456,6 +459,7 @@ class Boarding {
     this.setStrictClickHandlingRules(nextElem);
     this.overlay.highlight(nextElem);
     this.currentStep += 1;
+    this.updateProgress();
   }
 
   /**
@@ -471,6 +475,7 @@ class Boarding {
     this.setStrictClickHandlingRules(previousElem);
     this.overlay.highlight(previousElem);
     this.currentStep -= 1;
+    this.updateProgress();
   }
 
   /**
@@ -483,6 +488,8 @@ class Boarding {
     this.isActivated = true;
     this.setStrictClickHandlingRules(element);
     this.overlay.highlight(element);
+
+    this.updateProgress();
   }
 
   /**
@@ -721,6 +728,12 @@ class Boarding {
       },
       popover,
     });
+  }
+
+  private updateProgress() {
+    if (!this.steps.length) return;
+    const progress = ((this.currentStep + 1) / this.steps.length) * 100;
+    this.overlay.updateProgress(progress);
   }
 }
 
