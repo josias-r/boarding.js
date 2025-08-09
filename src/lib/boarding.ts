@@ -24,10 +24,13 @@ type HighlightSelector = BoardingStepDefinition | string | HTMLElement;
 enum MovementType {
   Start,
   Highlight,
+  CleanupNext,
   PrepareNext,
   Next,
+  CleanupPrevious,
   PreparePrevious,
   Previous,
+  CleanupReset,
 }
 
 type Movement =
@@ -35,7 +38,9 @@ type Movement =
       movement:
         | MovementType.Start
         | MovementType.Next
+        | MovementType.CleanupNext
         | MovementType.PrepareNext
+        | MovementType.CleanupPrevious
         | MovementType.PreparePrevious
         | MovementType.Previous;
       index: number;
@@ -43,6 +48,11 @@ type Movement =
   | {
       movement: MovementType.Highlight;
       selector: HighlightSelector;
+    }
+  | {
+      movement: MovementType.CleanupReset;
+      immediate: boolean;
+      exitReason: BoardingExitReason;
     };
 
 /**
@@ -64,6 +74,7 @@ class Boarding {
   private currentMovePrevented: Movement | false;
 
   private overlay: Overlay;
+  private stepCleanupRequired: boolean = false;
 
   constructor(options?: BoardingOptions) {
     const {
@@ -137,6 +148,8 @@ class Boarding {
     if (!this.steps || this.steps.length === 0) {
       throw new Error("There are no steps defined to iterate");
     }
+
+    this.stepCleanupRequired = true;
     this.steps[index].prepareElement?.("init");
     if (this.currentMovePrevented) {
       return;
@@ -161,6 +174,7 @@ class Boarding {
         ? selector
         : { element: selector };
 
+    this.stepCleanupRequired = true;
     stepDefinition.prepareElement?.("init");
     if (this.currentMovePrevented) {
       return;
@@ -205,8 +219,8 @@ class Boarding {
    * If preventMove was called, you can use this method to continue where the movement was stopped.
    * It's a smart method that chooses the correct method from: `next`, `previous`, `start` and `highlight`
    */
-  public async continue() {
-    // setTimout foces the continue to always be executed async from the original (this is necessary, so a user can't make the mistake of calling preventMove and continue synchronously which would cause issues)
+  public continue() {
+    // setTimout foces the continue to always be executed from the original (this is necessary, so a user can't make the mistake of calling preventMove and continue synchronously which would cause issues)
     setTimeout(() => {
       if (this.currentMovePrevented === this.lastMovementRequested) {
         // reset, we are continuing
@@ -220,17 +234,26 @@ class Boarding {
           case MovementType.Highlight:
             this.handleHighlight(this.lastMovementRequested.selector);
             break;
+          case MovementType.CleanupNext:
+            this.next();
+            break;
           case MovementType.PrepareNext:
             this.handleNext();
             break;
           case MovementType.Next:
             this.moveNext();
             break;
+          case MovementType.CleanupPrevious:
+            this.previous();
+            break;
           case MovementType.PreparePrevious:
             this.handlePrevious();
             break;
           case MovementType.Previous:
             this.movePrevious();
+            break;
+          case MovementType.CleanupReset:
+            this.reset(this.lastMovementRequested.immediate, this.lastMovementRequested.exitReason);
             break;
         }
       } else {
@@ -257,12 +280,28 @@ class Boarding {
       return;
     }
 
+    if (this.stepCleanupRequired && (
+        this.lastMovementRequested?.movement !== MovementType.CleanupNext &&
+        this.lastMovementRequested?.movement !== MovementType.PrepareNext)) {
+      this.lastMovementRequested = {
+        movement: MovementType.CleanupNext,
+        index: this.currentStep,
+      };
+
+      this.stepCleanupRequired = false;
+      this.steps[this.currentStep]?.cleanupElement?.("next");
+      if (this.currentMovePrevented) {
+        return;
+      }
+    }
+
     this.lastMovementRequested = {
       movement: MovementType.PrepareNext,
       index: this.currentStep,
     };
 
     // call prepareElement for coming element if available
+    this.stepCleanupRequired = true;
     this.steps[this.currentStep + 1]?.prepareElement?.("next");
     // check if prepareElement wants to stop
     if (this.currentMovePrevented) {
@@ -281,12 +320,28 @@ class Boarding {
       return;
     }
 
+    if (this.stepCleanupRequired && (
+        this.lastMovementRequested?.movement !== MovementType.CleanupPrevious &&
+        this.lastMovementRequested?.movement !== MovementType.PreparePrevious)) {
+      this.lastMovementRequested = {
+        movement: MovementType.CleanupPrevious,
+        index: this.currentStep,
+      };
+
+      this.stepCleanupRequired = false;
+      this.steps[this.currentStep]?.cleanupElement?.("prev");
+      if (this.currentMovePrevented) {
+        return;
+      }
+    }
+
     this.lastMovementRequested = {
       movement: MovementType.PreparePrevious,
       index: this.currentStep,
     };
 
     // call prepareElement for coming element if available
+    this.stepCleanupRequired = true;
     this.steps[this.currentStep - 1]?.prepareElement?.("prev");
     // check if prepareElement wants to stop
     if (this.currentMovePrevented) {
@@ -316,6 +371,21 @@ class Boarding {
    * @param exitReason report the reason reset is called to `onReset`. This string has no other functionallity and is purely of informational purpose inside `onReset`
    */
   public reset(immediate = false, exitReason: BoardingExitReason = "cancel") {
+    if (this.stepCleanupRequired &&
+        this.lastMovementRequested?.movement !== MovementType.CleanupReset) {
+      this.lastMovementRequested = {
+        movement: MovementType.CleanupReset,
+        immediate: immediate,
+        exitReason: exitReason,
+      };
+
+      this.stepCleanupRequired = false;
+      this.steps[this.currentStep]?.cleanupElement?.("reset");
+      if (this.currentMovePrevented) {
+        return;
+      }
+    }
+
     this.currentStep = 0;
     this.isActivated = false;
     this.overlay.clear(immediate, exitReason);
@@ -328,6 +398,7 @@ class Boarding {
     // reset step tracking
     this.lastMovementRequested = undefined;
     this.currentMovePrevented = false;
+    this.options.onFinish?.(exitReason);
   }
 
   /**
@@ -456,6 +527,7 @@ class Boarding {
     this.setStrictClickHandlingRules(nextElem);
     this.overlay.highlight(nextElem);
     this.currentStep += 1;
+    this.options.onStep?.(this.currentStep);
   }
 
   /**
@@ -471,6 +543,7 @@ class Boarding {
     this.setStrictClickHandlingRules(previousElem);
     this.overlay.highlight(previousElem);
     this.currentStep -= 1;
+    this.options.onStep?.(this.currentStep);
   }
 
   /**
@@ -483,6 +556,7 @@ class Boarding {
     this.isActivated = true;
     this.setStrictClickHandlingRules(element);
     this.overlay.highlight(element);
+    this.options.onStep?.(this.currentStep);
   }
 
   /**
@@ -697,7 +771,7 @@ class Boarding {
           this.previous();
         },
         onCloseClick: () => {
-          this.reset(false, "cancel");
+          this.reset(false, "close-button");
         },
       });
     }
