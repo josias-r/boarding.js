@@ -51,6 +51,11 @@ export interface BoardingOptions
    */
   keyboardControl?: boolean;
   /**
+   * Whether the keyboard control should work in RTL mode (Right arrow means "previous", Left arrow means "next")
+   * @default false
+   */
+  keyboardControlRtl?: boolean;
+  /**
    * Clicking outside the highlighted element should reset boarding or not
    * @default true
    */
