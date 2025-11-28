@@ -1,3 +1,10 @@
+## [3.6.1](https://github.com/josias-r/boarding.js/compare/v3.6.0...v3.6.1) (2025-11-28)
+
+
+### Bug Fixes
+
+* correct typo in spelling of 'preferredSide' in popover options with backwards compatibility (PR [#30](https://github.com/josias-r/boarding.js/issues/30)) ([1bad8bd](https://github.com/josias-r/boarding.js/commit/1bad8bd708d82eb28b90c24b685016882e725df0))
+
 # [3.6.0](https://github.com/josias-r/boarding.js/compare/v3.5.2...v3.6.0) (2024-09-16)
 
 
