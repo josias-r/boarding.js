@@ -591,14 +591,17 @@ class Boarding {
       return;
     }
 
-    if (event.key === "ArrowRight") {
+    if ((event.key === "ArrowRight" && !this.options.keyboardControlRtl) ||
+        (event.key === "ArrowLeft" && this.options.keyboardControlRtl)
+    ) {
       if (
         !popoverDisabledBtns?.includes("next") &&
         (popoverShowBtns === true || popoverShowBtns.includes("next"))
       ) {
         this.next();
       }
-    } else if (event.key === "ArrowLeft") {
+    } else if ((event.key === "ArrowLeft" && !this.options.keyboardControlRtl) ||
+        (event.key === "ArrowRight" && this.options.keyboardControlRtl)) {
       if (
         !popoverDisabledBtns?.includes("previous") &&
         (popoverShowBtns === true || popoverShowBtns.includes("previous"))
