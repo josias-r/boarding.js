@@ -366,7 +366,7 @@ boarding.highlight({
         <div id="single-element-with-popover-position" class="section__example">
           <h4>Popover Positioning</h4>
           <p>
-            You can also, change the preffered position of the popover to be
+            You can also change the preferred position of the popover to be
             either
             <code>top</code>, <code>bottom</code>, <code>left</code>,
             <code>right</code>.
@@ -375,6 +375,12 @@ boarding.highlight({
             And for even more fine-grain control define the alignment of the
             popover to be either
             <code>start</code>, <code>center</code>, <code>end</code>
+          </p>
+          <p class="top-10">
+            <small
+              >Legacy <code>prefferedSide</code> still works for backward
+              compatibility.</small
+            >
           </p>
           <a
             href="#"
@@ -388,8 +394,8 @@ boarding.highlight({
   popover: {
     title: 'Title for the Popover',
     description: 'Description for it',
-    // prefferedPosition can be top, bottom, left, right
-    prefferedPosition: 'left',
+    // preferredSide can be top, bottom, left, right
+    preferredSide: 'left',
     // alignment can be start, center, end
     alignment: "start"
   }
@@ -526,7 +532,7 @@ boarding.defineSteps([
       className: 'first-step-popover-class',
       title: 'Title on Popover',
       description: 'Body of the popover',
-      prefferedPosition: 'left'
+      preferredSide: 'left'
     }
   },
   {
@@ -534,7 +540,7 @@ boarding.defineSteps([
     popover: {
       title: 'Title on Popover',
       description: 'Body of the popover',
-      prefferedPosition: 'top'
+      preferredSide: 'top'
     }
   },
   {
@@ -542,7 +548,7 @@ boarding.defineSteps([
     popover: {
       title: 'Title on Popover',
       description: 'Body of the popover',
-      prefferedPosition: 'right'
+      preferredSide: 'right'
     }
   },
 ]);
@@ -582,7 +588,7 @@ boarding.highlight({
   popover: {
     title: 'Title for the Popover',
     description: 'Description for it',
-    prefferedPosition: 'top', // can be `top`, `left`, `right`, `bottom`
+    preferredSide: 'top', // can be `top`, `left`, `right`, `bottom`
   }
 });
 </code></pre>

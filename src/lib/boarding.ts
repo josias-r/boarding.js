@@ -81,6 +81,9 @@ class Boarding {
       ...defaultOptions
     } = { ...options };
 
+    const normalizedPreferredSide =
+      defaultOptions.preferredSide ?? defaultOptions.prefferedSide;
+
     this.options = {
       strictClickHandling,
       animate,
@@ -90,6 +93,7 @@ class Boarding {
       allowClose,
       keyboardControl,
       overlayClickNext,
+      preferredSide: normalizedPreferredSide ?? defaultOptions.preferredSide,
       ...defaultOptions,
     };
 
@@ -638,6 +642,10 @@ class Boarding {
 
     let popover: Popover | null = null;
     if (currentStep.popover?.title) {
+      const preferredSide =
+        currentStep.popover.preferredSide ??
+        currentStep.popover.prefferedSide ??
+        this.options.preferredSide;
       const mergedClassNames = [
         this.options.className,
         currentStep.popover.className,
@@ -658,8 +666,7 @@ class Boarding {
         title: currentStep.popover.title,
         description: currentStep.popover.description,
         // hybrid options
-        prefferedSide:
-          currentStep.popover.prefferedSide || this.options.prefferedSide,
+        preferredSide,
         alignment: currentStep.popover.alignment || this.options.alignment,
         showButtons:
           currentStep.popover.showButtons === undefined

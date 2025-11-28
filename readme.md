@@ -118,7 +118,7 @@ Also, `title` and `description` can have HTML as well.
 
 ### Positioning the Popover – [Demo](https://josias-r.github.io/boarding.js#single-element-with-popover-position)
 
-By default, boarding automatically finds the suitable position for the popover and displays it. You can override it using `prefferedSide` and the `alignment` property.
+By default, boarding automatically finds the suitable position for the popover and displays it. You can override it using `preferredSide` and the `alignment` property (legacy `prefferedSide` is still supported).
 
 ```javascript
 const boarding = new Boarding();
@@ -127,8 +127,8 @@ boarding.highlight({
   popover: {
     title: "Title for the Popover",
     description: "Description for it",
-    // prefferedSide can be left, right, top, bottom
-    prefferedSide: "left",
+    // preferredSide can be left, right, top, bottom
+    preferredSide: "left",
     // alignment can be start, center, right
     alignment: "center",
   },
@@ -166,7 +166,7 @@ boarding.defineSteps([
       className: "first-step-popover-class",
       title: "Title on Popover",
       description: "Body of the popover",
-      prefferedSide: "left",
+      preferredSide: "left",
     },
   },
   {
@@ -174,7 +174,7 @@ boarding.defineSteps([
     popover: {
       title: "Title on Popover",
       description: "Body of the popover",
-      prefferedSide: "top",
+      preferredSide: "top",
     },
   },
   {
@@ -182,7 +182,7 @@ boarding.defineSteps([
     popover: {
       title: "Title on Popover",
       description: "Body of the popover",
-      prefferedSide: "right",
+      preferredSide: "right",
     },
   },
 ]);
@@ -209,7 +209,7 @@ boarding.defineSteps([
     popover: {
       title: "Title on Popover",
       description: "Body of the popover",
-      prefferedSide: "left",
+      preferredSide: "left",
     },
   },
   {
@@ -217,7 +217,7 @@ boarding.defineSteps([
     popover: {
       title: "Title on Popover",
       description: "Body of the popover",
-      prefferedSide: "top",
+      preferredSide: "top",
     },
     onNext: () => {
       // Prevent moving to the next step
@@ -235,7 +235,7 @@ boarding.defineSteps([
     popover: {
       title: "Title on Popover",
       description: "Body of the popover",
-      prefferedSide: "right",
+      preferredSide: "right",
     },
   },
 ]);
@@ -308,7 +308,7 @@ const stepDefinition = {
     closeBtnText: "Close", // Text on the close button
     nextBtnText: "Next", // Next button text
     prevBtnText: "Previous", // Previous button text
-    preferredSide: "top", // Preffered side on which the popover should render of the HighlightElement
+    preferredSide: "top", // Preferred side on which the popover should render of the HighlightElement
     alignment: "start", // Alignment of the popover on the side it gets renderd on
     // Make changes to the actual popoverElements once they get rendered.
     onPopoverRender: (el) => {
