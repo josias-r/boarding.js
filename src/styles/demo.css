@@ -49,7 +49,7 @@ hr,
 }
 hr.hr__fancy,
 .hr.hr__fancy {
-  background: url("./images/separator.png") repeat-y;
+  background: url("/images/separator.png") repeat-y;
   height: 5px;
   background-size: cover;
 }

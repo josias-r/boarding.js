@@ -40,12 +40,12 @@
     "semantic-release": "semantic-release"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "highlight.js": "^11.6.0",
-    "semantic-release": "^19.0.5",
-    "typescript": "^4.6.4",
-    "vite": "^3.2.0"
+    "highlight.js": "^11.11.1",
+    "semantic-release": "^25.0.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.4"
   },
   "repository": {
     "type": "git",

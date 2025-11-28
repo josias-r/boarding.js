@@ -1,3 +1,22 @@
+# [3.6.0](https://github.com/josias-r/boarding.js/compare/v3.5.2...v3.6.0) (2024-09-16)
+
+
+### Bug Fixes
+
+* fix defaults from constants being ignored ([a721c92](https://github.com/josias-r/boarding.js/commit/a721c92318b03de28958f4e45bc70cf66373f7bb))
+
+
+### Features
+
+* add overlay color option to Boarding class ([ab2a2f9](https://github.com/josias-r/boarding.js/commit/ab2a2f95235848bbe76f998746bd124754373df5))
+
+## [3.5.2](https://github.com/josias-r/boarding.js/compare/v3.5.1...v3.5.2) (2023-03-23)
+
+
+### Bug Fixes
+
+* fix bug breaking single-element highlight w/out popover ([92d7bfb](https://github.com/josias-r/boarding.js/commit/92d7bfba2ee28f8ff63a5b5769dd692bec593f7a))
+
 ## [3.5.1](https://github.com/josias-r/boarding.js/compare/v3.5.0...v3.5.1) (2023-03-21)
 
 

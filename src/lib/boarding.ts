@@ -104,6 +104,7 @@ class Boarding {
       radius: this.options.radius,
       onReset: this.options.onReset,
       opacity: this.options.opacity,
+      overlayColor: this.options.overlayColor,
       onOverlayClick: () => {
         // Perform the 'Next' operation when clicked outside the highlighted element
         if (this.options.overlayClickNext) {

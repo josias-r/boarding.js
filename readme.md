@@ -57,10 +57,12 @@ yarn add boarding.js
 npm install boarding.js
 ```
 
-Or include it using CDN. If you want a specific version, put it as `boarding.js@3.0.1` in the name
+Or import directly from a CDN. If you want a specific version, put it as `boarding.js@3.5.2` in the name
 
 ```html
-<script src="https://unpkg.com/boarding.js/dist/main.js"></script>
+<script type="module">
+  import { Boarding } from "https://unpkg.com/boarding.js/dist/main.js";
+</script>
 <link rel="stylesheet" href="https://unpkg.com/boarding.js/styles/main.css" />
 <!-- optionally include the base theme -->
 <link
@@ -258,10 +260,11 @@ Here are the options that Boarding understands:
 const boarding = new Boarding({
   className: "scoped-class", // className to wrap boarding.js popover
   animate: true, // Whether to animate or not
-  opacity: 0.75, // Background opacity (0 means only popovers and without overlay)
+  opacity: 0.75, // Overlay opacity (0 means only popovers and without overlay)
   padding: 10, // Distance of element from around the edges
   allowClose: true, // Whether the click on overlay should close or not
   overlayClickNext: false, // Whether the click on overlay should move next
+  overlayColor: "rgb(0,0,0)", // Fill color for the overlay
   doneBtnText: "Done", // Text on the final button
   closeBtnText: "Close", // Text on the close button for this step
   nextBtnText: "Next", // Next button text for this step
