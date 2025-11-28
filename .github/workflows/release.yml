@@ -5,6 +5,11 @@ name: Release CI
 on:
   push:
     branches: [master, next]
+
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
+
 jobs:
   release:
     name: Release
