@@ -197,10 +197,10 @@ class SmartPosition {
     right?: number;
   } {
     let foundSideResult: SideCheckResult | "none";
-    // check if prefferd side is optimal
+    // check if preferred side is optimal
     if (preferredSide) {
       foundSideResult = this.checkIfSideOptimal(preferredSide);
-      // if preffered side was not optimal -> check all sides the standard way
+      // if preferred side was not optimal -> check all sides the standard way
       if (!foundSideResult.isOptimal) {
         foundSideResult = this.findOptimalSide();
       }

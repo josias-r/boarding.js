@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
         description:
           "This is just one use-case, make sure to check out the rest of the docs below.",
         nextBtnText: "Okay, Start!",
-        prefferedSide: "left",
+        preferredSide: "left",
         alignment: "center",
       },
     },
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
         title: "Let's talk features",
         description:
           "You may leave your mouse and use the <strong>arrow keys</strong> to move next and back or <strong>escape key</strong> anytime to close this",
-        prefferedSide: "bottom",
+        preferredSide: "bottom",
       },
     },
     {
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
         title: "Feature Introductions",
         description:
           "With it's powerful API you can use it to make programmatic or user driven feature introductions",
-        prefferedSide: "bottom",
+        preferredSide: "bottom",
       },
     },
     {
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
         title: "Focus Shifters",
         description:
           "If some element or part of the page needs user's interaction, you can just call the highlight method. Boarding will take care of driving the user there",
-        prefferedSide: "bottom",
+        preferredSide: "bottom",
       },
     },
     {
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
         title: "Highly Customizable",
         description:
           "Boarding has a powerful API allowing you to customize the experience as much as you can.",
-        prefferedSide: "bottom",
+        preferredSide: "bottom",
       },
     },
     {
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
         title: "User Friendly",
         description:
           "Your users can control it with the arrow keys on keyboard, or escape to close it",
-        prefferedSide: "bottom",
+        preferredSide: "bottom",
       },
     },
     {
@@ -208,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
           showButtons: false,
           title: "Did you know?",
           description: "You can add HTML in title or description also!",
-          prefferedSide: "top",
+          preferredSide: "top",
         },
       });
     });
@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
           showButtons: false,
           title: "Did you know?",
           description: "You can add HTML in title or description also!",
-          prefferedSide: "top",
+          preferredSide: "top",
         },
       });
     });
@@ -245,18 +245,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let id = (e.target as HTMLElement).id;
     let alignment = (e.target as HTMLElement).dataset.alignment;
-    let preferredside = (e.target as HTMLElement).dataset.preferredside;
+    let preferredSide = (e.target as HTMLElement).dataset.preferredside;
 
     positionBtnsBoarding.highlight({
       element: id
         ? `#${id}`
-        : `#position-btns [data-alignment="${alignment}"][data-preferredside="${preferredside}"]`,
+        : `#position-btns [data-alignment="${alignment}"][data-preferredside="${preferredSide}"]`,
       popover: {
         showButtons: false,
         title: "Did you know?",
         description: "You can add HTML in title or description also!",
         alignment: alignment as any,
-        prefferedSide: preferredside as any,
+        preferredSide: preferredSide as any,
       },
     });
   });
@@ -277,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
           showButtons: false,
           title: "<em>Tags</em> in title or <u>body</u>",
           description: "Body can also have <strong>html tags</strong>!",
-          prefferedSide: "top",
+          preferredSide: "top",
         },
       });
     });
@@ -300,7 +300,7 @@ document.addEventListener("DOMContentLoaded", function () {
         popover: {
           title: "Title for the Popover",
           description: "Description for it",
-          prefferedSide: "top", // can be `top`, `left`, `right`, `bottom`
+          preferredSide: "top", // can be `top`, `left`, `right`, `bottom`
         },
       });
     });
@@ -350,7 +350,7 @@ document.addEventListener("DOMContentLoaded", function () {
   /////////////////////////////////////////////
   const singleNoClose = new Boarding({
     allowClose: false,
-    prefferedSide: "top",
+    preferredSide: "top",
   });
 
   singleNoClose.defineSteps([
@@ -366,7 +366,7 @@ document.addEventListener("DOMContentLoaded", function () {
       popover: {
         title: "Title on Popover",
         description: "Body of the popover",
-        prefferedSide: "top",
+        preferredSide: "top",
       },
     },
   ]);
@@ -389,7 +389,7 @@ document.addEventListener("DOMContentLoaded", function () {
         className: "first-step-popover-class",
         title: "Title on Popover",
         description: "Body of the popover",
-        prefferedSide: "top",
+        preferredSide: "top",
       },
     },
     {
@@ -397,7 +397,7 @@ document.addEventListener("DOMContentLoaded", function () {
       popover: {
         title: "Title on Popover",
         description: "Body of the popover",
-        prefferedSide: "bottom",
+        preferredSide: "bottom",
       },
     },
     {
@@ -405,7 +405,7 @@ document.addEventListener("DOMContentLoaded", function () {
       popover: {
         title: "Title on Popover",
         description: "Body of the popover",
-        prefferedSide: "top",
+        preferredSide: "top",
       },
     },
     {
@@ -413,7 +413,7 @@ document.addEventListener("DOMContentLoaded", function () {
       popover: {
         title: "Title on Popover",
         description: "Body of the popover",
-        prefferedSide: "top",
+        preferredSide: "top",
       },
     },
     {
@@ -421,7 +421,7 @@ document.addEventListener("DOMContentLoaded", function () {
       popover: {
         title: "Title on Popover",
         description: "Body of the popover",
-        prefferedSide: "top",
+        preferredSide: "top",
       },
     },
   ]);

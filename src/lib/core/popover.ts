@@ -89,7 +89,12 @@ export interface PopoverHybridOptions {
    */
   className?: string;
   /**
-   * Preffered side to render the popover
+   * Preferred side to render the popover
+   */
+  preferredSide?: Sides;
+  /**
+   * Preferred side to render the popover (backwards-compatible alias)
+   * @deprecated Use `preferredSide` instead.
    */
   prefferedSide?: Sides;
   /**
@@ -167,8 +172,11 @@ export default class Popover {
     startBtnText = "Next &rarr;",
     nextBtnText = "Next &rarr;",
     prevBtnText = "&larr; Previous",
+    preferredSide,
+    prefferedSide,
     ...options
   }: PopoverOptions) {
+    const resolvedPreferredSide = preferredSide ?? prefferedSide;
     this.options = {
       showButtons,
       disableButtons,
@@ -179,6 +187,7 @@ export default class Popover {
       startBtnText,
       nextBtnText,
       prevBtnText,
+      preferredSide: resolvedPreferredSide,
       ...options,
     };
   }
@@ -276,6 +285,7 @@ export default class Popover {
    */
   private setPosition() {
     assertVarIsNotFalsy(this.highlightElement);
+    const preferredSide = this.options.preferredSide;
 
     const customPadding = this.highlightElement.getCustomPadding();
 
@@ -284,7 +294,7 @@ export default class Popover {
       this,
       checkOptionalValue(this.options.padding, customPadding),
       this.options.offset
-    ).setBestPosition(this.options.alignment, this.options.prefferedSide);
+    ).setBestPosition(this.options.alignment, preferredSide);
   }
 
   /**
