@@ -591,8 +591,9 @@ class Boarding {
       return;
     }
 
-    if ((event.key === "ArrowRight" && !this.options.keyboardControlRtl) ||
-        (event.key === "ArrowLeft" && this.options.keyboardControlRtl)
+    if (
+      (event.key === "ArrowRight" && !this.options.keyboardControlRtl) ||
+      (event.key === "ArrowLeft" && this.options.keyboardControlRtl)
     ) {
       if (
         !popoverDisabledBtns?.includes("next") &&
@@ -600,8 +601,10 @@ class Boarding {
       ) {
         this.next();
       }
-    } else if ((event.key === "ArrowLeft" && !this.options.keyboardControlRtl) ||
-        (event.key === "ArrowRight" && this.options.keyboardControlRtl)) {
+    } else if (
+      (event.key === "ArrowLeft" && !this.options.keyboardControlRtl) ||
+      (event.key === "ArrowRight" && this.options.keyboardControlRtl)
+    ) {
       if (
         !popoverDisabledBtns?.includes("previous") &&
         (popoverShowBtns === true || popoverShowBtns.includes("previous"))
