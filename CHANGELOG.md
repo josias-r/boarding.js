@@ -1,3 +1,10 @@
+# [3.7.0](https://github.com/josias-r/boarding.js/compare/v3.6.1...v3.7.0) (2025-11-28)
+
+
+### Features
+
+* support rtl keyboard control navigation ([fd07a86](https://github.com/josias-r/boarding.js/commit/fd07a86d953d0300529d325e30282aeae7207b21))
+
 ## [3.6.1](https://github.com/josias-r/boarding.js/compare/v3.6.0...v3.6.1) (2025-11-28)
 
 
