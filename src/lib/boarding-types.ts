@@ -1,7 +1,7 @@
 import HighlightElement, {
   HighlightElementHybridOptions,
 } from "./core/highlight-element";
-import { OverlayTopLevelOptions } from "./core/overlay";
+import {BoardingExitReason, OverlayTopLevelOptions} from "./core/overlay";
 import {
   PopoverHybridOptions,
   PopoverStepLevelOptions,
@@ -73,7 +73,18 @@ export interface BoardingOptions
    * Simple event that triggers for boarding.start()
    */
   onStart?: (element: HighlightElement) => void;
+  /**
+   * Event that will trigger when boarding is finished, after everything is cleaned up
+   */
+  onFinish?: (reason: BoardingExitReason) => void;
+  /**
+   * Event that will trigger when a step is entered
+   */
+  onStep?: (step: number) => void;
 }
+
+/** Identifier for different navigation actions relevant to an event */
+export type StepNavigationInitiator = "next" | "prev" | "init" | "reset";
 
 export interface BoardingStepDefinition extends HighlightElementHybridOptions {
   /**
@@ -82,12 +93,17 @@ export interface BoardingStepDefinition extends HighlightElementHybridOptions {
   element: string | HTMLElement;
 
   /**
-   * A method that will run very early for the element to-be highlighted. The method will run right before `onNext` (or `onPrevious` when going backwards)
+   * A method that will run very early for the element to-be highlighted.
+   * The method will run right before `onNext` (or `onPrevious` when going backwards).
+   * If returning a promise, it will wait for it to resolve before moving into the step.
    *
-   * Note: This method won't run for the first step when starting
    * @param initiator either "next", "prev" or "init"
    */
-  prepareElement?: (initiator: "next" | "prev" | "init") => void;
+  prepareElement?: (initiator: StepNavigationInitiator) => void;
+  /**
+   * Event that will trigger when leaving a step
+   */
+  cleanupElement?: (initiator: StepNavigationInitiator) => void;
   /**
    * Options representing popover for this step
    */
