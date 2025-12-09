@@ -1,3 +1,10 @@
+## [3.7.3](https://github.com/josias-r/boarding.js/compare/v3.7.2...v3.7.3) (2025-12-09)
+
+
+### Bug Fixes
+
+* remove next branch release flow ([92e9e67](https://github.com/josias-r/boarding.js/commit/92e9e67e07c35b27b13406e394c6354501fab1ba))
+
 ## [3.7.2](https://github.com/josias-r/boarding.js/compare/v3.7.1...v3.7.2) (2025-12-09)
 
 
