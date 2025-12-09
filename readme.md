@@ -1,15 +1,7 @@
-> This is a port of [driver.js](https://github.com/kamranahmedse/driver.js).  
-> The code has been fully refactored and rewritten to TS. It uses a different highlight technique under the hood, which does not fiddle with z-index.  
-> This ensures the layout will always stay intact. With driver.js this is not the case.
->
-> After more and more work on this port, there are more changes and improvements available. At the moment the documentation is not 100% updated, please bear with me until I get around to it.
->
-> For a full comparison you can [check here](https://josias-r.github.io/boarding.js/#comparison-table).
-
 <h1 align="center"><img height="150" src="./public/images/boarding.svg" /><br> Boarding.js</h1>
 
 <p align="center">
-  <a href="https://github.com/josias-r/boarding.js/blob/master/license">
+  <a href="https://github.com/josias-r/boarding.js/blob/main/license">
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg" />
   </a>
   <a href="https://npmjs.org/package/boarding.js">
@@ -404,3 +396,7 @@ Feel free to submit pull requests, create issues or spread the word.
 ## License
 
 MIT &copy; [Josias Ribi](https://josias.me)
+
+## Credits
+
+This project started as a rewrite of [driver.js](https://github.com/kamranahmedse/driver.js) to address several shortcomings of that library. It has since evolved into its own fully-featured project with unique approaches and capabilities. Inspired by these improvements, [Kamran Ahmed](https://github.com/kamranahmedse) subsequently rewrote large parts of driver.js (v1.0.3+) incorporating similar approaches. Kudos to him for creating such a great library in the first place!

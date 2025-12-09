@@ -4,7 +4,7 @@ name: Release CI
 
 on:
   push:
-    branches: [master, next]
+    branches: [main, next]
 
 permissions:
   contents: write # to be able to publish a GitHub release
@@ -38,4 +38,3 @@ jobs:
         env:
           CI: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
