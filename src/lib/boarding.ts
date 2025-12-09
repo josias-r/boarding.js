@@ -1,4 +1,4 @@
-import Overlay, { BoardingExitReason } from "./core/overlay";
+import Overlay, { type BoardingExitReason } from "./core/overlay";
 import Popover from "./core/popover";
 import {
   OVERLAY_PADDING,
@@ -13,7 +13,7 @@ import {
 } from "./common/constants";
 import { assertIsElement } from "./common/utils";
 import HighlightElement from "./core/highlight-element";
-import {
+import type {
   BoardingOptions,
   BoardingStepDefinition,
   BoardingSteps,
@@ -21,27 +21,27 @@ import {
 
 type HighlightSelector = BoardingStepDefinition | string | HTMLElement;
 
-enum MovementType {
-  Start,
-  Highlight,
-  PrepareNext,
-  Next,
-  PreparePrevious,
-  Previous,
-}
+const MovementType = {
+  Start: 0,
+  Highlight: 1,
+  PrepareNext: 2,
+  Next: 3,
+  PreparePrevious: 4,
+  Previous: 5,
+} as const;
 
 type Movement =
   | {
       movement:
-        | MovementType.Start
-        | MovementType.Next
-        | MovementType.PrepareNext
-        | MovementType.PreparePrevious
-        | MovementType.Previous;
+        | typeof MovementType.Start
+        | typeof MovementType.Next
+        | typeof MovementType.PrepareNext
+        | typeof MovementType.PreparePrevious
+        | typeof MovementType.Previous;
       index: number;
     }
   | {
-      movement: MovementType.Highlight;
+      movement: typeof MovementType.Highlight;
       selector: HighlightSelector;
     };
 
@@ -647,7 +647,7 @@ class Boarding {
     }
 
     let popover: Popover | null = null;
-    if (currentStep.popover?.title) {
+    if (currentStep.popover) {
       const preferredSide =
         currentStep.popover.preferredSide ??
         currentStep.popover.prefferedSide ??

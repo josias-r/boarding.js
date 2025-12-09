@@ -1,3 +1,10 @@
+## [3.7.1](https://github.com/josias-r/boarding.js/compare/v3.7.0...v3.7.1) (2025-11-28)
+
+
+### Bug Fixes
+
+* maintenance and release ([a6f7a8b](https://github.com/josias-r/boarding.js/commit/a6f7a8b06d5b34bd0973b86eb014988bc64b2332))
+
 # [3.7.0](https://github.com/josias-r/boarding.js/compare/v3.6.1...v3.7.0) (2025-11-28)
 
 

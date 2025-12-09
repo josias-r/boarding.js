@@ -1,4 +1,4 @@
-import { BoardingSharedOptions } from "../boarding-types";
+import type { BoardingSharedOptions } from "../boarding-types";
 import { OVERLAY_FILL_COLOR, OVERLAY_OPACITY } from "../common/constants";
 import {
   assertVarIsNotFalsy,
@@ -8,7 +8,7 @@ import {
 } from "../common/utils";
 import {
   createSvgCutout,
-  CutoutDefinition,
+  type CutoutDefinition,
   generateSvgCutoutPathString,
 } from "./cutout";
 import HighlightElement from "./highlight-element";
