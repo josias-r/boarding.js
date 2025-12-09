@@ -34,18 +34,19 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build --config lib-build.vite.config.js && tsc src/lib/main.ts --declaration --emitDeclarationOnly --esModuleInterop --outDir dist ",
-    "build:gh-page": "vite build --base=/boarding.js",
+    "build": "vite build --config lib-build.vite.config.js && tsc src/lib/main.ts --declaration --emitDeclarationOnly --esModuleInterop --outDir dist",
+    "build:gh-page": "tsc && vite build --base=/boarding.js",
     "preview": "vite preview",
     "semantic-release": "semantic-release"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "highlight.js": "^11.11.1",
-    "semantic-release": "^25.0.2",
-    "typescript": "^5.9.3",
-    "vite": "^7.2.4"
+    "typescript": "~5.9.3",
+    "vite": "npm:rolldown-vite@7.2.5"
+  },
+  "overrides": {
+    "vite": "npm:rolldown-vite@7.2.5"
   },
   "repository": {
     "type": "git",

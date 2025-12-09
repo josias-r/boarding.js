@@ -1,4 +1,4 @@
-import { BoardingSharedOptions } from "../boarding-types";
+import type { BoardingSharedOptions } from "../boarding-types";
 import {
   CLASS_ACTIVE_HIGHLIGHTED_ELEMENT,
   CLASS_POPOVER_NO_ELEMENT,

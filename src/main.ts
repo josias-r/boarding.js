@@ -1,9 +1,7 @@
 import "../styles/main.css";
 import "../styles/themes/basic.css";
-import { BoardingStepDefinition } from "./lib/boarding-types";
+import type { BoardingStepDefinition } from "./lib/boarding-types";
 import { Boarding } from "./lib/main";
-import hljs from "highlight.js";
-import "highlight.js/styles/dark.css";
 
 import "./styles/demo.css";
 
@@ -101,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
     {
       element: "#lightweight_feature",
       popover: {
-        title: "Only ~4KB",
+        title: "Only ~7KB",
         description:
           "Boarding is free of bloat and written in Vanilla JS. There is no external dependency at all, thus keeping it smaller in size.",
       },
@@ -157,14 +155,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     boringTourBoarding.start();
   });
-
-  try {
-    document.querySelectorAll<HTMLElement>("pre code").forEach((element) => {
-      hljs.highlightElement(element);
-    });
-  } catch (e) {
-    // Silently ignore the highlight errors
-  }
 
   /////////////////////////////////////////////
   // First example – highlighting without popover

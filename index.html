@@ -48,12 +48,16 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/dark.min.css"
+    />
   </head>
   <body>
     <div class="page-wrap">
       <section class="section__header" id="boarding-demo-head">
         <h1 class="brand">
-          <img id="logo_img" src="./images/boarding.svg" />
+          <img id="logo_img" src="./images/boarding.svg" height="67" />
           <span id="name_boarding">Boarding.js</span>
         </h1>
         <p class="text-muted tagline">
@@ -87,34 +91,9 @@
         </div>
       </section>
 
-      <blockquote style="font-size: 0.8rem">
-        <p>
-          💡 This library is a a port of
-          <a
-            href="https://github.com/kamranahmedse/driver.js"
-            target="_blank"
-            rel="noopener noreferrer"
-            >driver.js</a
-          >. The reason behind refactoring that library, is because driver.js
-          under the hood works by elevating elements using css with z-index.
-          This means it can very easily break your layout if you rely anywhere
-          on the css stacking context.
-        </p>
-        <p>
-          So how does this library approach the problem? It doesn't touch any
-          styles at all. Instead the library renders the overlay using an SVG
-          element. This means it works with <strong>any</strong> layout.
-        </p>
-        <p class="zero-bottom">
-          It has the small downside that an SVG is less customizable in terms of
-          how it looks visually than the approach that driver.js had. But maybe
-          better support for styling will be added in the future, since there
-          are other ways to approach that problem.
-        </p>
-      </blockquote>
       <blockquote>
         <p>
-          A lightweight (~7.5kb gzipped) yet powerful JavaScript engine that
+          A lightweight (~6.7kb gzipped) yet powerful JavaScript engine that
           helps you drive the user's focus on page.
         </p>
         <p class="zero-bottom">
@@ -155,7 +134,7 @@
             use
           </li>
           <li id="lightweight_feature">
-            🕊️ Lightweight – Only <strong>~7.5kb</strong> when gzipped
+            🕊️ Lightweight – Only <strong>~6.7kb</strong> when gzipped
           </li>
           <li id="major_browsers_feature">
             🌀 <strong>Consistent behavior</strong> across all major browsers
@@ -750,6 +729,29 @@ activeElement.getNode();  // Gets the DOM Element behind this element
         </p>
       </section>
       <hr class="hr__fancy" />
+      <blockquote style="font-size: 0.8rem">
+        <p class="zero-bottom">
+          💡 This library started as a rewrite of
+          <a
+            href="https://github.com/kamranahmedse/driver.js"
+            target="_blank"
+            rel="noopener noreferrer"
+            >driver.js</a
+          >
+          to address several shortcomings. It has since evolved into its own
+          fully-featured project with unique approaches and capabilities.
+          Inspired by these improvements,
+          <a
+            href="https://github.com/kamranahmedse"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Kamran Ahmed</a
+          >
+          subsequently rewrote large parts of driver.js (v1.0.3+) incorporating
+          similar approaches.
+        </p>
+      </blockquote>
+      <hr class="hr__fancy" />
       <div class="section__example">
         <h4>Contributing</h4>
         <p>
@@ -773,6 +775,10 @@ activeElement.getNode();  // Gets the DOM Element behind this element
     </div>
 
     <script async defer src="//buttons.github.io/buttons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script>
+      hljs.highlightAll();
+    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
