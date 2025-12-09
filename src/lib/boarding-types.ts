@@ -1,8 +1,8 @@
 import HighlightElement, {
-  HighlightElementHybridOptions,
+  type HighlightElementHybridOptions,
 } from "./core/highlight-element";
-import { OverlayTopLevelOptions } from "./core/overlay";
-import {
+import type { OverlayTopLevelOptions } from "./core/overlay";
+import type {
   PopoverHybridOptions,
   PopoverStepLevelOptions,
   PopoverTopLevelOptions,
