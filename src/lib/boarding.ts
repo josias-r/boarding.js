@@ -647,7 +647,7 @@ class Boarding {
     }
 
     let popover: Popover | null = null;
-    if (currentStep.popover?.title) {
+    if (currentStep.popover) {
       const preferredSide =
         currentStep.popover.preferredSide ??
         currentStep.popover.prefferedSide ??
