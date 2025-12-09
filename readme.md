@@ -28,6 +28,12 @@
 - **Focus shifters**: add focus shifters for users
 - **User friendly**: Everything is controllable by keyboard
 - **Consistent behavior**: usable across all major browsers
+- **Works with complex layouts**: no z-index conflicts with your existing page elements
+- **Dynamic content support**: define steps for elements not yet mounted (perfect for interactive SPAs like React applications)
+- **Auto popover positioning**: automatically finds the best position for popovers with full control over alignment
+- **Flexible click handling**: control allowed user interactions during tours with `strictClickHandling`
+- **Step preparation**: validate and prepare moves before they happen with `prepareElement`
+- **Written in TypeScript**: fully typed for better development experience
 - **MIT Licensed**: free for personal and commercial use
 
 ![](./public/images/split.png)
