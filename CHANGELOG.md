@@ -1,3 +1,10 @@
+## [3.7.2](https://github.com/josias-r/boarding.js/compare/v3.7.1...v3.7.2) (2025-12-09)
+
+
+### Bug Fixes
+
+* Render popover condition should not be depending on title value ([871097e](https://github.com/josias-r/boarding.js/commit/871097e1800ca77695cc26e2df947f989584f0ba)), closes [#33](https://github.com/josias-r/boarding.js/issues/33)
+
 ## [3.7.1](https://github.com/josias-r/boarding.js/compare/v3.7.0...v3.7.1) (2025-11-28)
 
 
