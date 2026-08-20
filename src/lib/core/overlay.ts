@@ -19,8 +19,8 @@ type OverlaySupportedSharedOptions = Pick<
   "animate" | "padding" | "radius"
 >;
 
-/** Identifier for different exist reasons that causing onReset, such as cancel or finish */
-export type BoardingExitReason = "cancel" | "finish";
+/** Identifier for different exit reasons that causing onReset, such as cancel or finish */
+export type BoardingExitReason = "cancel" | "close-button" | "finish";
 
 /** The options of overlay that will come from the top-level */
 export interface OverlayTopLevelOptions {
@@ -133,6 +133,7 @@ class Overlay {
   /**
    * Removes the overlay and cancel any listeners
    * @param immediate immediately unmount overlay or animate out
+   * @param exitReason the reason for clearing the overlay, such as cancel or finish
    */
   public clear(immediate = false, exitReason: BoardingExitReason) {
     // Callback for when overlay is about to be reset
