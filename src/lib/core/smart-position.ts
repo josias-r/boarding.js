@@ -356,7 +356,9 @@ class SmartPosition {
         }
         //
         else if (
-          elementPosSecondaryAxis + elementLength - popOverDimensions.width <=
+          elementPosSecondaryAxis * 2 +
+            elementLength -
+            popOverDimensions.width <=
           0
         ) {
           tipAlignment = "start";
@@ -367,8 +369,10 @@ class SmartPosition {
         }
         //
         else if (
-          elementPosSecondaryAxis + popOverDimensions.width >=
-          window.innerWidth
+          elementPosSecondaryAxis * 2 +
+            elementLength +
+            popOverDimensions.width >=
+          2 * window.innerWidth
         ) {
           tipAlignment = "end";
         }
@@ -380,7 +384,9 @@ class SmartPosition {
         }
         //
         else if (
-          elementPosSecondaryAxis + elementLength - popOverDimensions.width <=
+          elementPosSecondaryAxis * 2 +
+            elementLength -
+            popOverDimensions.width <=
           0
         ) {
           tipAlignment = "start";
@@ -391,8 +397,10 @@ class SmartPosition {
         }
         //
         else if (
-          elementPosSecondaryAxis + popOverDimensions.width >=
-          window.innerWidth
+          elementPosSecondaryAxis * 2 +
+            elementLength +
+            popOverDimensions.width >=
+          2 * window.innerWidth
         ) {
           tipAlignment = "end";
         }
@@ -404,7 +412,9 @@ class SmartPosition {
         }
         //
         else if (
-          elementPosSecondaryAxis + elementLength - popOverDimensions.height <=
+          elementPosSecondaryAxis * 2 +
+            elementLength -
+            popOverDimensions.height <=
           0
         ) {
           tipAlignment = "start";
@@ -416,8 +426,10 @@ class SmartPosition {
         }
         //
         else if (
-          elementPosSecondaryAxis + popOverDimensions.height >=
-          window.innerHeight
+          elementPosSecondaryAxis * 2 +
+            elementLength +
+            popOverDimensions.height >=
+          2 * window.innerHeight
         ) {
           tipAlignment = "end";
         }
@@ -429,7 +441,9 @@ class SmartPosition {
         }
         //
         else if (
-          elementPosSecondaryAxis + elementLength - popOverDimensions.height <=
+          elementPosSecondaryAxis * 2 +
+            elementLength -
+            popOverDimensions.height <=
           0
         ) {
           tipAlignment = "start";
@@ -440,8 +454,10 @@ class SmartPosition {
         }
         //
         else if (
-          elementPosSecondaryAxis + popOverDimensions.height >=
-          window.innerHeight
+          elementPosSecondaryAxis * 2 +
+            elementLength +
+            popOverDimensions.height >=
+          2 * window.innerHeight
         ) {
           tipAlignment = "end";
         }
