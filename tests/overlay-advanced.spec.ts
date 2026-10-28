@@ -10,7 +10,9 @@ test.describe("Advanced Overlay Behaviors", () => {
     });
   });
 
-  test("overlayClickNext: true advances to next step on overlay backdrop click", async ({ page }) => {
+  test("overlayClickNext: true advances to next step on overlay backdrop click", async ({
+    page,
+  }) => {
     await page.evaluate(() => {
       const boarding = new (window as any).Boarding({
         overlayClickNext: true,
@@ -18,7 +20,10 @@ test.describe("Advanced Overlay Behaviors", () => {
       (window as any).activeBoarding = boarding;
 
       boarding.defineSteps([
-        { element: "#box-1", popover: { title: "Step 1", description: "Click backdrop to advance" } },
+        {
+          element: "#box-1",
+          popover: { title: "Step 1", description: "Click backdrop to advance" },
+        },
         { element: "#box-2", popover: { title: "Step 2", description: "Advanced via backdrop" } },
       ]);
 

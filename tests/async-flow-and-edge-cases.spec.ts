@@ -10,7 +10,9 @@ test.describe("Async Flow & Edge Cases", () => {
     });
   });
 
-  test("prepareElement receives correct initiator and can mount dynamic elements", async ({ page }) => {
+  test("prepareElement receives correct initiator and can mount dynamic elements", async ({
+    page,
+  }) => {
     await page.evaluate(() => {
       const log: string[] = [];
       (window as any).prepareLog = log;
@@ -105,11 +107,15 @@ test.describe("Async Flow & Edge Cases", () => {
     await expect(popover.locator(".boarding-popover-title")).toHaveText("Step 1");
 
     // After async continue(), should advance to Step 2
-    await expect(popover.locator(".boarding-popover-title")).toHaveText("Step 2", { timeout: 3000 });
+    await expect(popover.locator(".boarding-popover-title")).toHaveText("Step 2", {
+      timeout: 3000,
+    });
     await expect(page.locator("#box-2")).toHaveClass(/boarding-highlighted-element/);
   });
 
-  test("marks popover with boarding-popover-element-missing when highlighted element is removed from DOM", async ({ page }) => {
+  test("marks popover with boarding-popover-element-missing when highlighted element is removed from DOM", async ({
+    page,
+  }) => {
     await page.evaluate(() => {
       const boarding = new (window as any).Boarding({ animate: false });
       (window as any).activeBoarding = boarding;
@@ -148,11 +154,16 @@ test.describe("Async Flow & Edge Cases", () => {
     expect(errorMsg).toBe("There are no steps defined to iterate");
   });
 
-  test("throws error when starting with a selector that does not resolve to an element", async ({ page }) => {
+  test("throws error when starting with a selector that does not resolve to an element", async ({
+    page,
+  }) => {
     const errorMsg = await page.evaluate(() => {
       const boarding = new (window as any).Boarding();
       boarding.defineSteps([
-        { element: "#non-existent-element", popover: { title: "404", description: "Does not exist" } },
+        {
+          element: "#non-existent-element",
+          popover: { title: "404", description: "Does not exist" },
+        },
       ]);
       try {
         boarding.start();

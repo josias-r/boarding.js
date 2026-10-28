@@ -26,11 +26,7 @@ export function generateSvgCutoutPathString({
   const highlightBoxHeightBase = hightlightBox.height + padding * 2;
 
   // prevent glitches when highlightBox is too small for radius
-  const limitedRadius = Math.min(
-    radius,
-    highlightBoxWidthBase / 2,
-    highlightBoxHeightBase / 2
-  );
+  const limitedRadius = Math.min(radius, highlightBoxWidthBase / 2, highlightBoxHeightBase / 2);
   // no value below 0 allowed + round down
   const normalizedRadius = Math.floor(Math.max(limitedRadius, 0));
 
@@ -79,15 +75,9 @@ export function createSvgCutout({
   svg.style.width = "100%";
   svg.style.height = "100%";
 
-  const cutoutPath = document.createElementNS(
-    "http://www.w3.org/2000/svg",
-    "path"
-  );
+  const cutoutPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
   // path
-  cutoutPath.setAttribute(
-    "d",
-    generateSvgCutoutPathString({ hightlightBox, padding, radius })
-  );
+  cutoutPath.setAttribute("d", generateSvgCutoutPathString({ hightlightBox, padding, radius }));
   // path styles
   cutoutPath.style.fill = fillColor;
   cutoutPath.style.opacity = `${opacity}`;

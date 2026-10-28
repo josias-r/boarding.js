@@ -10,7 +10,9 @@ test.describe("Strict Click Handling", () => {
     });
   });
 
-  test("strictClickHandling: true blocks outside clicks but allows clicking active element", async ({ page }) => {
+  test("strictClickHandling: true blocks outside clicks but allows clicking active element", async ({
+    page,
+  }) => {
     await page.evaluate(() => {
       const boarding = new (window as any).Boarding({
         strictClickHandling: true,
@@ -72,8 +74,8 @@ test.describe("Strict Click Handling", () => {
     await expect(outsideBtn).toHaveText("Outside Button (Clicked: 0)");
 
     // In block-all mode, interactive element must have pointer-events: none computed
-    const pointerEvents = await interactiveTarget.evaluate((el) =>
-      window.getComputedStyle(el).pointerEvents
+    const pointerEvents = await interactiveTarget.evaluate(
+      (el) => window.getComputedStyle(el).pointerEvents,
     );
     expect(pointerEvents).toBe("none");
 

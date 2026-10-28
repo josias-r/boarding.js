@@ -1,6 +1,4 @@
-import HighlightElement, {
-  type HighlightElementHybridOptions,
-} from "./core/highlight-element";
+import HighlightElement, { type HighlightElementHybridOptions } from "./core/highlight-element";
 import type { OverlayTopLevelOptions } from "./core/overlay";
 import type {
   PopoverHybridOptions,
@@ -40,7 +38,8 @@ export interface BoardingSharedOptions {
 }
 
 export interface BoardingOptions
-  extends Partial<BoardingSharedOptions>, // partial because they will get default values
+  extends
+    Partial<BoardingSharedOptions>, // partial because they will get default values
     OverlayTopLevelOptions,
     PopoverHybridOptions,
     PopoverTopLevelOptions,

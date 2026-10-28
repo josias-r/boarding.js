@@ -13,11 +13,7 @@ import {
 } from "./common/constants";
 import { assertIsElement } from "./common/utils";
 import HighlightElement from "./core/highlight-element";
-import type {
-  BoardingOptions,
-  BoardingStepDefinition,
-  BoardingSteps,
-} from "./boarding-types";
+import type { BoardingOptions, BoardingStepDefinition, BoardingSteps } from "./boarding-types";
 
 type HighlightSelector = BoardingStepDefinition | string | HTMLElement;
 
@@ -81,8 +77,7 @@ class Boarding {
       ...defaultOptions
     } = { ...options };
 
-    const normalizedPreferredSide =
-      defaultOptions.preferredSide ?? defaultOptions.prefferedSide;
+    const normalizedPreferredSide = defaultOptions.preferredSide ?? defaultOptions.prefferedSide;
 
     this.options = {
       strictClickHandling,
@@ -161,9 +156,7 @@ class Boarding {
 
     // convert argument to step definition
     const stepDefinition: BoardingStepDefinition =
-      typeof selector === "object" && "element" in selector
-        ? selector
-        : { element: selector };
+      typeof selector === "object" && "element" in selector ? selector : { element: selector };
 
     stepDefinition.prepareElement?.("init");
     if (this.currentMovePrevented) {
@@ -190,18 +183,16 @@ class Boarding {
           this.lastMovementRequested = newMovePrevented;
         } else {
           console.warn(
-            "Tried to call Boarding.preventMove, but move has already been prevented, and not been continued or reset yet"
+            "Tried to call Boarding.preventMove, but move has already been prevented, and not been continued or reset yet",
           );
         }
       } else {
         console.warn(
-          "Boarding.preventMove was called multiple times for the same move, which has no effect."
+          "Boarding.preventMove was called multiple times for the same move, which has no effect.",
         );
       }
     } else {
-      console.warn(
-        "Tried to call Boarding.preventMove before, but no move was requested so far."
-      );
+      console.warn("Tried to call Boarding.preventMove before, but no move was requested so far.");
     }
   }
 
@@ -239,7 +230,7 @@ class Boarding {
         }
       } else {
         console.warn(
-          "Boarding.continue was probably called too late, since the last preventMove was called from a different step (or never called at all)."
+          "Boarding.continue was probably called too late, since the last preventMove was called from a different step (or never called at all).",
         );
       }
     }, 0);
@@ -325,10 +316,7 @@ class Boarding {
     this.overlay.clear(immediate, exitReason);
     this.removeEventListeners();
     // remove strict click handling classes, in case they got added
-    document.body.classList.remove(
-      CLASS_NO_CLICK_BODY,
-      CLASS_STRICT_CLICK_BODY
-    );
+    document.body.classList.remove(CLASS_NO_CLICK_BODY, CLASS_STRICT_CLICK_BODY);
     // reset step tracking
     this.lastMovementRequested = undefined;
     this.currentMovePrevented = false;
@@ -375,9 +363,7 @@ class Boarding {
   private handleStart(index: number) {
     const element = this.prepareElementFromStep(index);
     if (!element) {
-      throw new Error(
-        `The step with starting index ${index} could not resolve to an element.`
-      );
+      throw new Error(`The step with starting index ${index} could not resolve to an element.`);
     }
 
     this.currentStep = index;
@@ -392,9 +378,7 @@ class Boarding {
   private handleHighlight(selector: HighlightSelector) {
     // convert argument to step definition
     const stepDefinition: BoardingStepDefinition =
-      typeof selector === "object" && "element" in selector
-        ? selector
-        : { element: selector };
+      typeof selector === "object" && "element" in selector ? selector : { element: selector };
 
     const element = this.prepareElementFromStep(stepDefinition);
     if (!element) {
@@ -497,14 +481,9 @@ class Boarding {
     // set body classes
     const customStrictHandling = element.getStrictClickHandling();
     const strictClickHandling =
-      customStrictHandling === undefined
-        ? this.options.strictClickHandling
-        : customStrictHandling;
+      customStrictHandling === undefined ? this.options.strictClickHandling : customStrictHandling;
 
-    document.body.classList.remove(
-      CLASS_NO_CLICK_BODY,
-      CLASS_STRICT_CLICK_BODY
-    );
+    document.body.classList.remove(CLASS_NO_CLICK_BODY, CLASS_STRICT_CLICK_BODY);
     if (strictClickHandling === "block-all") {
       document.body.classList.add(CLASS_NO_CLICK_BODY);
     } else if (strictClickHandling) {
@@ -552,16 +531,11 @@ class Boarding {
     const highlightedElement = this.overlay.currentHighlightedElement;
     const customStrictHandling = highlightedElement.getStrictClickHandling();
     const strictClickHandling =
-      customStrictHandling === undefined
-        ? this.options.strictClickHandling
-        : customStrictHandling;
+      customStrictHandling === undefined ? this.options.strictClickHandling : customStrictHandling;
 
-    const clickedHighlightedElement = highlightedElement
-      .getElement()
-      .contains(e.target);
+    const clickedHighlightedElement = highlightedElement.getElement().contains(e.target);
 
-    const clickedUnknown =
-      strictClickHandling === "block-all" ? true : !clickedHighlightedElement;
+    const clickedUnknown = strictClickHandling === "block-all" ? true : !clickedHighlightedElement;
 
     // with strict click handling any click that is not the active element (or a UI element of boarding.js) is ignored
     if (strictClickHandling && clickedUnknown) {
@@ -627,17 +601,13 @@ class Boarding {
    * of HighlightElement
    * @param currentStepOrIndex An index is expected in case the its a step from the steps array. Otherwise a full step definition can be passed as a one-off case
    */
-  private prepareElementFromStep(
-    currentStepOrIndex: number | BoardingStepDefinition
-  ) {
+  private prepareElementFromStep(currentStepOrIndex: number | BoardingStepDefinition) {
     const currentStep =
       typeof currentStepOrIndex === "number"
         ? (this.steps[currentStepOrIndex] as BoardingStepDefinition | undefined)
         : currentStepOrIndex;
-    const index =
-      typeof currentStepOrIndex === "number" ? currentStepOrIndex : 0;
-    const stepsCount =
-      typeof currentStepOrIndex === "number" ? this.steps.length : 1;
+    const index = typeof currentStepOrIndex === "number" ? currentStepOrIndex : 0;
+    const stepsCount = typeof currentStepOrIndex === "number" ? this.steps.length : 1;
 
     // we reached the end or maybe the user called "previous" on the first element
     if (currentStep === undefined) {
@@ -660,10 +630,7 @@ class Boarding {
         currentStep.popover.preferredSide ??
         currentStep.popover.prefferedSide ??
         this.options.preferredSide;
-      const mergedClassNames = [
-        this.options.className,
-        currentStep.popover.className,
-      ]
+      const mergedClassNames = [this.options.className, currentStep.popover.className]
         .filter((c) => c)
         .join(" ");
 
@@ -694,16 +661,11 @@ class Boarding {
           currentStep.popover.onPopoverRender === undefined
             ? this.options.onPopoverRender
             : currentStep.popover.onPopoverRender,
-        doneBtnText:
-          currentStep.popover.doneBtnText || this.options.doneBtnText,
-        closeBtnText:
-          currentStep.popover.closeBtnText || this.options.closeBtnText,
-        nextBtnText:
-          currentStep.popover.nextBtnText || this.options.nextBtnText,
-        startBtnText:
-          currentStep.popover.startBtnText || this.options.startBtnText,
-        prevBtnText:
-          currentStep.popover.prevBtnText || this.options.prevBtnText,
+        doneBtnText: currentStep.popover.doneBtnText || this.options.doneBtnText,
+        closeBtnText: currentStep.popover.closeBtnText || this.options.closeBtnText,
+        nextBtnText: currentStep.popover.nextBtnText || this.options.nextBtnText,
+        startBtnText: currentStep.popover.startBtnText || this.options.startBtnText,
+        prevBtnText: currentStep.popover.prevBtnText || this.options.prevBtnText,
         className: mergedClassNames,
         // inferred options
         totalCount: stepsCount,
@@ -730,8 +692,7 @@ class Boarding {
           currentStep.scrollIntoViewOptions === undefined
             ? this.options.scrollIntoViewOptions
             : currentStep.scrollIntoViewOptions,
-        onBeforeHighlighted:
-          currentStep.onBeforeHighlighted || this.options.onBeforeHighlighted,
+        onBeforeHighlighted: currentStep.onBeforeHighlighted || this.options.onBeforeHighlighted,
         onHighlighted: currentStep.onHighlighted || this.options.onHighlighted,
         onDeselected: currentStep.onDeselected || this.options.onDeselected,
         onNext: currentStep.onNext || this.options.onNext,

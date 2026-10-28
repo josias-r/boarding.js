@@ -110,7 +110,8 @@ export interface PopoverHybridOptions {
 }
 
 interface PopoverOptions
-  extends PopoverHybridOptions,
+  extends
+    PopoverHybridOptions,
     PopoverStepLevelOptions,
     PopoverTopLevelOptions,
     PopoverSupportedSharedOptions {
@@ -193,9 +194,7 @@ export default class Popover {
     }
 
     // unmount node
-    this.popover.popoverWrapper.parentElement?.removeChild(
-      this.popover.popoverWrapper
-    );
+    this.popover.popoverWrapper.parentElement?.removeChild(this.popover.popoverWrapper);
   }
 
   /**
@@ -220,10 +219,7 @@ export default class Popover {
     this.setPosition();
 
     if (this.options.scrollIntoViewOptions !== "no-scroll") {
-      bringInView(
-        this.popover.popoverWrapper,
-        this.options.scrollIntoViewOptions
-      );
+      bringInView(this.popover.popoverWrapper, this.options.scrollIntoViewOptions);
     }
   }
 
@@ -286,7 +282,7 @@ export default class Popover {
       this.highlightElement,
       this,
       checkOptionalValue(this.options.padding, customPadding),
-      this.options.offset
+      this.options.offset,
     ).setBestPosition(this.options.alignment, preferredSide);
   }
 
@@ -295,19 +291,12 @@ export default class Popover {
    */
   private attachNode() {
     if (this.popover) {
-      this.popover.popoverWrapper.parentElement?.removeChild(
-        this.popover.popoverWrapper
-      );
+      this.popover.popoverWrapper.parentElement?.removeChild(this.popover.popoverWrapper);
     }
 
     const popoverElement = POPOVER_ELEMENT(this.options.className);
-    const {
-      popoverWrapper,
-      popoverDescription,
-      popoverPrevBtn,
-      popoverNextBtn,
-      popoverCloseBtn,
-    } = popoverElement;
+    const { popoverWrapper, popoverDescription, popoverPrevBtn, popoverNextBtn, popoverCloseBtn } =
+      popoverElement;
     if (this.options.animate) {
       popoverWrapper.classList.add(`${ID_POPOVER}-animated`);
     }
@@ -335,7 +324,7 @@ export default class Popover {
           return false;
         }
         return true;
-      }
+      },
     );
 
     this.popover = popoverElement;

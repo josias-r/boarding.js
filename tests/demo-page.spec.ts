@@ -40,7 +40,9 @@ test.describe("Demo Page (Mini Homepage)", () => {
 
     await expect(page.locator("svg.boarding-coutout-svg")).toBeVisible();
     await expect(page.locator("#boarding-popover-item")).toHaveCount(0);
-    await expect(page.locator("#single-element-no-popover")).toHaveClass(/boarding-highlighted-element/);
+    await expect(page.locator("#single-element-no-popover")).toHaveClass(
+      /boarding-highlighted-element/,
+    );
 
     await page.keyboard.press("Escape");
     await expect(page.locator("svg.boarding-coutout-svg")).toHaveCount(0);

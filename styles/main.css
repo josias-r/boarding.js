@@ -57,9 +57,9 @@ div#boarding-popover-item .boarding-popover-tip {
   border-color: #fff;
 }
 div#boarding-popover-item
-  .boarding-popover-tip:not([class^="boarding-tipside-"]):not(
-    [class^="boarding-tipalign-"]
-  ):not([class*=" boarding-tipalign-"]):not([class*=" boarding-tipalign-"]) {
+  .boarding-popover-tip:not([class^="boarding-tipside-"]):not([class^="boarding-tipalign-"]):not(
+    [class*=" boarding-tipalign-"]
+  ):not([class*=" boarding-tipalign-"]) {
   display: none;
 }
 
@@ -76,23 +76,17 @@ div#boarding-popover-item .boarding-popover-tip.boarding-tipside-bottom {
   border-top-color: transparent;
   border-right-color: transparent;
 }
-div#boarding-popover-item
-  .boarding-popover-tip.boarding-tipside-top.boarding-tipalign-center,
-div#boarding-popover-item
-  .boarding-popover-tip.boarding-tipside-bottom.boarding-tipalign-center {
+div#boarding-popover-item .boarding-popover-tip.boarding-tipside-top.boarding-tipalign-center,
+div#boarding-popover-item .boarding-popover-tip.boarding-tipside-bottom.boarding-tipalign-center {
   left: 50%;
   margin-left: -5px;
 }
-div#boarding-popover-item
-  .boarding-popover-tip.boarding-tipside-top.boarding-tipalign-start,
-div#boarding-popover-item
-  .boarding-popover-tip.boarding-tipside-bottom.boarding-tipalign-start {
+div#boarding-popover-item .boarding-popover-tip.boarding-tipside-top.boarding-tipalign-start,
+div#boarding-popover-item .boarding-popover-tip.boarding-tipside-bottom.boarding-tipalign-start {
   left: var(--boarding-popover-padding);
 }
-div#boarding-popover-item
-  .boarding-popover-tip.boarding-tipside-top.boarding-tipalign-end,
-div#boarding-popover-item
-  .boarding-popover-tip.boarding-tipside-bottom.boarding-tipalign-end {
+div#boarding-popover-item .boarding-popover-tip.boarding-tipside-top.boarding-tipalign-end,
+div#boarding-popover-item .boarding-popover-tip.boarding-tipside-bottom.boarding-tipalign-end {
   right: var(--boarding-popover-padding);
 }
 
@@ -109,22 +103,16 @@ div#boarding-popover-item .boarding-popover-tip.boarding-tipside-right {
   border-bottom-color: transparent;
   border-top-color: transparent;
 }
-div#boarding-popover-item
-  .boarding-popover-tip.boarding-tipside-left.boarding-tipalign-center,
-div#boarding-popover-item
-  .boarding-popover-tip.boarding-tipside-right.boarding-tipalign-center {
+div#boarding-popover-item .boarding-popover-tip.boarding-tipside-left.boarding-tipalign-center,
+div#boarding-popover-item .boarding-popover-tip.boarding-tipside-right.boarding-tipalign-center {
   top: 50%;
   margin-top: -5px;
 }
-div#boarding-popover-item
-  .boarding-popover-tip.boarding-tipside-left.boarding-tipalign-start,
-div#boarding-popover-item
-  .boarding-popover-tip.boarding-tipside-right.boarding-tipalign-start {
+div#boarding-popover-item .boarding-popover-tip.boarding-tipside-left.boarding-tipalign-start,
+div#boarding-popover-item .boarding-popover-tip.boarding-tipside-right.boarding-tipalign-start {
   top: var(--boarding-popover-padding);
 }
-div#boarding-popover-item
-  .boarding-popover-tip.boarding-tipside-left.boarding-tipalign-end,
-div#boarding-popover-item
-  .boarding-popover-tip.boarding-tipside-right.boarding-tipalign-end {
+div#boarding-popover-item .boarding-popover-tip.boarding-tipside-left.boarding-tipalign-end,
+div#boarding-popover-item .boarding-popover-tip.boarding-tipside-right.boarding-tipalign-end {
   bottom: var(--boarding-popover-padding);
 }

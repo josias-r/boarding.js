@@ -94,7 +94,9 @@ test.describe("Popover Features & Customization", () => {
     await expect(popover.locator(".boarding-prev-btn")).toBeHidden();
   });
 
-  test("disableButtons disables specific buttons and prevents keyboard triggers", async ({ page }) => {
+  test("disableButtons disables specific buttons and prevents keyboard triggers", async ({
+    page,
+  }) => {
     await page.evaluate(() => {
       const boarding = new (window as any).Boarding();
       (window as any).activeBoarding = boarding;
@@ -150,7 +152,9 @@ test.describe("Popover Features & Customization", () => {
     await expect(badge).toHaveText("NEW FEATURE");
   });
 
-  test("links inside description execute default action without resetting tour", async ({ page }) => {
+  test("links inside description execute default action without resetting tour", async ({
+    page,
+  }) => {
     await page.evaluate(() => {
       window.location.hash = "";
       const boarding = new (window as any).Boarding();

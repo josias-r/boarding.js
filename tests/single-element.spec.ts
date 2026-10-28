@@ -57,7 +57,9 @@ test.describe("Single Element Highlighting", () => {
     const popover = page.locator("#boarding-popover-item");
     await expect(popover).toBeVisible();
     await expect(popover.locator(".boarding-popover-title")).toHaveText("Box 2 Title");
-    await expect(popover.locator(".boarding-popover-description")).toHaveText("Box 2 Description content");
+    await expect(popover.locator(".boarding-popover-description")).toHaveText(
+      "Box 2 Description content",
+    );
 
     // Single element highlight with popover should only have close button (no prev/next buttons)
     const prevBtn = popover.locator(".boarding-prev-btn");
@@ -192,7 +194,9 @@ test.describe("Single Element Highlighting", () => {
     expect(isActivated).toBe(true);
   });
 
-  test("pressing Escape closes when allowClose is true and ignores when allowClose is false", async ({ page }) => {
+  test("pressing Escape closes when allowClose is true and ignores when allowClose is false", async ({
+    page,
+  }) => {
     // 1. allowClose: false
     await page.evaluate(() => {
       const boarding = new (window as any).Boarding({ allowClose: false, keyboardControl: true });
@@ -215,7 +219,9 @@ test.describe("Single Element Highlighting", () => {
     await expect(page.locator("svg.boarding-coutout-svg")).toHaveCount(0);
   });
 
-  test("triggers lifecycle hooks: onBeforeHighlighted, onHighlighted, onDeselected, onReset", async ({ page }) => {
+  test("triggers lifecycle hooks: onBeforeHighlighted, onHighlighted, onDeselected, onReset", async ({
+    page,
+  }) => {
     await page.evaluate(() => {
       const log: string[] = [];
       (window as any).lifecycleLog = log;
@@ -268,11 +274,11 @@ test.describe("Single Element Highlighting", () => {
       boarding.highlight("#box-1");
     });
 
-    let currentId = await page.evaluate(() =>
-      (window as any).activeBoarding.getHighlightedElement()?.getElement()?.id
+    let currentId = await page.evaluate(
+      () => (window as any).activeBoarding.getHighlightedElement()?.getElement()?.id,
     );
-    let lastId = await page.evaluate(() =>
-      (window as any).activeBoarding.getLastHighlightedElement()?.getElement()?.id
+    let lastId = await page.evaluate(
+      () => (window as any).activeBoarding.getLastHighlightedElement()?.getElement()?.id,
     );
     expect(currentId).toBe("box-1");
     expect(lastId).toBeUndefined();
@@ -282,11 +288,11 @@ test.describe("Single Element Highlighting", () => {
       (window as any).activeBoarding.highlight("#box-2");
     });
 
-    currentId = await page.evaluate(() =>
-      (window as any).activeBoarding.getHighlightedElement()?.getElement()?.id
+    currentId = await page.evaluate(
+      () => (window as any).activeBoarding.getHighlightedElement()?.getElement()?.id,
     );
-    lastId = await page.evaluate(() =>
-      (window as any).activeBoarding.getLastHighlightedElement()?.getElement()?.id
+    lastId = await page.evaluate(
+      () => (window as any).activeBoarding.getLastHighlightedElement()?.getElement()?.id,
     );
     expect(currentId).toBe("box-2");
     expect(lastId).toBe("box-1");

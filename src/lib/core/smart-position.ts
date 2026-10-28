@@ -5,7 +5,7 @@ import Popover from "./popover";
 
 const sideHierarchy = ["top", "bottom", "left", "right"] as const;
 
-export type Sides = typeof sideHierarchy[number];
+export type Sides = (typeof sideHierarchy)[number];
 export type Alignments = "start" | "end" | "center";
 
 interface SideCheckResult {
@@ -28,7 +28,7 @@ class SmartPosition {
     highlightElement: HighlightElement,
     popover: Popover,
     padding: number,
-    offset: number
+    offset: number,
   ) {
     this.highlightElement = highlightElement;
     this.popover = popover;
@@ -43,12 +43,10 @@ class SmartPosition {
     const popoverWrapper = this.popover.getPopoverElements()?.popoverWrapper;
     assertVarIsNotFalsy(popoverWrapper);
 
-    popoverWrapper.style.left =
-      typeof position.left === "number" ? `${position.left}px` : "auto";
+    popoverWrapper.style.left = typeof position.left === "number" ? `${position.left}px` : "auto";
     popoverWrapper.style.right =
       typeof position.right === "number" ? `${position.right}px` : "auto";
-    popoverWrapper.style.top =
-      typeof position.top === "number" ? `${position.top}px` : "auto";
+    popoverWrapper.style.top = typeof position.top === "number" ? `${position.top}px` : "auto";
     popoverWrapper.style.bottom =
       typeof position.bottom === "number" ? `${position.bottom}px` : "auto";
   }
@@ -96,8 +94,7 @@ class SmartPosition {
         };
 
       case "bottom":
-        const bottom =
-          window.innerHeight - (elemRect.bottom + popoverDimensions.height);
+        const bottom = window.innerHeight - (elemRect.bottom + popoverDimensions.height);
 
         return {
           side: "bottom",
@@ -113,8 +110,7 @@ class SmartPosition {
           isOptimal: left >= 0,
         };
       case "right":
-        const right =
-          window.innerWidth - (elemRect.right + popoverDimensions.width);
+        const right = window.innerWidth - (elemRect.right + popoverDimensions.width);
 
         return {
           side: "right",
@@ -127,9 +123,7 @@ class SmartPosition {
   /**
    * Find the best side to place the popover at
    */
-  private findOptimalSide(
-    sideHierarchyIndex: number = 0
-  ): SideCheckResult | "none" {
+  private findOptimalSide(sideHierarchyIndex: number = 0): SideCheckResult | "none" {
     const currentPositionToCheck = sideHierarchy[sideHierarchyIndex];
     const result = this.checkIfSideOptimal(currentPositionToCheck);
     if (!result.isOptimal) {
@@ -159,28 +153,25 @@ class SmartPosition {
     pos: number, // element top or left
     end: number, // window height or width
     elementLength: number, // popover height or width
-    extraPadding: number
+    extraPadding: number,
   ) {
     switch (alignment) {
       case "start":
         return Math.max(
           Math.min(pos - this.padding, end - popoverLength - extraPadding),
-          extraPadding
+          extraPadding,
         );
       case "end":
         return Math.max(
           Math.min(
             pos - popoverLength + elementLength + this.padding,
-            end - popoverLength - extraPadding
+            end - popoverLength - extraPadding,
           ),
-          extraPadding
+          extraPadding,
         );
       case "center":
         const posCentered = pos - popoverLength / 2 + elementLength / 2;
-        return Math.min(
-          Math.max(extraPadding, posCentered),
-          end - extraPadding - popoverLength
-        );
+        return Math.min(Math.max(extraPadding, posCentered), end - extraPadding - popoverLength);
     }
   }
 
@@ -189,7 +180,7 @@ class SmartPosition {
    */
   private findOptimalPosition(
     alignment: Alignments,
-    preferredSide?: Sides
+    preferredSide?: Sides,
   ): {
     top?: number;
     bottom?: number;
@@ -218,9 +209,7 @@ class SmartPosition {
       this.clearPopoverTipPosition();
 
       return {
-        left:
-          window.innerWidth / 2 -
-          (popoverDimensions.width - this.finalOffset) / 2,
+        left: window.innerWidth / 2 - (popoverDimensions.width - this.finalOffset) / 2,
         bottom: 10,
       };
     } else {
@@ -235,7 +224,7 @@ class SmartPosition {
         case "top":
           position.top = Math.min(
             foundSideResult.value,
-            window.innerHeight - popoverRealHeight - popoverDimensions.tipSize
+            window.innerHeight - popoverRealHeight - popoverDimensions.tipSize,
           );
           position.left = this.normalizeAlignment(
             alignment,
@@ -243,19 +232,19 @@ class SmartPosition {
             elemRect.left,
             window.innerWidth,
             elemRect.width,
-            popoverDimensions.tipSize
+            popoverDimensions.tipSize,
           );
           this.setPopoverTipPosition(
             alignment,
             foundSideResult.side,
             elemRect.left,
-            elemRect.width
+            elemRect.width,
           );
           break;
         case "bottom":
           position.bottom = Math.min(
             foundSideResult.value,
-            window.innerHeight - popoverRealHeight - popoverDimensions.tipSize
+            window.innerHeight - popoverRealHeight - popoverDimensions.tipSize,
           );
           position.left = this.normalizeAlignment(
             alignment,
@@ -263,19 +252,19 @@ class SmartPosition {
             elemRect.left,
             window.innerWidth,
             elemRect.width,
-            popoverDimensions.tipSize
+            popoverDimensions.tipSize,
           );
           this.setPopoverTipPosition(
             alignment,
             foundSideResult.side,
             elemRect.left,
-            elemRect.width
+            elemRect.width,
           );
           break;
         case "left":
           position.left = Math.min(
             foundSideResult.value,
-            window.innerWidth - popoverRealWidth - popoverDimensions.tipSize
+            window.innerWidth - popoverRealWidth - popoverDimensions.tipSize,
           );
           position.top = this.normalizeAlignment(
             alignment,
@@ -283,19 +272,19 @@ class SmartPosition {
             elemRect.top,
             window.innerHeight,
             elemRect.height,
-            popoverDimensions.tipSize
+            popoverDimensions.tipSize,
           );
           this.setPopoverTipPosition(
             alignment,
             foundSideResult.side,
             elemRect.top,
-            elemRect.height
+            elemRect.height,
           );
           break;
         case "right":
           position.right = Math.min(
             foundSideResult.value,
-            window.innerWidth - popoverRealWidth - popoverDimensions.tipSize
+            window.innerWidth - popoverRealWidth - popoverDimensions.tipSize,
           );
           position.top = this.normalizeAlignment(
             alignment,
@@ -303,13 +292,13 @@ class SmartPosition {
             elemRect.top,
             window.innerHeight,
             elemRect.height,
-            popoverDimensions.tipSize
+            popoverDimensions.tipSize,
           );
           this.setPopoverTipPosition(
             alignment,
             foundSideResult.side,
             elemRect.top,
-            elemRect.height
+            elemRect.height,
           );
           break;
       }
@@ -335,7 +324,7 @@ class SmartPosition {
     /** When right/left = element.top, when top/bottom = element.left */
     elementPosSecondaryAxis: number,
     /** When right/left = element.height, when top/bottom = element.width */
-    elementLength: number
+    elementLength: number,
   ) {
     const popoverElem = this.popover.getPopoverElements()?.popoverWrapper;
     const popoverTipElem = this.popover.getPopoverElements()?.popoverTip;
@@ -355,10 +344,7 @@ class SmartPosition {
           tipAlignment = "end";
         }
         //
-        else if (
-          elementPosSecondaryAxis + elementLength - popOverDimensions.width <=
-          0
-        ) {
+        else if (elementPosSecondaryAxis + elementLength - popOverDimensions.width <= 0) {
           tipAlignment = "start";
         }
         if (elementPosSecondaryAxis >= window.innerWidth) {
@@ -366,10 +352,7 @@ class SmartPosition {
           tipAlignment = "end";
         }
         //
-        else if (
-          elementPosSecondaryAxis + popOverDimensions.width >=
-          window.innerWidth
-        ) {
+        else if (elementPosSecondaryAxis + popOverDimensions.width >= window.innerWidth) {
           tipAlignment = "end";
         }
         break;
@@ -379,10 +362,7 @@ class SmartPosition {
           tipAlignment = "start";
         }
         //
-        else if (
-          elementPosSecondaryAxis + elementLength - popOverDimensions.width <=
-          0
-        ) {
+        else if (elementPosSecondaryAxis + elementLength - popOverDimensions.width <= 0) {
           tipAlignment = "start";
         }
         if (elementPosSecondaryAxis >= window.innerWidth) {
@@ -390,10 +370,7 @@ class SmartPosition {
           tipAlignment = "start";
         }
         //
-        else if (
-          elementPosSecondaryAxis + popOverDimensions.width >=
-          window.innerWidth
-        ) {
+        else if (elementPosSecondaryAxis + popOverDimensions.width >= window.innerWidth) {
           tipAlignment = "end";
         }
         break;
@@ -403,10 +380,7 @@ class SmartPosition {
           tipAlignment = "end";
         }
         //
-        else if (
-          elementPosSecondaryAxis + elementLength - popOverDimensions.height <=
-          0
-        ) {
+        else if (elementPosSecondaryAxis + elementLength - popOverDimensions.height <= 0) {
           tipAlignment = "start";
         }
 
@@ -415,10 +389,7 @@ class SmartPosition {
           tipAlignment = "end";
         }
         //
-        else if (
-          elementPosSecondaryAxis + popOverDimensions.height >=
-          window.innerHeight
-        ) {
+        else if (elementPosSecondaryAxis + popOverDimensions.height >= window.innerHeight) {
           tipAlignment = "end";
         }
         break;
@@ -428,10 +399,7 @@ class SmartPosition {
           tipAlignment = "start";
         }
         //
-        else if (
-          elementPosSecondaryAxis + elementLength - popOverDimensions.height <=
-          0
-        ) {
+        else if (elementPosSecondaryAxis + elementLength - popOverDimensions.height <= 0) {
           tipAlignment = "start";
         }
         if (elementPosSecondaryAxis >= window.innerHeight) {
@@ -439,10 +407,7 @@ class SmartPosition {
           tipAlignment = "start";
         }
         //
-        else if (
-          elementPosSecondaryAxis + popOverDimensions.height >=
-          window.innerHeight
-        ) {
+        else if (elementPosSecondaryAxis + popOverDimensions.height >= window.innerHeight) {
           tipAlignment = "end";
         }
         break;
@@ -452,7 +417,7 @@ class SmartPosition {
 
     popoverTipElem.classList.add(
       `boarding-tipside-${tipSide}`,
-      `boarding-tipalign-${tipAlignment}`
+      `boarding-tipalign-${tipAlignment}`,
     );
   }
 }
