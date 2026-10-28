@@ -48,18 +48,19 @@ Boarding.js is written in Vanilla JS (with TypeScript), has zero dependencies an
 
 ## Installation
 
-You can install it using `yarn` or `npm`, whatever you prefer.
+You can install it using `pnpm`, `npm`, or `yarn`.
 
 ```bash
-yarn add boarding.js
+pnpm add boarding.js
 npm install boarding.js
+yarn add boarding.js
 ```
 
-Or import directly from a CDN. If you want a specific version, put it as `boarding.js@3.5.2` in the name
+Or import directly via ESM from a CDN. If you want a specific version, put it as `boarding.js@3.5.2` in the name
 
 ```html
 <script type="module">
-  import { Boarding } from "https://unpkg.com/boarding.js/dist/main.js";
+  import { Boarding } from "https://unpkg.com/boarding.js/dist/main.mjs";
 </script>
 <link rel="stylesheet" href="https://unpkg.com/boarding.js/styles/main.css" />
 <!-- optionally include the base theme -->

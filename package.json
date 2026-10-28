@@ -3,11 +3,12 @@
   "private": false,
   "version": "0.0.0-development",
   "type": "module",
-  "main": "dist/main.js",
+  "main": "dist/main.mjs",
+  "types": "dist/main.d.mts",
   "exports": {
     ".": {
-      "import": "./dist/main.js",
-      "require": "./dist/main.umd.cjs"
+      "types": "./dist/main.d.mts",
+      "import": "./dist/main.mjs"
     },
     "./styles/main.css": "./styles/main.css",
     "./styles/themes/basic.css": "./styles/themes/basic.css"
@@ -26,30 +27,32 @@
     "focus-shifters"
   ],
   "files": [
-    "dist/**",
-    "!**/.DS_Store",
-    "!dist/favicons/**",
-    "!dist/images/**",
-    "styles/**"
+    "dist",
+    "styles"
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build --config lib-build.vite.config.js && tsc src/lib/main.ts --declaration --emitDeclarationOnly --esModuleInterop --outDir dist",
-    "build:gh-page": "tsc && vite build --base=/boarding.js",
+    "build": "tsdown",
+    "build:gh-page": "vite build",
     "preview": "vite preview",
+    "test": "playwright test",
+    "lint": "oxlint src tests",
+    "typecheck": "tsc --noEmit",
     "semantic-release": "semantic-release"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "typescript": "~5.9.3",
-    "vite": "npm:rolldown-vite@7.2.5"
-  },
-  "overrides": {
-    "vite": "npm:rolldown-vite@7.2.5"
+    "@playwright/test": "^1.64.1",
+    "@semantic-release/changelog": "^7.0.0",
+    "@semantic-release/git": "^11.0.1",
+    "oxlint": "^1.90.0",
+    "semantic-release": "^25.0.9",
+    "tsdown": "^0.23.2",
+    "typescript": "5.9.3",
+    "vite": "8.3.5"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/josias-r/boarding.js.git"
-  }
+  },
+  "packageManager": "pnpm@12.15.0+sha512.b3951d6d6ff4a9f13dc7cf56cd28d2b8eb37dbcc9c68e52e1e1191873ea9f82a017287ab50baadc5ccc494f036c67c0e47eb13608c2fa36f47711b61ea128e61"
 }
