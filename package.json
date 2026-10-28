@@ -1,55 +1,54 @@
 {
   "name": "boarding.js",
+  "version": "3.7.3",
   "private": false,
-  "version": "0.0.0-development",
+  "keywords": [
+    "feature-introductions",
+    "focus-shifters",
+    "intro",
+    "onboarding",
+    "overlay",
+    "overlays",
+    "popover",
+    "spotlight",
+    "tour",
+    "user-onboarding",
+    "walkthrough"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/josias-r/boarding.js.git"
+  },
+  "files": [
+    "dist",
+    "styles"
+  ],
   "type": "module",
-  "main": "dist/main.js",
+  "main": "dist/main.mjs",
+  "types": "dist/main.d.mts",
   "exports": {
     ".": {
-      "import": "./dist/main.js",
-      "require": "./dist/main.umd.cjs"
+      "types": "./dist/main.d.mts",
+      "import": "./dist/main.mjs"
     },
     "./styles/main.css": "./styles/main.css",
     "./styles/themes/basic.css": "./styles/themes/basic.css"
   },
-  "keywords": [
-    "tour",
-    "intro",
-    "onboarding",
-    "walkthrough",
-    "spotlight",
-    "popover",
-    "overlay",
-    "overlays",
-    "user-onboarding",
-    "feature-introductions",
-    "focus-shifters"
-  ],
-  "files": [
-    "dist/**",
-    "!**/.DS_Store",
-    "!dist/favicons/**",
-    "!dist/images/**",
-    "styles/**"
-  ],
   "scripts": {
-    "dev": "vite",
-    "build": "vite build --config lib-build.vite.config.js && tsc src/lib/main.ts --declaration --emitDeclarationOnly --esModuleInterop --outDir dist",
-    "build:gh-page": "tsc && vite build --base=/boarding.js",
-    "preview": "vite preview",
-    "semantic-release": "semantic-release"
+    "dev": "node scripts/serve.js",
+    "build": "tsdown",
+    "test": "playwright test",
+    "lint": "oxlint src tests",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check .",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "typescript": "~5.9.3",
-    "vite": "npm:rolldown-vite@7.2.5"
+    "@playwright/test": "^1.64.1",
+    "oxfmt": "^0.75.0",
+    "oxlint": "^1.90.0",
+    "tsdown": "0.23.3",
+    "typescript": "7.0.2"
   },
-  "overrides": {
-    "vite": "npm:rolldown-vite@7.2.5"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/josias-r/boarding.js.git"
-  }
+  "packageManager": "pnpm@12.15.0+sha512.b3951d6d6ff4a9f13dc7cf56cd28d2b8eb37dbcc9c68e52e1e1191873ea9f82a017287ab50baadc5ccc494f036c67c0e47eb13608c2fa36f47711b61ea128e61"
 }

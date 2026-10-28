@@ -110,7 +110,8 @@ export interface PopoverHybridOptions {
 }
 
 interface PopoverOptions
-  extends PopoverHybridOptions,
+  extends
+    PopoverHybridOptions,
     PopoverStepLevelOptions,
     PopoverTopLevelOptions,
     PopoverSupportedSharedOptions {
@@ -150,16 +151,7 @@ interface PopoverOptions
  */
 export default class Popover {
   private options; // type will get inferred with default values being required
-  private popover?: {
-    popoverWrapper: HTMLDivElement;
-    popoverTip: HTMLDivElement;
-    popoverTitle: HTMLDivElement;
-    popoverDescription: HTMLDivElement;
-    popoverFooter: HTMLDivElement;
-    popoverPrevBtn: HTMLButtonElement;
-    popoverNextBtn: HTMLButtonElement;
-    popoverCloseBtn: HTMLButtonElement;
-  };
+  private popover?: PopoverElements;
   private highlightElement?: HighlightElement;
 
   constructor({
@@ -202,9 +194,7 @@ export default class Popover {
     }
 
     // unmount node
-    this.popover.popoverWrapper.parentElement?.removeChild(
-      this.popover.popoverWrapper
-    );
+    this.popover.popoverWrapper.parentElement?.removeChild(this.popover.popoverWrapper);
   }
 
   /**
@@ -224,13 +214,12 @@ export default class Popover {
 
     this.renderFooter();
 
+    this.options.onPopoverRender?.(this.popover);
+
     this.setPosition();
 
     if (this.options.scrollIntoViewOptions !== "no-scroll") {
-      bringInView(
-        this.popover.popoverWrapper,
-        this.options.scrollIntoViewOptions
-      );
+      bringInView(this.popover.popoverWrapper, this.options.scrollIntoViewOptions);
     }
   }
 
@@ -293,7 +282,7 @@ export default class Popover {
       this.highlightElement,
       this,
       checkOptionalValue(this.options.padding, customPadding),
-      this.options.offset
+      this.options.offset,
     ).setBestPosition(this.options.alignment, preferredSide);
   }
 
@@ -302,26 +291,15 @@ export default class Popover {
    */
   private attachNode() {
     if (this.popover) {
-      this.popover.popoverWrapper.parentElement?.removeChild(
-        this.popover.popoverWrapper
-      );
+      this.popover.popoverWrapper.parentElement?.removeChild(this.popover.popoverWrapper);
     }
 
     const popoverElement = POPOVER_ELEMENT(this.options.className);
-    const {
-      popoverWrapper,
-      popoverTip,
-      popoverTitle,
-      popoverDescription,
-      popoverFooter,
-      popoverPrevBtn,
-      popoverNextBtn,
-      popoverCloseBtn,
-    } = popoverElement;
+    const { popoverWrapper, popoverDescription, popoverPrevBtn, popoverNextBtn, popoverCloseBtn } =
+      popoverElement;
     if (this.options.animate) {
       popoverWrapper.classList.add(`${ID_POPOVER}-animated`);
     }
-    this.options.onPopoverRender?.(popoverElement);
     document.body.appendChild(popoverWrapper);
 
     // add btn eventlisteners (using util method, to ensure no external libraries will ever "hear" the click)
@@ -346,19 +324,10 @@ export default class Popover {
           return false;
         }
         return true;
-      }
+      },
     );
 
-    this.popover = {
-      popoverWrapper,
-      popoverTip,
-      popoverTitle,
-      popoverDescription,
-      popoverFooter,
-      popoverPrevBtn,
-      popoverNextBtn,
-      popoverCloseBtn,
-    };
+    this.popover = popoverElement;
   }
 
   /**
@@ -426,7 +395,7 @@ export default class Popover {
 
     if (this.options.isLast) {
       this.popover.popoverNextBtn.innerHTML = this.options.doneBtnText;
-    } else {
+    } else if (!this.options.isFirst) {
       this.popover.popoverNextBtn.innerHTML = this.options.nextBtnText;
     }
   }

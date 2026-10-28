@@ -1,14 +1,9 @@
-import "../styles/main.css";
-import "../styles/themes/basic.css";
-import type { BoardingStepDefinition } from "./lib/boarding-types";
-import { Boarding } from "./lib/main";
-
-import "./styles/demo.css";
+import { Boarding } from "../dist/main.mjs";
 
 document.addEventListener("DOMContentLoaded", function () {
-  const tourSteps: BoardingStepDefinition[] = [
+  const tourSteps = [
     {
-      element: document.getElementById("boarding-demo-head") as HTMLElement,
+      element: document.getElementById("boarding-demo-head"),
       popover: {
         className: "scoped-boarding-popover",
         title: "Before we start",
@@ -108,8 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
       element: "#examples_section",
       popover: {
         title: "Usage Examples",
-        description:
-          "Have a look at the usage examples and see how you can use it.",
+        description: "Have a look at the usage examples and see how you can use it.",
       },
     },
     {
@@ -160,23 +154,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // First example – highlighting without popover
   /////////////////////////////////////////////
   const singleBoardingNoPopover = new Boarding();
-  document
-    .querySelector("#run-single-element-no-popover")
-    ?.addEventListener("click", (e) => {
-      e.preventDefault();
-      singleBoardingNoPopover.highlight("#single-element-no-popover");
-    });
+  document.querySelector("#run-single-element-no-popover")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    singleBoardingNoPopover.highlight("#single-element-no-popover");
+  });
 
   /////////////////////////////////////////////
   // Form focus examples
   /////////////////////////////////////////////
   const focusBoarding = new Boarding({ padding: 0 });
-  const inputIds = [
-    "creation-input",
-    "creation-input-2",
-    "creation-input-3",
-    "creation-input-4",
-  ];
+  const inputIds = ["creation-input", "creation-input-2", "creation-input-3", "creation-input-4"];
   inputIds.forEach((inputId) => {
     // Highlight the section on focus
     document.getElementById(inputId)?.addEventListener("focus", () => {
@@ -188,20 +175,18 @@ document.addEventListener("DOMContentLoaded", function () {
   // Highlighting single element with popover
   /////////////////////////////////////////////
   const singleBoardingWithPopover = new Boarding();
-  document
-    .querySelector("#run-single-element-with-popover")
-    ?.addEventListener("click", (e) => {
-      e.preventDefault();
-      singleBoardingWithPopover.highlight({
-        element: "#single-element-with-popover",
-        popover: {
-          showButtons: false,
-          title: "Did you know?",
-          description: "You can add HTML in title or description also!",
-          preferredSide: "top",
-        },
-      });
+  document.querySelector("#run-single-element-with-popover")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    singleBoardingWithPopover.highlight({
+      element: "#single-element-with-popover",
+      popover: {
+        showButtons: false,
+        title: "Did you know?",
+        description: "You can add HTML in title or description also!",
+        preferredSide: "top",
+      },
     });
+  });
 
   /////////////////////////////////////////////////////
   // Highlighting single element with popover position
@@ -233,9 +218,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelector("#position-btns")?.addEventListener("click", (e) => {
     e.preventDefault();
 
-    let id = (e.target as HTMLElement).id;
-    let alignment = (e.target as HTMLElement).dataset.alignment;
-    let preferredSide = (e.target as HTMLElement).dataset.preferredside;
+    let id = e.target.id;
+    let alignment = e.target.dataset.alignment;
+    let preferredSide = e.target.dataset.preferredside;
 
     positionBtnsBoarding.highlight({
       element: id
@@ -245,8 +230,8 @@ document.addEventListener("DOMContentLoaded", function () {
         showButtons: false,
         title: "Did you know?",
         description: "You can add HTML in title or description also!",
-        alignment: alignment as any,
-        preferredSide: preferredSide as any,
+        alignment: alignment,
+        preferredSide: preferredSide,
       },
     });
   });
@@ -280,33 +265,28 @@ document.addEventListener("DOMContentLoaded", function () {
     padding: 0,
   });
 
-  document
-    .querySelector("#run-element-without-popover")
-    ?.addEventListener("click", (e) => {
-      e.preventDefault();
+  document.querySelector("#run-element-without-popover")?.addEventListener("click", (e) => {
+    e.preventDefault();
 
-      withoutOverlay.highlight({
-        element: "#run-element-without-popover",
-        popover: {
-          title: "Title for the Popover",
-          description: "Description for it",
-          preferredSide: "top", // can be `top`, `left`, `right`, `bottom`
-        },
-      });
+    withoutOverlay.highlight({
+      element: "#run-element-without-popover",
+      popover: {
+        title: "Title for the Popover",
+        description: "Description for it",
+        preferredSide: "top",
+      },
     });
+  });
 
   /////////////////////////////////////////////////////
   // Without Current Step Counter Example
   /////////////////////////////////////////////////////
   const withStepCounter = new Boarding({
     onPopoverRender: (popoverElements) => {
-      // setTimeout, so we the count runs immediatly after all internal boarding logic has run. Otherwise we would get an outdated boarding.currentStep number
       setTimeout(() => {
         popoverElements.popoverTitle.innerText = `${
           popoverElements.popoverTitle.innerText
-        } (${withStepCounter.currentStep + 1}/${
-          withStepCounter.getSteps().length
-        })`;
+        } (${withStepCounter.currentStep + 1}/${withStepCounter.getSteps().length})`;
       }, 0);
     },
   });
@@ -327,13 +307,11 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   ]);
 
-  document
-    .querySelector("#run-element-with-step-counter")
-    ?.addEventListener("click", (e) => {
-      e.preventDefault();
+  document.querySelector("#run-element-with-step-counter")?.addEventListener("click", (e) => {
+    e.preventDefault();
 
-      withStepCounter.start();
-    });
+    withStepCounter.start();
+  });
 
   /////////////////////////////////////////////
   // Single no close demo
@@ -361,12 +339,10 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   ]);
 
-  document
-    .querySelector("#run-single-element-no-close")
-    ?.addEventListener("click", function (e) {
-      e.preventDefault();
-      singleNoClose.start();
-    });
+  document.querySelector("#run-single-element-no-close")?.addEventListener("click", function (e) {
+    e.preventDefault();
+    singleNoClose.start();
+  });
 
   /////////////////////////////////////////////////////
   // Highlighting single element with popover position
@@ -416,17 +392,14 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   ]);
 
-  document
-    .querySelector("#run-multi-element-popovers")
-    ?.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      featureIntroductionBoarding.start();
-    });
+  document.querySelector("#run-multi-element-popovers")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    featureIntroductionBoarding.start();
+  });
 
   const newURL = location.href.split("?")[0];
   if (newURL !== location.href) {
-    (window.location as any) = newURL;
     window.location.href = newURL;
   }
 });

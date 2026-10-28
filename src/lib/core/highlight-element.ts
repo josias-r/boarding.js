@@ -1,19 +1,15 @@
 import type { BoardingSharedOptions } from "../boarding-types";
-import {
-  CLASS_ACTIVE_HIGHLIGHTED_ELEMENT,
-  CLASS_POPOVER_NO_ELEMENT,
-} from "../common/constants";
+import { CLASS_ACTIVE_HIGHLIGHTED_ELEMENT, CLASS_POPOVER_NO_ELEMENT } from "../common/constants";
 import { bringInView } from "../common/utils";
 import Popover from "./popover";
 
 /** The options of popover that will come from the top-level but can also be overwritten */
-export interface HighlightElementHybridOptions
-  extends Partial<
-    Pick<
-      BoardingSharedOptions,
-      "padding" | "radius" | "strictClickHandling" | "scrollIntoViewOptions"
-    >
-  > {
+export interface HighlightElementHybridOptions extends Partial<
+  Pick<
+    BoardingSharedOptions,
+    "padding" | "radius" | "strictClickHandling" | "scrollIntoViewOptions"
+  >
+> {
   /**
    * Callback to be called when element is about to be highlighted
    */

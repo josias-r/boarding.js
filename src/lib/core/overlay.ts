@@ -6,18 +6,11 @@ import {
   checkOptionalValue,
   easeInOutQuad,
 } from "../common/utils";
-import {
-  createSvgCutout,
-  type CutoutDefinition,
-  generateSvgCutoutPathString,
-} from "./cutout";
+import { createSvgCutout, type CutoutDefinition, generateSvgCutoutPathString } from "./cutout";
 import HighlightElement from "./highlight-element";
 
 /** The top-level options that are shared between multiple classes that overlay supports */
-type OverlaySupportedSharedOptions = Pick<
-  BoardingSharedOptions,
-  "animate" | "padding" | "radius"
->;
+type OverlaySupportedSharedOptions = Pick<BoardingSharedOptions, "animate" | "padding" | "radius">;
 
 /** Identifier for different exist reasons that causing onReset, such as cancel or finish */
 export type BoardingExitReason = "cancel" | "finish";
@@ -30,7 +23,7 @@ export interface OverlayTopLevelOptions {
   onReset?: (
     element: HighlightElement,
     /** What caused the reset? Did the user cancel, finish .. */
-    exitReason: BoardingExitReason
+    exitReason: BoardingExitReason,
   ) => void;
   /**
    * Opacity for the overlay
@@ -44,19 +37,14 @@ export interface OverlayTopLevelOptions {
   overlayColor?: string;
 }
 
-interface OverlayOptions
-  extends OverlaySupportedSharedOptions,
-    OverlayTopLevelOptions {
+interface OverlayOptions extends OverlaySupportedSharedOptions, OverlayTopLevelOptions {
   /**
    * Click handler attached to overlay element
    */
   onOverlayClick: () => void;
 }
 
-type AnimatableCutoutDefinition = Pick<
-  CutoutDefinition,
-  "padding" | "hightlightBox" | "radius"
->;
+type AnimatableCutoutDefinition = Pick<CutoutDefinition, "padding" | "hightlightBox" | "radius">;
 
 /**
  * Responsible for overlay creation and manipulation i.e.
@@ -75,12 +63,8 @@ class Overlay {
   constructor(options: OverlayOptions) {
     this.options = {
       ...options,
-      opacity:
-        options.opacity === undefined ? OVERLAY_OPACITY : options.opacity,
-      overlayColor:
-        options.overlayColor === undefined
-          ? OVERLAY_FILL_COLOR
-          : options.overlayColor,
+      opacity: options.opacity === undefined ? OVERLAY_OPACITY : options.opacity,
+      overlayColor: options.overlayColor === undefined ? OVERLAY_FILL_COLOR : options.overlayColor,
       // padding: Padding default will come from outside, as it affects more then just the overlay
     };
   }
@@ -118,10 +102,7 @@ class Overlay {
     }
 
     // transition to new element + start tracking element on screen
-    this.startElementTracking(
-      this.currentHighlightedElement || element,
-      element
-    );
+    this.startElementTracking(this.currentHighlightedElement || element, element);
 
     this.previouslyHighlightedElement = this.currentHighlightedElement;
     this.currentHighlightedElement = element;
@@ -169,10 +150,7 @@ class Overlay {
   /**
    * Initialize requestAnimationFrame tracking of active element
    */
-  private startElementTracking(
-    fromElement: HighlightElement,
-    toElement: HighlightElement
-  ) {
+  private startElementTracking(fromElement: HighlightElement, toElement: HighlightElement) {
     const duration = 400;
     const start = Date.now();
 
@@ -182,12 +160,7 @@ class Overlay {
       if (this.currentTransitionInProgress === animateOverlay) {
         // transition
         if (this.options.animate && ellapsed < duration) {
-          this.transitionCutoutToPosition(
-            ellapsed,
-            duration,
-            fromElement,
-            toElement
-          );
+          this.transitionCutoutToPosition(ellapsed, duration, fromElement, toElement);
         } else {
           // once transition is finished, just track the element on the screen
           this.trackElementOnScreen();
@@ -209,10 +182,9 @@ class Overlay {
     ellapsed: number,
     duration: number,
     fromElement: HighlightElement,
-    toElement: HighlightElement
+    toElement: HighlightElement,
   ) {
-    const fromDefinition: AnimatableCutoutDefinition = this
-      .activeSvgCutoutDefinition
+    const fromDefinition: AnimatableCutoutDefinition = this.activeSvgCutoutDefinition
       ? {
           ...this.activeSvgCutoutDefinition,
           hightlightBox: { ...this.activeSvgCutoutDefinition.hightlightBox }, // deep copy in case it was mutated
@@ -224,59 +196,37 @@ class Overlay {
         };
 
     const toRect = toElement.getDOMRect();
-    const toPadding = checkOptionalValue(
-      this.options.padding,
-      toElement.getCustomPadding()
-    );
-    const toRadius = checkOptionalValue(
-      this.options.radius,
-      toElement.getCustomRadius()
-    );
-    const fromPadding = checkOptionalValue(
-      this.options.padding,
-      fromDefinition.padding
-    );
-    const fromRadius = checkOptionalValue(
-      this.options.radius,
-      fromDefinition.radius
-    );
+    const toPadding = checkOptionalValue(this.options.padding, toElement.getCustomPadding());
+    const toRadius = checkOptionalValue(this.options.radius, toElement.getCustomRadius());
+    const fromPadding = checkOptionalValue(this.options.padding, fromDefinition.padding);
+    const fromRadius = checkOptionalValue(this.options.radius, fromDefinition.radius);
 
     const x = easeInOutQuad(
       ellapsed,
       fromDefinition.hightlightBox.x,
       toRect.x - fromDefinition.hightlightBox.x,
-      duration
+      duration,
     );
     const y = easeInOutQuad(
       ellapsed,
       fromDefinition.hightlightBox.y,
       toRect.y - fromDefinition.hightlightBox.y,
-      duration
+      duration,
     );
     const width = easeInOutQuad(
       ellapsed,
       fromDefinition.hightlightBox.width,
       toRect.width - fromDefinition.hightlightBox.width,
-      duration
+      duration,
     );
     const height = easeInOutQuad(
       ellapsed,
       fromDefinition.hightlightBox.height,
       toRect.height - fromDefinition.hightlightBox.height,
-      duration
+      duration,
     );
-    const padding = easeInOutQuad(
-      ellapsed,
-      fromPadding,
-      toPadding - fromPadding,
-      duration
-    );
-    const radius = easeInOutQuad(
-      ellapsed,
-      fromRadius,
-      toRadius - fromRadius,
-      duration
-    );
+    const padding = easeInOutQuad(ellapsed, fromPadding, toPadding - fromPadding, duration);
+    const radius = easeInOutQuad(ellapsed, fromRadius, toRadius - fromRadius, duration);
 
     const newCutoutPosition: AnimatableCutoutDefinition = {
       hightlightBox: { x: x, y: y, width: width, height: height },
@@ -312,11 +262,11 @@ class Overlay {
           },
           padding: checkOptionalValue(
             this.options.padding,
-            this.currentHighlightedElement.getCustomPadding()
+            this.currentHighlightedElement.getCustomPadding(),
           ),
           radius: checkOptionalValue(
             this.options.radius,
-            this.currentHighlightedElement.getCustomRadius()
+            this.currentHighlightedElement.getCustomRadius(),
           ),
         };
         // update cutout
@@ -368,11 +318,13 @@ class Overlay {
 
   private unmountCutoutElement() {
     if (!this.cutoutSVGElement) {
-      throw new Error("No SVG found to unmount");
+      return;
     }
 
     // rm from body
-    document.body.removeChild(this.cutoutSVGElement);
+    if (this.cutoutSVGElement.parentElement) {
+      this.cutoutSVGElement.parentElement.removeChild(this.cutoutSVGElement);
+    }
     // rm from memory
     this.cutoutSVGElement = undefined;
   }
@@ -395,14 +347,10 @@ class Overlay {
       this.mountCutoutElement(cutoutBoxSettings);
     } else {
       // otherwise update existing SVG path
-      const pathElement = this.cutoutSVGElement
-        .firstElementChild as SVGPathElement | null;
+      const pathElement = this.cutoutSVGElement.firstElementChild as SVGPathElement | null;
 
       if (pathElement?.tagName === "path") {
-        pathElement.setAttribute(
-          "d",
-          generateSvgCutoutPathString(cutoutBoxSettings)
-        );
+        pathElement.setAttribute("d", generateSvgCutoutPathString(cutoutBoxSettings));
       } else {
         throw new Error("No existing path found on SVG but we want one :(");
       }

@@ -48,25 +48,23 @@ Boarding.js is written in Vanilla JS (with TypeScript), has zero dependencies an
 
 ## Installation
 
-You can install it using `yarn` or `npm`, whatever you prefer.
+You can install it using `pnpm`, `npm`, or `yarn`.
 
 ```bash
-yarn add boarding.js
+pnpm add boarding.js
 npm install boarding.js
+yarn add boarding.js
 ```
 
-Or import directly from a CDN. If you want a specific version, put it as `boarding.js@3.5.2` in the name
+Or import directly via ESM from a CDN. If you want a specific version, put it as `boarding.js@3.5.2` in the name
 
 ```html
 <script type="module">
-  import { Boarding } from "https://unpkg.com/boarding.js/dist/main.js";
+  import { Boarding } from "https://unpkg.com/boarding.js/dist/main.mjs";
 </script>
 <link rel="stylesheet" href="https://unpkg.com/boarding.js/styles/main.css" />
 <!-- optionally include the base theme -->
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/boarding.js/styles/themes/basic.css"
-/>
+<link rel="stylesheet" href="https://unpkg.com/boarding.js/styles/themes/basic.css" />
 ```
 
 ![](./public/images/split.png)
@@ -329,12 +327,7 @@ And this is how it would look when creating a step-by-step guide:
 
 ```javascript
 const boarding = new Boarding(boardingOptions);
-boarding.defineSteps([
-  stepDefinition1,
-  stepDefinition2,
-  stepDefinition3,
-  stepDefinition4,
-]);
+boarding.defineSteps([stepDefinition1, stepDefinition2, stepDefinition3, stepDefinition4]);
 ```
 
 ### API Methods

@@ -2,7 +2,7 @@ export function easeInOutQuad(
   elapsed: number,
   initialValue: number,
   amountOfChange: number,
-  duration: number
+  duration: number,
 ): number {
   if ((elapsed /= duration / 2) < 1) {
     return (amountOfChange / 2) * elapsed * elapsed + initialValue;
@@ -23,11 +23,11 @@ export function easeInOutQuad(
 export function attachHighPrioClick(
   element: HTMLElement | SVGElement,
   handler: (e: MouseEvent | PointerEvent) => void,
-  preventDefaultConditon?: (target: HTMLElement) => boolean | undefined | void
+  preventDefaultConditon?: (target: HTMLElement) => boolean | undefined | void,
 ) {
   const listener = (
     e: MouseEvent | PointerEvent,
-    finalHandler?: (e: MouseEvent | PointerEvent) => void
+    finalHandler?: (e: MouseEvent | PointerEvent) => void,
   ) => {
     const target = e.target as HTMLElement;
     if (element.contains(target)) {
@@ -54,7 +54,7 @@ export function attachHighPrioClick(
     (e) => {
       listener(e, handler);
     },
-    useCapture
+    useCapture,
   );
 }
 
@@ -66,17 +66,13 @@ export type PartialExcept<T, K extends keyof T> = Pick<T, K> & Partial<T>;
 /**
  * Mark only a few items partial in TS
  */
-export type PartialSome<T, K extends keyof T> = Omit<T, K> &
-  Partial<Pick<T, K>>;
+export type PartialSome<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 
 /**
  * TS runtime check to make sure we are working with an Element
  */
 export function assertIsElement(e: any | null): asserts e is Element {
-  if (
-    !e ||
-    !("nodeType" in e && e.nodeType === 1 && typeof e.nodeName === "string")
-  ) {
+  if (!e || !("nodeType" in e && e.nodeType === 1 && typeof e.nodeName === "string")) {
     throw new Error("Html Element expected");
   }
 }
@@ -84,10 +80,7 @@ export function assertIsElement(e: any | null): asserts e is Element {
 /**
  * Receives two arguments. If the second one is "undefined", return the first one, otherwise return the second one.
  */
-export function checkOptionalValue<T1 extends any>(
-  argOriginal: T1,
-  argOptional?: T1
-) {
+export function checkOptionalValue<T1 extends any>(argOriginal: T1, argOptional?: T1) {
   if (typeof argOptional === "undefined") {
     return argOriginal;
   }
@@ -99,12 +92,10 @@ type Falsy = false | 0 | "" | null | undefined;
  * TS runtime check to ensure var is not falsy
  */
 export function assertVarIsNotFalsy<T extends any>(
-  e?: T
+  e?: T,
 ): asserts e is T extends Falsy ? never : T {
   if (!e) {
-    throw new Error(
-      `Variable was expected to not be falsy, but isntead was: ${e}`
-    );
+    throw new Error(`Variable was expected to not be falsy, but isntead was: ${e}`);
   }
 }
 
@@ -117,8 +108,7 @@ function isInView(element: HTMLElement) {
   return (
     rect.top >= 0 &&
     rect.left >= 0 &&
-    rect.bottom <=
-      (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
     rect.right <= (window.innerWidth || document.documentElement.clientWidth)
   );
 }
@@ -126,10 +116,7 @@ function isInView(element: HTMLElement) {
 /**
  * Brings the element to middle of the view port if not in view
  */
-export function bringInView(
-  element?: HTMLElement,
-  scrollIntoViewOptions?: ScrollIntoViewOptions
-) {
+export function bringInView(element?: HTMLElement, scrollIntoViewOptions?: ScrollIntoViewOptions) {
   if (!element || isInView(element)) {
     return;
   }
