@@ -46,6 +46,7 @@ export function generateSvgCutoutPathString({
 export function createSvgCutout({
   hightlightBox,
   padding = 0,
+  radius = 0,
   fillColor = "rgb(0,0,0)",
   opacity = 1,
   animated = true,
@@ -85,7 +86,7 @@ export function createSvgCutout({
   // path
   cutoutPath.setAttribute(
     "d",
-    generateSvgCutoutPathString({ hightlightBox, padding })
+    generateSvgCutoutPathString({ hightlightBox, padding, radius })
   );
   // path styles
   cutoutPath.style.fill = fillColor;
