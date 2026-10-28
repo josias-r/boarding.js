@@ -550,14 +550,21 @@ class Boarding {
     assertIsElement(e.target);
 
     const highlightedElement = this.overlay.currentHighlightedElement;
+    const customStrictHandling = highlightedElement.getStrictClickHandling();
+    const strictClickHandling =
+      customStrictHandling === undefined
+        ? this.options.strictClickHandling
+        : customStrictHandling;
+
     const clickedHighlightedElement = highlightedElement
       .getElement()
       .contains(e.target);
 
-    const clickedUnknown = !clickedHighlightedElement;
+    const clickedUnknown =
+      strictClickHandling === "block-all" ? true : !clickedHighlightedElement;
 
     // with strict click handling any click that is not the active element (or a UI element of boarding.js) is ignored
-    if (this.options.strictClickHandling && clickedUnknown) {
+    if (strictClickHandling && clickedUnknown) {
       e.preventDefault();
       e.stopImmediatePropagation();
       e.stopPropagation();
@@ -606,6 +613,7 @@ class Boarding {
       (event.key === "ArrowRight" && this.options.keyboardControlRtl)
     ) {
       if (
+        this.hasPreviousStep() &&
         !popoverDisabledBtns?.includes("previous") &&
         (popoverShowBtns === true || popoverShowBtns.includes("previous"))
       ) {
