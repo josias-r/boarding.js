@@ -150,16 +150,7 @@ interface PopoverOptions
  */
 export default class Popover {
   private options; // type will get inferred with default values being required
-  private popover?: {
-    popoverWrapper: HTMLDivElement;
-    popoverTip: HTMLDivElement;
-    popoverTitle: HTMLDivElement;
-    popoverDescription: HTMLDivElement;
-    popoverFooter: HTMLDivElement;
-    popoverPrevBtn: HTMLButtonElement;
-    popoverNextBtn: HTMLButtonElement;
-    popoverCloseBtn: HTMLButtonElement;
-  };
+  private popover?: PopoverElements;
   private highlightElement?: HighlightElement;
 
   constructor({
@@ -223,6 +214,8 @@ export default class Popover {
     this.popover.popoverDescription.innerHTML = this.options.description || "";
 
     this.renderFooter();
+
+    this.options.onPopoverRender?.(this.popover);
 
     this.setPosition();
 
@@ -310,10 +303,7 @@ export default class Popover {
     const popoverElement = POPOVER_ELEMENT(this.options.className);
     const {
       popoverWrapper,
-      popoverTip,
-      popoverTitle,
       popoverDescription,
-      popoverFooter,
       popoverPrevBtn,
       popoverNextBtn,
       popoverCloseBtn,
@@ -321,7 +311,6 @@ export default class Popover {
     if (this.options.animate) {
       popoverWrapper.classList.add(`${ID_POPOVER}-animated`);
     }
-    this.options.onPopoverRender?.(popoverElement);
     document.body.appendChild(popoverWrapper);
 
     // add btn eventlisteners (using util method, to ensure no external libraries will ever "hear" the click)
@@ -349,16 +338,7 @@ export default class Popover {
       }
     );
 
-    this.popover = {
-      popoverWrapper,
-      popoverTip,
-      popoverTitle,
-      popoverDescription,
-      popoverFooter,
-      popoverPrevBtn,
-      popoverNextBtn,
-      popoverCloseBtn,
-    };
+    this.popover = popoverElement;
   }
 
   /**
@@ -426,7 +406,7 @@ export default class Popover {
 
     if (this.options.isLast) {
       this.popover.popoverNextBtn.innerHTML = this.options.doneBtnText;
-    } else {
+    } else if (!this.options.isFirst) {
       this.popover.popoverNextBtn.innerHTML = this.options.nextBtnText;
     }
   }
