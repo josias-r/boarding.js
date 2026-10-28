@@ -5,6 +5,14 @@
 
 * remove next branch release flow ([92e9e67](https://github.com/josias-r/boarding.js/commit/92e9e67e07c35b27b13406e394c6354501fab1ba))
 
+## [4.0.1](https://github.com/josias-r/boarding.js/compare/v4.0.0...v4.0.1) (2026-10-28)
+
+
+### Bug Fixes
+
+* **demo:** move static assets out of public and fix relative paths for gh-pages ([f85fcb1](https://github.com/josias-r/boarding.js/commit/f85fcb1f144bd14629893c06aac693b2eb2ccc29))
+* **popover:** resolve tip clamping and add e2e test ([#37](https://github.com/josias-r/boarding.js/issues/37)) ([bd746cf](https://github.com/josias-r/boarding.js/commit/bd746cfcbde85869bcec8ff8725bec9cdb22b70d))
+
 ## [4.0.0](https://github.com/josias-r/boarding.js/compare/v3.7.3...v4.0.0) (2026-10-28)
 
 
