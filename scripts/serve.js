@@ -31,14 +31,6 @@ const server = http.createServer((req, res) => {
     filePath = path.join(filePath, "index.html");
   }
 
-  // Fallback to public/ directory for /images, /favicons, etc.
-  if (!fs.existsSync(filePath)) {
-    const publicPath = path.join(process.cwd(), "public", relPath);
-    if (fs.existsSync(publicPath)) {
-      filePath = publicPath;
-    }
-  }
-
   fs.readFile(filePath, (err, data) => {
     if (err) {
       res.writeHead(404, { "Content-Type": "text/plain" });

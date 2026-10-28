@@ -5,6 +5,15 @@ test.describe("Demo Page (Mini Homepage)", () => {
     await page.goto("/index.html");
   });
 
+  test("logo image loads successfully", async ({ page }) => {
+    const logo = page.locator("#logo_img");
+    await expect(logo).toBeVisible();
+    const isLoaded = await logo.evaluate(
+      (img: HTMLImageElement) => img.complete && img.naturalWidth > 0,
+    );
+    expect(isLoaded).toBe(true);
+  });
+
   test("runs animated tour from header button", async ({ page }) => {
     await page.locator("#animated-tour").click();
 

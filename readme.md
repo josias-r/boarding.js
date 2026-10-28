@@ -1,4 +1,4 @@
-<h1 align="center"><img height="150" src="./public/images/boarding.svg" /><br> Boarding.js</h1>
+<h1 align="center"><img height="150" src="./images/boarding.svg" /><br> Boarding.js</h1>
 
 <p align="center">
   <a href="https://github.com/josias-r/boarding.js/blob/main/license">
@@ -36,7 +36,7 @@
 - **Written in TypeScript**: fully typed for better development experience
 - **MIT Licensed**: free for personal and commercial use
 
-![](./public/images/split.png)
+![](./images/split.png)
 
 For Usage and Examples, [have a look at demo](https://josias-r.github.io/boarding.js/)
 
@@ -67,7 +67,7 @@ Or import directly via ESM from a CDN. If you want a specific version, put it as
 <link rel="stylesheet" href="https://unpkg.com/boarding.js/styles/themes/basic.css" />
 ```
 
-![](./public/images/split.png)
+![](./images/split.png)
 
 ## Usage and Demo
 
@@ -189,7 +189,7 @@ boarding.start();
 
 You can also hide the buttons and control the introductions programmatically by using the API methods listed below.
 
-![](./public/images/split.png)
+![](./images/split.png)
 
 ### Asynchronous Actions – [Demo](https://josias-r.github.io/boarding.js)
 
@@ -242,7 +242,7 @@ boarding.start();
 
 You can also hide the buttons and control the introductions programmatically by using the API methods listed below.
 
-![](./public/images/split.png)
+![](./images/split.png)
 
 ## API
 
@@ -382,11 +382,11 @@ const activeElement = boarding.getHighlightedElement();
 const lastActiveElement = boarding.getLastHighlightedElement();
 ```
 
-![](./public/images/split.png)
+![](./images/split.png)
 
 **Note –** Do not forget to add `e.stopPropagation()` to the `click` binding that triggers boarding.
 
-![](./public/images/split.png)
+![](./images/split.png)
 
 ## Contributions
 
