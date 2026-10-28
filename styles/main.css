@@ -56,10 +56,7 @@ div#boarding-popover-item .boarding-popover-tip {
   position: absolute;
   border-color: #fff;
 }
-div#boarding-popover-item
-  .boarding-popover-tip:not([class^="boarding-tipside-"]):not([class^="boarding-tipalign-"]):not(
-    [class*=" boarding-tipalign-"]
-  ):not([class*=" boarding-tipalign-"]) {
+div#boarding-popover-item .boarding-popover-tip:not([class*="boarding-tipside-"]) {
   display: none;
 }
 

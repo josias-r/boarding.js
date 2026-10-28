@@ -179,4 +179,115 @@ test.describe("Popover Features & Customization", () => {
     // Popover should still be open
     await expect(page.locator("#boarding-popover-item")).toBeVisible();
   });
+
+  test("dynamically positions and clamps popover tip near viewport boundaries", async ({
+    page,
+  }) => {
+    await page.evaluate(() => {
+      // Mount an element pinned near the right edge of the viewport
+      let edgeEl = document.getElementById("edge-element");
+      if (!edgeEl) {
+        edgeEl = document.createElement("div");
+        edgeEl.id = "edge-element";
+        document.body.appendChild(edgeEl);
+      }
+      edgeEl.style.position = "absolute";
+      edgeEl.style.top = "150px";
+      edgeEl.style.right = "15px";
+      edgeEl.style.width = "50px";
+      edgeEl.style.height = "50px";
+      edgeEl.style.background = "red";
+
+      const boarding = new (window as any).Boarding();
+      (window as any).activeBoarding = boarding;
+
+      boarding.highlight({
+        element: "#edge-element",
+        popover: {
+          title: "Boundary Clamping Test",
+          description: "Popover is constrained by the right viewport boundary",
+          preferredSide: "bottom",
+          alignment: "center",
+        },
+      });
+    });
+
+    const popover = page.locator("#boarding-popover-item");
+    const tip = popover.locator(".boarding-popover-tip");
+
+    await expect(popover).toBeVisible();
+    await expect(tip).toBeVisible();
+
+    // Verify dynamic inline positioning applied to tip
+    const tipInlineStyle = await tip.evaluate((el: HTMLElement) => ({
+      left: el.style.left,
+      right: el.style.right,
+      marginLeft: el.style.marginLeft,
+    }));
+
+    // PR #37 sets dynamic left pixel value and negative half-size margin
+    expect(tipInlineStyle.left).toMatch(/^\d+(\.\d+)?px$/);
+    expect(tipInlineStyle.right).toBe("auto");
+    expect(tipInlineStyle.marginLeft).toMatch(/^-\d+(\.\d+)?px$/);
+
+    // Verify tip is physically constrained within the popover bounds
+    const popoverBox = await popover.boundingBox();
+    const tipBox = await tip.boundingBox();
+    const targetBox = await page.locator("#edge-element").boundingBox();
+
+    expect(popoverBox).not.toBeNull();
+    expect(tipBox).not.toBeNull();
+    expect(targetBox).not.toBeNull();
+
+    // Tip should stay inside popover horizontally
+    expect(tipBox!.x).toBeGreaterThanOrEqual(popoverBox!.x);
+    expect(tipBox!.x + tipBox!.width).toBeLessThanOrEqual(popoverBox!.x + popoverBox!.width + 1);
+
+    // Tip should be shifted towards the target element near the right side of the popover
+    const popoverCenterX = popoverBox!.x + popoverBox!.width / 2;
+    expect(tipBox!.x + tipBox!.width / 2).toBeGreaterThan(popoverCenterX);
+
+    // Verify popover width doesn't exceed viewport clientWidth
+    const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
+    expect(popoverBox!.width).toBeLessThanOrEqual(clientWidth);
+
+    // Highlighting a 'left' side element with enough room resets horizontal tip styles and applies vertical ones
+    await page.evaluate(() => {
+      let centerEl = document.getElementById("center-element");
+      if (!centerEl) {
+        centerEl = document.createElement("div");
+        centerEl.id = "center-element";
+        document.body.appendChild(centerEl);
+      }
+      centerEl.style.position = "absolute";
+      centerEl.style.top = "200px";
+      centerEl.style.left = "400px";
+      centerEl.style.width = "80px";
+      centerEl.style.height = "80px";
+
+      (window as any).activeBoarding.highlight({
+        element: "#center-element",
+        popover: {
+          title: "Center Element",
+          description: "Testing vertical tip positioning on left side",
+          preferredSide: "left",
+        },
+      });
+    });
+
+    const verticalTipStyles = await tip.evaluate((el: HTMLElement) => ({
+      left: el.style.left,
+      marginLeft: el.style.marginLeft,
+      top: el.style.top,
+      marginTop: el.style.marginTop,
+    }));
+    expect(verticalTipStyles.left).toBe("");
+    expect(verticalTipStyles.marginLeft).toBe("");
+    expect(verticalTipStyles.top).toMatch(/^\d+(\.\d+)?px$/);
+    expect(verticalTipStyles.marginTop).toMatch(/^-\d+(\.\d+)?px$/);
+
+    // Reset should unmount popover completely
+    await page.evaluate(() => (window as any).activeBoarding.reset(true));
+    await expect(popover).toHaveCount(0);
+  });
 });
