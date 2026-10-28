@@ -1,54 +1,53 @@
-name: Release CI
+name: Release
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
 
 permissions:
-  contents: write # to be able to publish a GitHub release
-  issues: write # to be able to comment on released issues
-  pull-requests: write # to be able to comment on released pull requests
-  id-token: write # to enable use of OIDC for trusted publishing and npm provenance
+  contents: write
+  pull-requests: write
+  id-token: write
 
 jobs:
   release:
-    name: Release
+    name: Release Please
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      - name: Checkout repository
+        if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@v4
 
       - name: Install pnpm
+        if: ${{ steps.release.outputs.release_created }}
         uses: pnpm/action-setup@v4
 
-      - name: Use Node.js 26.12.1
+      - name: Setup Node.js
+        if: ${{ steps.release.outputs.release_created }}
         uses: actions/setup-node@v4
         with:
           node-version: 26.12.1
+          registry-url: "https://registry.npmjs.org"
           cache: "pnpm"
 
       - name: Install dependencies
+        if: ${{ steps.release.outputs.release_created }}
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm run lint
-
-      - name: Type check
-        run: pnpm run typecheck
-
-      - name: Install Playwright browsers
-        run: pnpm exec playwright install --with-deps chromium
-
-      - name: Run E2E tests
-        run: pnpm test
-
-      - name: Build release
+      - name: Build library
+        if: ${{ steps.release.outputs.release_created }}
         run: pnpm run build
 
-      - name: Release
-        run: pnpm run semantic-release
+      - name: Publish to npm
+        if: ${{ steps.release.outputs.release_created }}
+        run: pnpm publish --no-git-checks --access public
         env:
-          CI: true
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

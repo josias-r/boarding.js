@@ -1,7 +1,28 @@
 {
   "name": "boarding.js",
+  "version": "3.7.3",
   "private": false,
-  "version": "0.0.0-development",
+  "keywords": [
+    "feature-introductions",
+    "focus-shifters",
+    "intro",
+    "onboarding",
+    "overlay",
+    "overlays",
+    "popover",
+    "spotlight",
+    "tour",
+    "user-onboarding",
+    "walkthrough"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/josias-r/boarding.js.git"
+  },
+  "files": [
+    "dist",
+    "styles"
+  ],
   "type": "module",
   "main": "dist/main.mjs",
   "types": "dist/main.d.mts",
@@ -13,46 +34,21 @@
     "./styles/main.css": "./styles/main.css",
     "./styles/themes/basic.css": "./styles/themes/basic.css"
   },
-  "keywords": [
-    "tour",
-    "intro",
-    "onboarding",
-    "walkthrough",
-    "spotlight",
-    "popover",
-    "overlay",
-    "overlays",
-    "user-onboarding",
-    "feature-introductions",
-    "focus-shifters"
-  ],
-  "files": [
-    "dist",
-    "styles"
-  ],
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/serve.js",
     "build": "tsdown",
-    "build:gh-page": "vite build",
-    "preview": "vite preview",
     "test": "playwright test",
     "lint": "oxlint src tests",
-    "typecheck": "tsc --noEmit",
-    "semantic-release": "semantic-release"
+    "format": "oxfmt",
+    "format:check": "oxfmt --check .",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
-    "@semantic-release/changelog": "^7.0.0",
-    "@semantic-release/git": "^11.0.1",
+    "oxfmt": "^0.75.0",
     "oxlint": "^1.90.0",
-    "semantic-release": "^25.0.9",
-    "tsdown": "^0.23.2",
-    "typescript": "5.9.3",
-    "vite": "8.3.5"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/josias-r/boarding.js.git"
+    "tsdown": "0.23.3",
+    "typescript": "7.0.2"
   },
   "packageManager": "pnpm@12.15.0+sha512.b3951d6d6ff4a9f13dc7cf56cd28d2b8eb37dbcc9c68e52e1e1191873ea9f82a017287ab50baadc5ccc494f036c67c0e47eb13608c2fa36f47711b61ea128e61"
 }

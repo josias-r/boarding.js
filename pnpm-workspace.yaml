@@ -1,0 +1,2 @@
+minimumReleaseAgeExclude:
+  - tsdown@0.23.3

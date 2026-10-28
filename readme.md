@@ -64,10 +64,7 @@ Or import directly via ESM from a CDN. If you want a specific version, put it as
 </script>
 <link rel="stylesheet" href="https://unpkg.com/boarding.js/styles/main.css" />
 <!-- optionally include the base theme -->
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/boarding.js/styles/themes/basic.css"
-/>
+<link rel="stylesheet" href="https://unpkg.com/boarding.js/styles/themes/basic.css" />
 ```
 
 ![](./public/images/split.png)
@@ -330,12 +327,7 @@ And this is how it would look when creating a step-by-step guide:
 
 ```javascript
 const boarding = new Boarding(boardingOptions);
-boarding.defineSteps([
-  stepDefinition1,
-  stepDefinition2,
-  stepDefinition3,
-  stepDefinition4,
-]);
+boarding.defineSteps([stepDefinition1, stepDefinition2, stepDefinition3, stepDefinition4]);
 ```
 
 ### API Methods

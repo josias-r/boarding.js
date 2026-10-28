@@ -19,7 +19,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "pnpm dev",
+    command: "node scripts/serve.js",
     port: 5173,
     reuseExistingServer: !process.env.CI,
     timeout: 10000,
