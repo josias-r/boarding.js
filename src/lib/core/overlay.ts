@@ -368,11 +368,13 @@ class Overlay {
 
   private unmountCutoutElement() {
     if (!this.cutoutSVGElement) {
-      throw new Error("No SVG found to unmount");
+      return;
     }
 
     // rm from body
-    document.body.removeChild(this.cutoutSVGElement);
+    if (this.cutoutSVGElement.parentElement) {
+      this.cutoutSVGElement.parentElement.removeChild(this.cutoutSVGElement);
+    }
     // rm from memory
     this.cutoutSVGElement = undefined;
   }
