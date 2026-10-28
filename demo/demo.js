@@ -1,4 +1,4 @@
-import { Boarding } from "/dist/main.mjs";
+import { Boarding } from "../dist/main.mjs";
 
 document.addEventListener("DOMContentLoaded", function () {
   const tourSteps = [
