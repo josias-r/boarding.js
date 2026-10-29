@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.2](https://github.com/josias-r/boarding.js/compare/v4.0.1...v4.0.2) (2026-10-29)
+
+
+### Bug Fixes
+
+* **changelog:** reorder entries and add h1 ([8a38809](https://github.com/josias-r/boarding.js/commit/8a38809a644640500db3a6c8db86f960c8fbc7a7))
+* **tsdown:** do not minify for publishing ([1590159](https://github.com/josias-r/boarding.js/commit/1590159f52759d2b94a49eae64ac80252277b50c))
+
 ## [4.0.1](https://github.com/josias-r/boarding.js/compare/v4.0.0...v4.0.1) (2026-10-28)
 
 
