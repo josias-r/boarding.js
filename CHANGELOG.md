@@ -1,9 +1,4 @@
-## [3.7.3](https://github.com/josias-r/boarding.js/compare/v3.7.2...v3.7.3) (2025-12-09)
-
-
-### Bug Fixes
-
-* remove next branch release flow ([92e9e67](https://github.com/josias-r/boarding.js/commit/92e9e67e07c35b27b13406e394c6354501fab1ba))
+# Changelog
 
 ## [4.0.1](https://github.com/josias-r/boarding.js/compare/v4.0.0...v4.0.1) (2026-10-28)
 
@@ -32,6 +27,13 @@
 * **events:** prevent left arrow reset on first step and improve block-all handling ([b825da3](https://github.com/josias-r/boarding.js/commit/b825da3004f6b2f2af2c2724d974593680b44773))
 * **overlay:** prevent unhandled error on redundant unmount ([20c18bf](https://github.com/josias-r/boarding.js/commit/20c18bfad956740ebadb523c853146214cc2de4e))
 * **popover:** preserve startBtnText and fix onPopoverRender timing ([8e9e7f8](https://github.com/josias-r/boarding.js/commit/8e9e7f88e30821e161867a15bbc76d50cb265421))
+
+## [3.7.3](https://github.com/josias-r/boarding.js/compare/v3.7.2...v3.7.3) (2025-12-09)
+
+
+### Bug Fixes
+
+* remove next branch release flow ([92e9e67](https://github.com/josias-r/boarding.js/commit/92e9e67e07c35b27b13406e394c6354501fab1ba))
 
 ## [3.7.2](https://github.com/josias-r/boarding.js/compare/v3.7.1...v3.7.2) (2025-12-09)
 
